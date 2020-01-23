@@ -1,4 +1,8 @@
 class User < ApplicationRecord
+  include Helpers::User
+  include Overrides::User
+  include Relations::User
+  include Validations::User
   include Devise::JWT::RevocationStrategies::JTIMatcher
 
   devise(
