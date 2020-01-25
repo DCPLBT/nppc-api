@@ -141,7 +141,7 @@ Devise.setup do |config|
   # The key to be used to check existing users when sending an invitation
   # and the regexp used to test it when validate_on_invite is not set.
   # config.invite_key = { email: /\A[^@]+@[^@]+\z/ }
-  # config.invite_key = { email: /\A[^@]+@[^@]+\z/, username: nil }
+  config.invite_key = { email: /\A[^@]+@[^@]+\z/, username: nil, phone: nil }
 
   # Ensure that invited record is valid.
   # The invitation won't be sent if this check fails.
@@ -169,7 +169,7 @@ Devise.setup do |config|
   # Auto-login after the user accepts the invite. If this is false,
   # the user will need to manually log in after accepting the invite.
   # Default: true
-  config.allow_insecure_sign_in_after_accept = true
+  # config.allow_insecure_sign_in_after_accept = true
 
   # ==> Configuration for :confirmable
   # A period that the user is allowed to access the website even without
