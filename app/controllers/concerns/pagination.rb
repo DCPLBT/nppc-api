@@ -23,12 +23,13 @@ module Pagination
   end
 
   def paginated_data(collection, config, serializer, root)
-    {
+    data = {
       json: collection,
       status: :ok,
-      each_serializer: serializer,
       root: root,
       meta: paginate(config)
     }
+    data.merge!(each_serializer: serializer) if serializer
+    data
   end
 end
