@@ -4,6 +4,8 @@ class ApplicationController < ActionController::API
   include Pagination
   include PreFilters
   include Pagy::Backend
+  include ResourceFinder
+  include ParamsSanitizer
   include ApiErrors::ErrorHandler
   include ActionController::Cookies
   include HttpAcceptLanguage::AutoLocale

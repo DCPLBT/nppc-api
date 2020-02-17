@@ -28,9 +28,6 @@ Style/PercentLiteralDelimiters:
 Metrics/MethodLength:
   Max: 50
 
-Metrics/ClassMethodLength:
-  Max: 50
-
 Metrics/AbcSize:
   Max: 50
 

@@ -5,7 +5,11 @@ module Api
     module Users
       class SessionsController < Devise::SessionsController
         def respond_with(resource, _opts = {})
-          render json: resource
+          if resource.errors?
+            invalid_resource(resource)
+          else
+            render json: resource
+          end
         end
 
         def respond_to_on_destroy
