@@ -43,7 +43,7 @@ module BookyulApi
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use(
       ActionDispatch::Session::CookieStore,
-      key: '_backend_key',
+      key: '_bookyul_key',
       domain: ENV['HOST_URL']
     )
 
