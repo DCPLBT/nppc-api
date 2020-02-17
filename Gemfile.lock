@@ -65,7 +65,10 @@ GEM
       public_suffix (>= 2.0.2, < 5.0)
     ast (2.4.0)
     bcrypt (3.1.13)
+    bcrypt (3.1.13-java)
     bootsnap (1.4.5)
+      msgpack (~> 1.0)
+    bootsnap (1.4.5-java)
       msgpack (~> 1.0)
     builder (3.2.4)
     bullet (6.0.2)
@@ -123,6 +126,9 @@ GEM
     faker (2.10.1)
       i18n (>= 1.6, < 2)
     ffi (1.12.1)
+    ffi (1.12.1-java)
+    ffi (1.12.1-x64-mingw32)
+    ffi (1.12.1-x86-mingw32)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     haml (5.1.2)
@@ -144,10 +150,14 @@ GEM
       concurrent-ruby (~> 1.0)
     iniparse (1.4.4)
     jaro_winkler (1.5.4)
+    jaro_winkler (1.5.4-java)
     jsonapi-renderer (0.2.2)
     jwt (2.2.1)
     launchy (2.4.3)
       addressable (~> 2.3)
+    launchy (2.4.3-java)
+      addressable (~> 2.3)
+      spoon (~> 0.0.1)
     letter_opener (1.7.0)
       launchy (~> 2.2)
     listen (3.1.5)
@@ -167,8 +177,17 @@ GEM
     mini_portile2 (2.4.0)
     minitest (5.14.0)
     msgpack (1.3.1)
+    msgpack (1.3.1-java)
+    msgpack (1.3.1-x64-mingw32)
+    msgpack (1.3.1-x86-mingw32)
     nio4r (2.5.2)
+    nio4r (2.5.2-java)
     nokogiri (1.10.7)
+      mini_portile2 (~> 2.4.0)
+    nokogiri (1.10.7-java)
+    nokogiri (1.10.7-x64-mingw32)
+      mini_portile2 (~> 2.4.0)
+    nokogiri (1.10.7-x86-mingw32)
       mini_portile2 (~> 2.4.0)
     orm_adapter (0.5.0)
     overcommit (0.52.1)
@@ -179,11 +198,18 @@ GEM
     parser (2.6.5.0)
       ast (~> 2.4.0)
     pg (1.2.2)
+    pg (1.2.2-x64-mingw32)
+    pg (1.2.2-x86-mingw32)
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
+    pry (0.12.2-java)
+      coderay (~> 1.1.0)
+      method_source (~> 0.9.0)
+      spoon (~> 0.0)
     public_suffix (4.0.3)
     puma (3.12.2)
+    puma (3.12.2-java)
     pundit (2.1.0)
       activesupport (>= 3.0.0)
     rack (2.1.1)
@@ -257,6 +283,8 @@ GEM
     sexp_processor (4.13.0)
     shoulda-matchers (4.1.2)
       activesupport (>= 4.2.0)
+    spoon (0.0.6)
+      ffi
     spring (2.1.0)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
@@ -271,9 +299,12 @@ GEM
     temple (0.8.2)
     thor (1.0.1)
     thread_safe (0.3.6)
+    thread_safe (0.3.6-java)
     tilt (2.0.10)
     tzinfo (1.2.6)
       thread_safe (~> 0.1)
+    tzinfo-data (1.2019.3)
+      tzinfo (>= 1.0.0)
     unicode-display_width (1.6.0)
     uniform_notifier (1.13.0)
     warden (1.2.8)
@@ -285,13 +316,19 @@ GEM
       warden (~> 1.2)
     websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
+    websocket-driver (0.7.1-java)
+      websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.4)
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.2.2)
 
 PLATFORMS
+  java
   ruby
+  x64-mingw32
+  x86-mingw32
+  x86-mswin32
 
 DEPENDENCIES
   active_model_serializers
@@ -325,7 +362,7 @@ DEPENDENCIES
   tzinfo-data
 
 RUBY VERSION
-   ruby 2.6.4p104
+   ruby 2.6.5p114
 
 BUNDLED WITH
    1.17.2
