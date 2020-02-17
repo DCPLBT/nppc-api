@@ -41,11 +41,10 @@ module BookyulApi
     end
 
     config.middleware.use ActionDispatch::Cookies
-    config.middleware.use ActionDispatch::Session::CookieStore
-
-    config.session_store(
-      :cookie_store,
-      domain: URI.parse(ENV['HOST_URL']).host
+    config.middleware.use(
+      ActionDispatch::Session::CookieStore,
+      key: '_backend_key',
+      domain: ENV['HOST_URL']
     )
 
     # Disabling some tests we don't need by default so we can create by hand if it is appropriate.
