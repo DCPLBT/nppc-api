@@ -45,6 +45,7 @@ group :development do
 end
 
 gem 'active_model_serializers'
+gem 'annotate'
 gem 'devise'
 gem 'devise-jwt'
 gem 'devise_invitable'

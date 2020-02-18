@@ -1,7 +1,16 @@
-class Role < ApplicationRecord
-  extend ActiveSupport::Concern
+# == Schema Information
+#
+# Table name: roles
+#
+#  id         :bigint           not null, primary key
+#  name       :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 
-  included do
-    has_and_belongs_to_many :users, inverse_of: :roles
-  end
+class Role < ApplicationRecord
+  include Booleans::Role
+  include Relations::Role
+  include Validations::Role
+  include ::Callbacks::Role
 end

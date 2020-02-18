@@ -3,7 +3,8 @@ module Validations
     extend ActiveSupport::Concern
 
     included do
-      validates :phone, :email, presence: true
+      validates_presence_of :email, :roles
+      validates_uniqueness_of :email, :username, :phone, allow_blank: true
     end
   end
 end
