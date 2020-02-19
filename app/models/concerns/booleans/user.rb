@@ -9,7 +9,7 @@ module Booleans
     end
 
     def role?(role)
-      roles.any? { |r| r.name.underscore.to_sym == role }
+      roles.any? { |r| r.name.delete(' ').underscore.to_sym == role }
     end
 
     def admin?
