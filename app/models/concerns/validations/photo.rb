@@ -3,7 +3,7 @@ module Validations
     extend ActiveSupport::Concern
 
     included do
-      validates :image, presence: true
+      validates_presence_of :image
       validate :image_content_type
     end
 
