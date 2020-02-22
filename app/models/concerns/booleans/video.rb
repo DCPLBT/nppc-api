@@ -2,8 +2,10 @@ module Booleans
   module Video
     extend ActiveSupport::Concern
 
-    def changed_for_autosave?
-      super || !attachment_changes.empty?
+    included do
+      def changed_for_autosave?
+        super || !attachment_changes.empty?
+      end
     end
 
     def correct_clip_type?
