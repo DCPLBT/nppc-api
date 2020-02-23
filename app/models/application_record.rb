@@ -1,7 +1,7 @@
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
-  def self.errors?
+  def errors?
     errors.any?
   end
 
