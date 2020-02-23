@@ -40,4 +40,4 @@ en:
         video:
           file_is_not_video: 'is not a valid video. Only MP4, quicktime and WEBM files are allowed.'
         role:
-          name_is_reserved: '%{name} is reserved keyword, cannot delete it!'
+          name_is_reserved: '%{name} is reserved keyword, cannot be deleted or updated!'
