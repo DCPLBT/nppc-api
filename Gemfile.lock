@@ -364,7 +364,7 @@ DEPENDENCIES
   puma (~> 3.11)
   pundit
   rack-cors
-  rails (~> 6.0.0)
+  rails (~> 6.0.2.1)
   rspec-rails (~> 3.8)
   rubocop
   shoulda-matchers
