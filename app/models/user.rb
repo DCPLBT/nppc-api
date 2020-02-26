@@ -51,6 +51,7 @@
 #
 
 class User < ApplicationRecord
+  include Scopes::User
   include Helpers::User
   include Booleans::User
   include Overrides::User

@@ -1,0 +1,61 @@
+module Api
+  module V1
+    class UsersController < ApplicationController
+      before_action :assign_params, only: :update
+
+      def index
+        populator = UserPopulator.new(current_user: current_user, params: query_params)
+        render_paginated_collection(populator.run)
+      end
+
+      def show
+        show_user_form(user_form)
+      end
+
+      def profile
+        render json: current_user
+      end
+
+      def update
+        update_user_form(user_form)
+      end
+
+      def destroy
+        destroy_user_form(user_form)
+      end
+
+      private
+
+      def user_params
+        params.require(:user).permit(
+          user_attributes
+        )
+      end
+
+      def user_form
+        UserForm.new(
+          user_attrs
+        )
+      end
+
+      def user_attrs
+        @user_attrs ||= {
+          current_user: current_user,
+          id: params[:id]
+        }
+      end
+
+      def assign_params
+        user_attrs.merge!(params: user_params)
+      end
+
+      def query_params
+        params.permit(
+          :q,
+          :status,
+          roles: []
+        )
+      end
+    end
+  end
+end

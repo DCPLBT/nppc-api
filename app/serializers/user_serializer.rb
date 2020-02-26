@@ -58,4 +58,6 @@ class UserSerializer < ApplicationSerializer
     :phone,
     :active
   )
+
+  has_many :roles
 end

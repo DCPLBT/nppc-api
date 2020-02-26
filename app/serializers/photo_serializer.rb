@@ -3,7 +3,7 @@
 # Table name: photos
 #
 #  id             :bigint           not null, primary key
-#  default        :boolean
+#  default        :boolean          default(FALSE)
 #  imageable_type :string           not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null

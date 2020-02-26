@@ -6,17 +6,8 @@ module ParamsSanitizer
       :phone,
       :username,
       :current_password,
-      role_ids: [],
-      profile_attributes: [
-        :id,
-        :first_name,
-        :last_name,
-        :gender,
-        :salutation,
-        photo_attributes: [
-          :image
-        ]
-      ]
+      :active,
+      role_ids: []
     ]
   end
 end
