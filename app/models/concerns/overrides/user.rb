@@ -16,6 +16,12 @@ module Overrides
           where(conditions.to_h).first
         end
       end
+
+      def update_with_password(params = {})
+        params.delete(:password) if params[:password].blank?
+        params.delete(:password_confirmation) if params[:password_confirmation].blank?
+        update_attributes(params)
+      end
     end
   end
 end
