@@ -15,6 +15,7 @@
 #
 
 class Attachment < ApplicationRecord
+  include Scopes::Attachment
   include Booleans::Attachment
   include Delegates::Attachment
   include Relations::Attachment

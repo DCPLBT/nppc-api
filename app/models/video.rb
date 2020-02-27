@@ -15,6 +15,7 @@
 #
 
 class Video < ApplicationRecord
+  include Scopes::Video
   include Booleans::Video
   include Delegates::Video
   include Relations::Video
