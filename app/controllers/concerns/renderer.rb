@@ -31,6 +31,14 @@ module Renderer
     end
   end
 
+  def transition_form(form, model)
+    if form.transition
+      render data(form.send(model), form.try(:serializer))
+    else
+      invalid_resource(form.send(model))
+    end
+  end
+
   def data(object, serializer)
     {
       json: object,
