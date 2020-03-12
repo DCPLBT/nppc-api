@@ -4,7 +4,7 @@ module Api
   module V1
     module Users
       class ConfirmationsController < Devise::ConfirmationsController
-        def respond_with(resource, _opts = {})
+        def respond_with(_, _opts = {})
           if resource.errors?
             invalid_resource(resource)
           else
