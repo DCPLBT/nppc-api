@@ -9,7 +9,7 @@ module Overrides
         conditions = warden_conditions.dup
         if (login = conditions.delete(:login))
           where(conditions.to_h).where(
-            'username = :value OR email = :value OR phone = :value',
+            ':value in (username, email, phone)',
             value: login.downcase
           ).first
         else
