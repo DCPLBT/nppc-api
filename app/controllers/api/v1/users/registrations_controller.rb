@@ -5,11 +5,16 @@ module Api
     module Users
       class RegistrationsController < Devise::RegistrationsController
         before_action :configure_account_update_params, only: :update
+        before_action :configure_account_create_params, only: :create
 
         protected
 
         def configure_account_update_params
           devise_parameter_sanitizer.permit(:account_update, keys: user_attributes)
+        end
+
+        def configure_account_create_params
+          devise_parameter_sanitizer.permit(:sign_up, keys: user_attributes)
         end
 
         def respond_with(resource, _opts = {})

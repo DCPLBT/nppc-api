@@ -22,6 +22,12 @@ module Overrides
         params.delete(:password_confirmation) if params[:password_confirmation].blank?
         update_attributes(params)
       end
+
+      def self.confirm_by_token(confirmation_token)
+        resource = super
+        resource.update(active: true) unless resource.errors?
+        resource
+      end
     end
   end
 end
