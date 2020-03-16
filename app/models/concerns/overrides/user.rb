@@ -28,6 +28,12 @@ module Overrides
         resource.update(active: true) unless resource.errors?
         resource
       end
+
+      def self.accept_invitation!(update_resource_params)
+        resource = super
+        resource.update(active: true) unless resource.errors?
+        resource
+      end
     end
   end
 end
