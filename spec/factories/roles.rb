@@ -10,6 +10,12 @@
 
 FactoryBot.define do
   factory :role do
-    name { 'MyString' }
+    name { 'Admin' }
+    trait :admin do
+      name { 'Admin' }
+    end
+    trait :user do
+      name { 'User' }
+    end
   end
 end

@@ -11,6 +11,18 @@ class UserPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def show?
+    invite?
+  end
+
+  def destroy?
+    show?
+  end
+
+  def update?
+    destroy?
+  end
+
   class Scope < Scope
     def resolve
       scope.all

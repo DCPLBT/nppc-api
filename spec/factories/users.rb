@@ -52,5 +52,18 @@
 
 FactoryBot.define do
   factory :user do
+    email { Faker::Internet.email }
+    password { Faker::Internet.password }
+    role_ids { [2] }
+    active { true }
+    factory :admin do
+      role_ids { [1] }
+    end
+
+    factory :customer do
+      role_ids { [3] }
+    end
+
+    after(:build, &:confirm)
   end
 end

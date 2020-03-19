@@ -92,6 +92,7 @@ GEM
     coderay (1.1.2)
     concurrent-ruby (1.1.5)
     crass (1.0.6)
+    database_cleaner (1.8.3)
     devise (4.7.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -346,6 +347,7 @@ DEPENDENCIES
   bullet
   byebug
   capybara
+  database_cleaner
   devise
   devise-jwt
   devise_invitable
@@ -376,4 +378,4 @@ RUBY VERSION
    ruby 2.6.5p114
 
 BUNDLED WITH
-   1.17.2
+   1.17.3
