@@ -7,12 +7,13 @@ module ResourceFinder
   private
 
   def parent_class
+    result = nil
     params.each_key do |name|
       if name.match?(/(.+)_id$/)
         model = name.match(%r{([^\/.]*)_id$})
-        return model[1].classify.constantize, name
+        result = model[1].classify.constantize, name
       end
     end
-    nil
+    result
   end
 end
