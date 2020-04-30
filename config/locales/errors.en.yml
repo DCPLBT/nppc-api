@@ -35,9 +35,12 @@ en:
       models:
         attachment:
           file_is_not_correct: 'is not a valid document. Only microsoft file and PDF files are allowed.'
+          max_size_exceeded: 'File size cannot exceed more than 5MB'
         photo:
           file_is_not_image: 'is not a valid image. Only JPG, PNG and GIF files are allowed.'
+          max_size_exceeded: 'Image size cannot exceed more than 5MB'
         video:
           file_is_not_video: 'is not a valid video. Only MP4, quicktime and WEBM files are allowed.'
+          max_size_exceeded: 'Video size cannot exceed more than 25MB'
         role:
           name_is_reserved: '%{name} is reserved keyword, cannot be deleted or updated!'
