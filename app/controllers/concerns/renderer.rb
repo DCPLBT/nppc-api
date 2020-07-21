@@ -1,38 +1,6 @@
 module Renderer
-  def create_form(form, model)
-    if form.create
-      render data(form.send(model), form.try(:serializer))
-    else
-      invalid_resource(form.send(model))
-    end
-  end
-
-  def update_form(form, model)
-    if form.update
-      render data(form.send(model), form.try(:serializer))
-    else
-      invalid_resource(form.send(model))
-    end
-  end
-
-  def destroy_form(form, model)
-    if form.destroy
-      render data(form.send(model), form.try(:serializer))
-    else
-      invalid_resource(form.send(model))
-    end
-  end
-
-  def show_form(form, model)
-    if form.show
-      render data(form.send(model), form.try(:serializer))
-    else
-      invalid_resource(form.send(model))
-    end
-  end
-
-  def transition_form(form, model)
-    if form.transition
+  def compute_form(action, form, model)
+    if form.send(action)
       render data(form.send(model), form.try(:serializer))
     else
       invalid_resource(form.send(model))
@@ -57,9 +25,19 @@ module Renderer
     )
   end
 
+  def file_preview(data, file_name, file_type)
+    send_data(
+      data,
+      type: file_type,
+      disposition: 'attachment',
+      file_name: file_name,
+      x_sendfile: true
+    )
+  end
+
   def method_missing(method_sym, *args, &block)
-    if method_sym.to_s =~ /^(create|update|destroy|show)_(.*)_form$/
-      send("#{Regexp.last_match(1)}_form", *args, Regexp.last_match(2))
+    if method_sym.to_s =~ /^(^[^_]+(?=_))_(.*)_form$/i
+      compute_form(Regexp.last_match(1), *args, Regexp.last_match(2))
     else
       super
     end
