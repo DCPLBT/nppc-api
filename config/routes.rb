@@ -76,6 +76,19 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
+      concern :attachable do
+        resources :attachments
+      end
+
+      concern :imageable do
+        resources :photos
+      end
+
+      concern :clipable do
+        resources :videos
+      end
+
+      resources :profiles, concerns: :imageable
       resources :roles
       resources :users do
         collection do
