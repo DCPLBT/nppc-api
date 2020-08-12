@@ -19,7 +19,7 @@ require 'rails/test_unit/railtie'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module Pages10Api
+module BackendApi
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
@@ -41,7 +41,7 @@ module Pages10Api
     end
 
     config.middleware.use ActionDispatch::Cookies
-    config.middleware.use ActionDispatch::Session::CookieStore, key: :_10pages_key, domain: :all
+    config.middleware.use ActionDispatch::Session::CookieStore, key: :_backend_key, domain: :all
 
     # Disabling some tests we don't need by default so we can create by hand if it is appropriate.
     config.generators do |g|
