@@ -25,13 +25,13 @@ module Overrides
 
       def self.confirm_by_token(confirmation_token)
         resource = super
-        resource.update(active: true) unless resource.errors?
+        resource.update_column(:active, true) unless resource.errors?
         resource
       end
 
       def self.accept_invitation!(update_resource_params)
         resource = super
-        resource.update(active: true) unless resource.errors?
+        resource.update_column(:active, true) unless resource.errors?
         resource
       end
     end
