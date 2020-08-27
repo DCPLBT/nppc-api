@@ -32,3 +32,7 @@ end
 def reverse_sorted?(array)
   array.each_cons(2).all? { |a, b| (a <=> b) >= 0 }
 end
+
+def image
+  fixture_file_upload(Rails.root.join('spec', 'support', 'assets', 'image.png'), 'image/png')
+end
