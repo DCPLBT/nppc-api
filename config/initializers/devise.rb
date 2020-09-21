@@ -351,7 +351,8 @@ Devise.setup do |config|
     jwt.dispatch_requests = [
       ['POST', /sign_in/],
       ['GET', /confirmation/],
-      ['PUT', /invitation/]
+      ['PUT', /invitation/],
+      ['PUT', /password/]
     ]
     jwt.revocation_requests = [
       ['DELETE', /sign_out/]
