@@ -22,6 +22,10 @@ require 'rspec/rails'
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
+
+require 'simplecov'
+SimpleCov.start
+
 Dir[Rails.root.join('spec', 'supports', '**', '*.rb')].each(&method(:require))
 
 # Checks for pending migrations and applies them before tests are run.
@@ -64,13 +68,14 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 
   config.before(:suite) do
-    ActiveRecord::Base.connection.tables.each do |t|
-      ActiveRecord::Base.connection.reset_pk_sequence!(t)
-    end
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
 
     load_task('rspec:seed')
+
+    ActiveRecord::Base.connection.tables.each do |t|
+      ActiveRecord::Base.connection.reset_pk_sequence!(t)
+    end
   end
 end
 
