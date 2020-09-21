@@ -4,6 +4,7 @@ class BaseForm
 
   attr_accessor(
     :current_user,
+    :include,
     :parent,
     :params,
     :id

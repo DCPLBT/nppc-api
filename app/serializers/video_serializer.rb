@@ -5,6 +5,7 @@
 #  id            :bigint           not null, primary key
 #  clipable_type :string           not null
 #  default       :boolean          default(FALSE)
+#  type          :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  clipable_id   :bigint           not null

@@ -46,13 +46,13 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
-gem 'active_model_serializers'
 gem 'annotate'
 gem 'devise'
 gem 'devise-jwt'
 gem 'devise_invitable'
 gem 'dotenv-rails'
 gem 'faker'
+gem 'fast_jsonapi'
 gem 'haml-rails'
 gem 'http_accept_language'
 gem 'letter_opener'

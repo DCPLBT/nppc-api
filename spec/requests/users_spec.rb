@@ -7,46 +7,85 @@ RSpec.describe 'Users', type: :request do
   let!(:admin) { create(:admin) }
 
   context 'As a admin' do
-    let!(:token) { user_token(admin) }
+    before(:each) do
+      user_token(admin)
+    end
 
     it 'should see the list of users' do
-      get api_v1_users_path, params: {}, headers: header_params(token: token)
+      get api_v1_users_path
       expect(status).to eq(200)
-      expect(json.dig(:users).count).to eq(4)
+      expect(json.dig(:data).size).to eq(4)
+    end
+
+    it 'check others user' do
+      get api_v1_user_path(user)
+      expect(status).to eq(200)
+      expect(json.dig(:data, :id).to_i).to eq(user.id)
+    end
+
+    it 'check his/her profile' do
+      get profile_api_v1_users_path
+      expect(status).to eq(200)
+      expect(json.dig(:data, :id).to_i).to eq(admin.id)
+    end
+
+    it 'admin should be able to delete the user' do
+      delete api_v1_user_path(user)
+      expect(status).to eq(200)
+    end
+
+    it 'filter user by roles' do
+      get api_v1_users_path, params: { roles: [2] }
+      expect(status).to eq(200)
+    end
+
+    it 'filter user by status' do
+      get api_v1_users_path, params: { status: true }
+      expect(status).to eq(200)
     end
 
     it 'should activate & deactivate user' do
-      put api_v1_user_path(user), params: { user: { active: false } }, headers: header_params(token: token)
+      put api_v1_user_path(user), params: { user: { active: false } }
       expect(status).to eq(200)
-      expect(json.dig(:user, :active)).to eq(false)
+      expect(json.dig(:data, :attributes, :active)).to eq(false)
     end
   end
 
   context 'As a normal user' do
-    let!(:token) { user_token(user) }
+    before(:each) do
+      user_token(user)
+    end
 
     it 'should not be able to see the list of user' do
-      get api_v1_users_path, params: {}, headers: header_params(token: token)
+      get api_v1_users_path, params: {}
       expect(status).to eq(403)
       expect(json.dig(:errors)).to eq([I18n.t('pundit')])
     end
 
     it 'should not permit to activate or deactivate user' do
-      put api_v1_user_path(user), params: { user: { active: false } }, headers: header_params(token: token)
+      put api_v1_user_path(user), params: { user: { active: false } }
       expect(status).to eq(403)
       expect(json.dig(:errors)).to eq([I18n.t('pundit')])
     end
 
     it 'should not allow to see other user details' do
-      get api_v1_user_path(user), params: {}, headers: header_params(token: token)
+      get api_v1_user_path(user), params: {}
       expect(status).to eq(403)
       expect(json.dig(:errors)).to eq([I18n.t('pundit')])
     end
 
     it 'should not allowed to delete other user' do
-      delete api_v1_user_path(user), params: {}, headers: header_params(token: token)
+      delete api_v1_user_path(user), params: {}
       expect(status).to eq(403)
       expect(json.dig(:errors)).to eq([I18n.t('pundit')])
+    end
+  end
+
+  context 'Anonymous user' do
+    it 'Unable to login' do
+      admin.assign_attributes(email: Faker::Internet.email)
+      user_token(admin)
+      expect(json.dig(:error)).to eq(I18n.t('devise.failure.invalid', authentication_keys: 'Login'))
     end
   end
 end

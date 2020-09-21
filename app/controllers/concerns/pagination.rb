@@ -9,9 +9,9 @@ module Pagination
     }
   end
 
-  def render_paginated_collection(resource, serializer = nil, root = nil)
+  def render_paginated_collection(resource, serializer = nil, options = {})
     config, collection = paginated_collection(resource)
-    render paginated_data(collection, config, serializer, root)
+    render paginated_data(collection, config, serializer, options)
   end
 
   def paginated_collection(resource)
@@ -22,14 +22,16 @@ module Pagination
     )
   end
 
-  def paginated_data(collection, config, serializer, root)
-    data = {
-      json: collection,
-      status: :ok,
-      root: root,
-      meta: paginate(config)
+  def paginated_data(collection, config, serializer, options)
+    options[:meta] = paginate(config)
+    options[:params] = { current_user: current_user }
+    {
+      json: collection_serializer(collection, serializer).new(collection, options).serialized_json,
+      status: :ok
     }
-    data.merge!(each_serializer: serializer) if serializer
-    data
+  end
+
+  def collection_serializer(obj, serializer)
+    serializer.present? ? serializer : "#{obj.class.to_s.deconstantize}Serializer".constantize
   end
 end

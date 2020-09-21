@@ -1,17 +1,20 @@
 module Renderer
   def compute_form(action, form, model)
     if form.send(action)
-      render data(form.send(model), form.try(:serializer))
+      render data(form.send(model), form)
     else
       invalid_resource(form.send(model))
     end
   end
 
-  def data(object, serializer)
+  def data(object, form)
+    options = {
+      include: form.include,
+      params: { current_user: current_user }
+    }
     {
-      json: object,
-      status: :ok,
-      serializer: serializer
+      json: single_serializer(object, form.try(:serializer)).new(object, options).serialized_json,
+      status: :ok
     }
   end
 
@@ -45,5 +48,9 @@ module Renderer
 
   def respond_to_missing?(method, *)
     super
+  end
+
+  def single_serializer(obj, serializer)
+    serializer.present? ? serializer : "#{obj.class}Serializer".constantize
   end
 end

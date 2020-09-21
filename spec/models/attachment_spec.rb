@@ -5,6 +5,7 @@
 #  id              :bigint           not null, primary key
 #  attachable_type :string           not null
 #  default         :boolean          default(FALSE)
+#  type            :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  attachable_id   :bigint           not null

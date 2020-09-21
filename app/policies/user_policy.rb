@@ -7,10 +7,6 @@ class UserPolicy < ApplicationPolicy
     user.admin?
   end
 
-  def status?
-    user.admin?
-  end
-
   def show?
     invite?
   end
@@ -21,11 +17,5 @@ class UserPolicy < ApplicationPolicy
 
   def update?
     destroy?
-  end
-
-  class Scope < Scope
-    def resolve
-      scope.all
-    end
   end
 end

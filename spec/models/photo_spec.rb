@@ -5,6 +5,7 @@
 #  id             :bigint           not null, primary key
 #  default        :boolean          default(FALSE)
 #  imageable_type :string           not null
+#  type           :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  imageable_id   :bigint           not null

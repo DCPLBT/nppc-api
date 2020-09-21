@@ -9,7 +9,7 @@ module Api
           if resource.errors?
             invalid_resource(resource)
           else
-            render json: resource
+            render json: UserSerializer.new(resource, include: %i[roles])
           end
         end
 

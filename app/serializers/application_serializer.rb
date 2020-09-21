@@ -1,18 +1,6 @@
-class ApplicationSerializer < ActiveModel::Serializer
-  include ActionView::Helpers::DateHelper
+class ApplicationSerializer
+  include FastJsonapi::ObjectSerializer
   include Rails.application.routes.url_helpers
 
-  def time_in_words(date)
-    return if date.nil?
-
-    "#{time_ago_in_words(date)} ago"
-  end
-
-  def created_ago
-    time_in_words(object.created_at)
-  end
-
-  def created_date
-    object.created_at.strftime('%d %b, %Y')
-  end
+  cache_options enabled: true, cache_length: 12.hours
 end

@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(version: 2020_02_18_104309) do
 
   create_table "attachments", force: :cascade do |t|
     t.boolean "default", default: false
+    t.string "type"
     t.string "attachable_type", null: false
     t.bigint "attachable_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -47,6 +48,7 @@ ActiveRecord::Schema.define(version: 2020_02_18_104309) do
 
   create_table "photos", force: :cascade do |t|
     t.boolean "default", default: false
+    t.string "type"
     t.string "imageable_type", null: false
     t.bigint "imageable_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -112,6 +114,7 @@ ActiveRecord::Schema.define(version: 2020_02_18_104309) do
 
   create_table "videos", force: :cascade do |t|
     t.boolean "default", default: false
+    t.string "type"
     t.string "clipable_type", null: false
     t.bigint "clipable_id", null: false
     t.datetime "created_at", precision: 6, null: false
