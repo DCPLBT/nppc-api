@@ -1,4 +1,6 @@
 module Pagination
+  require 'pagy/extras/array'
+
   def paginate(resource)
     {
       previous: resource.prev,
