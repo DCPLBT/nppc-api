@@ -15,11 +15,19 @@ module Pagination
   end
 
   def paginated_collection(resource)
-    pagy(
-      resource,
-      page: params.fetch(:page, 1),
-      items: params.fetch(:per_page, 10)
-    )
+    if resource.is_a?(Array)
+      pagy_array(
+        resource,
+        page: params.fetch(:page, 1),
+        items: params.fetch(:per_page, 10)
+      )
+    else
+      pagy(
+        resource,
+        page: params.fetch(:page, 1),
+        items: params.fetch(:per_page, 10)
+      )
+    end
   end
 
   def paginated_data(collection, config, serializer, options)
