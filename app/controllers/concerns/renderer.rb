@@ -1,19 +1,19 @@
 module Renderer
-  def compute_form(action, form, model)
+  def compute_form(action, model, form, serializer = {})
     if form.send(action)
-      render data(form.send(model), form)
+      render data(form.send(model), form, serializer)
     else
       invalid_resource(form.send(model))
     end
   end
 
-  def data(object, form)
+  def data(object, form, serializer)
     options = {
       include: form.include,
       params: { current_user: current_user }
     }
     {
-      json: single_serializer(object, form.try(:serializer)).new(object, options).serialized_json,
+      json: single_serializer(object, serializer.try(:serializer)).new(object, options).serialized_json,
       status: :ok
     }
   end
@@ -40,7 +40,7 @@ module Renderer
 
   def method_missing(method_sym, *args, &block)
     if method_sym.to_s =~ /^(^[^_]+(?=_))_(.*)_form$/i
-      compute_form(Regexp.last_match(1), *args, Regexp.last_match(2))
+      compute_form(Regexp.last_match(1), Regexp.last_match(2), *args)
     else
       super
     end
