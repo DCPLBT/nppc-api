@@ -14,7 +14,7 @@ RSpec.describe 'Users', type: :request do
     it 'should see the list of users' do
       get api_v1_users_path
       expect(status).to eq(200)
-      expect(json.dig(:data).size).to eq(4)
+      expect(json[:data].size).to eq(4)
     end
 
     it 'check others user' do
@@ -59,25 +59,25 @@ RSpec.describe 'Users', type: :request do
     it 'should not be able to see the list of user' do
       get api_v1_users_path, params: {}
       expect(status).to eq(403)
-      expect(json.dig(:errors)).to eq([I18n.t('pundit')])
+      expect(json[:errors]).to eq([I18n.t('pundit')])
     end
 
     it 'should not permit to activate or deactivate user' do
       put api_v1_user_path(user), params: { user: { active: false } }
       expect(status).to eq(403)
-      expect(json.dig(:errors)).to eq([I18n.t('pundit')])
+      expect(json[:errors]).to eq([I18n.t('pundit')])
     end
 
     it 'should not allow to see other user details' do
       get api_v1_user_path(user), params: {}
       expect(status).to eq(403)
-      expect(json.dig(:errors)).to eq([I18n.t('pundit')])
+      expect(json[:errors]).to eq([I18n.t('pundit')])
     end
 
     it 'should not allowed to delete other user' do
       delete api_v1_user_path(user), params: {}
       expect(status).to eq(403)
-      expect(json.dig(:errors)).to eq([I18n.t('pundit')])
+      expect(json[:errors]).to eq([I18n.t('pundit')])
     end
   end
 
@@ -85,7 +85,7 @@ RSpec.describe 'Users', type: :request do
     it 'Unable to login' do
       admin.assign_attributes(email: Faker::Internet.email)
       user_token(admin)
-      expect(json.dig(:error)).to eq(I18n.t('devise.failure.invalid', authentication_keys: 'Login'))
+      expect(json[:error]).to eq(I18n.t('devise.failure.invalid', authentication_keys: 'Login'))
     end
   end
 end

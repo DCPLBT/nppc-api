@@ -47,7 +47,7 @@ module Renderer
   end
 
   def respond_to_missing?(method, *)
-    super
+    true if method
   end
 
   def single_serializer(obj, serializer)

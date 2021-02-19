@@ -7,7 +7,7 @@ module ParamsSanitizer
       :username,
       :current_password,
       :active,
-      role_ids: []
+      { role_ids: [] }
     ]
   end
 end

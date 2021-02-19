@@ -10,7 +10,7 @@ module ResourceFinder
     result = nil
     params.each_key do |name|
       if name.match?(/(.+)_id$/)
-        model = name.match(%r{([^\/.]*)_id$})
+        model = name.match(%r{([^/.]*)_id$})
         result = model[1].classify.constantize, name
       end
     end

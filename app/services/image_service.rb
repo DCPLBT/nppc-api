@@ -1,4 +1,7 @@
-class ImageService < BaseService
+class ImageService
+  include Assigner
+  include Rails.application.routes.url_helpers
+
   attr_accessor(
     :image,
     :image_size
@@ -20,7 +23,7 @@ class ImageService < BaseService
   end
 
   def respond_to_missing?(method, *)
-    super
+    true if method
   end
 
   def generate_image(size)

@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.6.5'
+ruby '3.0.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.2.1'
+gem 'rails', '~> 6.1.1'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
@@ -26,38 +26,38 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'rack-cors'
 
 group :development, :test do
-  gem 'bullet'
+  gem 'bullet', '~> 6.1'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  gem 'capybara'
-  gem 'database_cleaner'
-  gem 'factory_bot_rails'
-  gem 'pry'
-  gem 'rspec-rails', '~> 3.8'
-  gem 'shoulda-matchers'
-  gem 'simplecov', require: false
+  gem 'database_cleaner', '~> 1.8'
+  gem 'factory_bot', '~> 6.1'
+  gem 'faker', '~> 2.15'
+  gem 'rspec-rails', '~> 4.0'
+  gem 'rubocop-rails', '~> 2.9'
+  gem 'rubocop-rspec', '~> 2.0'
+  gem 'shoulda-matchers', '~> 4.4'
+  gem 'simplecov', '~> 0.20.0'
 end
 
 group :development do
-  gem 'listen', '>= 3.0.5', '< 3.2'
-  gem 'rubocop', require: false
+  # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
+  gem 'listen', '~> 3.2'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
-gem 'annotate'
-gem 'devise'
-gem 'devise-jwt'
-gem 'devise_invitable'
-gem 'dotenv-rails'
-gem 'faker'
-gem 'fast_jsonapi'
-gem 'haml-rails'
-gem 'http_accept_language'
-gem 'letter_opener'
-gem 'overcommit'
-gem 'pagy'
-gem 'pundit'
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem 'annotate', '~> 3.1'
+gem 'devise', '~> 4.7'
+gem 'devise_invitable', '~> 2.0'
+gem 'devise-jwt', '~> 0.8.1'
+gem 'dotenv-rails', '~> 2.7'
+gem 'fast_jsonapi', '~> 1.5'
+gem 'haml-rails', '~> 2.0'
+gem 'http_accept_language', '~> 2.1'
+gem 'letter_opener', '~> 1.7'
+gem 'overcommit', '~> 0.57.0'
+gem 'pagy', '~> 3.11'
+gem 'pundit', '~> 2.1'
+gem 'react-rails', '~> 2.6'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
