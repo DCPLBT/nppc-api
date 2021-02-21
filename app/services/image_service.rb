@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ImageService
   include Assigner
   include Rails.application.routes.url_helpers

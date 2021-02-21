@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RoleForm < BaseForm
   def create
     authorize(role, :create?)

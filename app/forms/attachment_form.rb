@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AttachmentForm < BaseForm
   def create
     attachment.save

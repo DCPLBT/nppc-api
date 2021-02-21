@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Renderer
   def compute_form(action, model, form, serializer = {})
     if form.send(action)

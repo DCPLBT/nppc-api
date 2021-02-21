@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Pagination
   require 'pagy/extras/array'
 
@@ -18,17 +20,9 @@ module Pagination
 
   def paginated_collection(resource)
     if resource.is_a?(Array)
-      pagy_array(
-        resource,
-        page: params.fetch(:page, 1),
-        items: params.fetch(:per_page, 10)
-      )
+      pagy_array(resource, page: params.fetch(:page, 1), items: params.fetch(:per_page, 10))
     else
-      pagy(
-        resource,
-        page: params.fetch(:page, 1),
-        items: params.fetch(:per_page, 10)
-      )
+      pagy(resource, page: params.fetch(:page, 1), items: params.fetch(:per_page, 10))
     end
   end
 

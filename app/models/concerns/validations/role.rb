@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Validations
   module Role
     extend ActiveSupport::Concern

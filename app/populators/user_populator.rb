@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserPopulator < BasePopulator
   attr_accessor :q, :status, :roles, :departments, :grades, :sections
 
@@ -30,6 +32,6 @@ class UserPopulator < BasePopulator
   end
 
   def determine_status
-    [true, 'true'].include?(status) ? true : false
+    [true, 'true'].include?(status)
   end
 end

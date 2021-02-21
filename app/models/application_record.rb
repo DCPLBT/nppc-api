@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
@@ -5,6 +7,7 @@ class ApplicationRecord < ActiveRecord::Base
     errors.any?
   end
 
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def self.validates_uniqueness(*attr_names)
     configuration = { attribute_name: :name, scope: nil, message: I18n.t('errors.messages.taken') }
     configuration.update(attr_names.extract_options!)
@@ -26,4 +29,6 @@ class ApplicationRecord < ActiveRecord::Base
       end
     end
   end
+
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize:
 end

@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 module Overrides
   module User
     extend ActiveSupport::Concern
 
+    # rubocop:disable Metrics/BlockLength
     included do
       attr_accessor :login
 
@@ -35,5 +38,6 @@ module Overrides
         resource
       end
     end
+    # rubocop:enable Metrics/BlockLength
   end
 end

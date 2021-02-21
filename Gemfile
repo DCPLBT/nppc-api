@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -30,7 +32,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'database_cleaner', '~> 1.8'
-  gem 'factory_bot', '~> 6.1'
+  gem 'factory_bot_rails', '~> 6.1'
   gem 'faker', '~> 2.15'
   gem 'rspec-rails', '~> 4.0'
   gem 'rubocop-rails', '~> 2.9'

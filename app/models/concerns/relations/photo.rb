@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Relations
   module Photo
     extend ActiveSupport::Concern

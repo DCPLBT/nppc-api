@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ResourceFinder
   def parent
     klass, param = parent_class

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ApiErrors
   module ErrorHandler
     def self.included(base)

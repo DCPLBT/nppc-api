@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: users
@@ -64,6 +66,6 @@ FactoryBot.define do
       role_ids { [3] }
     end
 
-    after(:build, &:confirm)
+    after(:build) { |u| u.confirm } # rubocop:disable Style/SymbolProc
   end
 end

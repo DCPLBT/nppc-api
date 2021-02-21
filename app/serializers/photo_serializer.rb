@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: photos
@@ -16,9 +18,9 @@
 #
 
 class PhotoSerializer < ApplicationSerializer
-  SMALL = '120X120'.freeze
-  MEDIUM = '320X180'.freeze
-  LARGE = '500X250'.freeze
+  SMALL = '120X120'
+  MEDIUM = '320X180'
+  LARGE = '500X250'
 
   attributes(
     :id,

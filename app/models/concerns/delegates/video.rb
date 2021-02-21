@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Delegates
   module Video
     extend ActiveSupport::Concern

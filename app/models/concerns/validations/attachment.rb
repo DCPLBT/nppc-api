@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Validations
   module Attachment
     extend ActiveSupport::Concern

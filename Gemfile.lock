@@ -116,6 +116,9 @@ GEM
     execjs (2.7.0)
     factory_bot (6.1.0)
       activesupport (>= 5.0.0)
+    factory_bot_rails (6.1.0)
+      factory_bot (~> 6.1.0)
+      railties (>= 5.0.0)
     faker (2.16.0)
       i18n (>= 1.6, < 2)
     fast_jsonapi (1.5)
@@ -321,7 +324,7 @@ DEPENDENCIES
   devise-jwt (~> 0.8.1)
   devise_invitable (~> 2.0)
   dotenv-rails (~> 2.7)
-  factory_bot (~> 6.1)
+  factory_bot_rails (~> 6.1)
   faker (~> 2.15)
   fast_jsonapi (~> 1.5)
   haml-rails (~> 2.0)
@@ -350,4 +353,4 @@ RUBY VERSION
    ruby 3.0.0p0
 
 BUNDLED WITH
-   2.2.3
+   2.2.11

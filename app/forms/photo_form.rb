@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PhotoForm < BaseForm
   def create
     photo.save

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Assigner
   def assign_attributes(attributes = {})
     Hash(attributes).each do |key, value|

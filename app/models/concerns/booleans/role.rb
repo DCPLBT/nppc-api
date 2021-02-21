@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Booleans
   module Role
     extend ActiveSupport::Concern

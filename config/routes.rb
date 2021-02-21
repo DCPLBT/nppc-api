@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # rubocop:disable Layout/LineLength
 # == Route Map
 #

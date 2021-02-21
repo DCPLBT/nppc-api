@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationSerializer
   include FastJsonapi::ObjectSerializer
   include Rails.application.routes.url_helpers

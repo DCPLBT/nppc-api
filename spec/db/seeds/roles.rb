@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 abort('Rails environment is not in test mode') unless Rails.env.test?
 
 Role.destroy_all
