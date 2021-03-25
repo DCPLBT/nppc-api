@@ -32,20 +32,4 @@ class PhotoSerializer < ApplicationSerializer
     :large,
     :original
   )
-
-  def small
-    ImageService.new(object.image, SMALL).generate if object.image.attached?
-  end
-
-  def medium
-    ImageService.new(object.image, MEDIUM).generate if object.image.attached?
-  end
-
-  def large
-    ImageService.new(object.image, LARGE).generate if object.image.attached?
-  end
-
-  def original
-    rails_blob_url(object.image) if object.image.attached?
-  end
 end

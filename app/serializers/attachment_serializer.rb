@@ -22,11 +22,10 @@ class AttachmentSerializer < ApplicationSerializer
     :id,
     :filename,
     :byte_size,
-    :default,
-    :file_url
+    :default
   )
 
-  def file_url
-    rails_blob_url(object.file) if object.file.attached?
+  attribute :file_url do |object|
+    Rails.application.routes.url_helpers.rails_blob_url(object.file) if object.file.attached?
   end
 end

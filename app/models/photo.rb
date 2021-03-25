@@ -19,6 +19,7 @@
 
 class Photo < ApplicationRecord
   include Scopes::Photo
+  include Helpers::Photo
   include Booleans::Photo
   include Delegates::Photo
   include Relations::Photo

@@ -22,11 +22,10 @@ class VideoSerializer < ApplicationSerializer
     :id,
     :filename,
     :byte_size,
-    :default,
-    :clip_url
+    :default
   )
 
-  def clip_url
-    rails_blob_url(object.clip) if object.clip.attached?
+  attribute :clip_url do |object|
+    Rails.application.routes.url_helpers.rails_blob_url(object.clip) if object.clip.attached?
   end
 end
