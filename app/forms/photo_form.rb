@@ -16,7 +16,7 @@ class PhotoForm < BaseForm
   private
 
   def photo
-    @photo ||= id ? photo.find(id) : determine_singularity
+    @photo ||= id ? Photo.find(id) : determine_singularity
   end
 
   def determine_singularity

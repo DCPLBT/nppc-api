@@ -16,7 +16,7 @@ class AttachmentForm < BaseForm
   private
 
   def attachment
-    @attachment ||= id ? attachment.find(id) : determine_singularity
+    @attachment ||= id ? Attachment.find(id) : determine_singularity
   end
 
   def determine_singularity
