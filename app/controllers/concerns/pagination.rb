@@ -3,14 +3,15 @@
 module Pagination
   require 'pagy/extras/array'
 
-  def paginate(resource)
+  def paginate(resource, extras = {})
+    extras ||= {}
     {
       previous: resource.prev,
       current: resource.page,
       next_page: resource.next,
       last_page: resource.last,
       total: resource.count
-    }
+    }.merge(extras)
   end
 
   def render_paginated_collection(resource, serializer = nil, options = {})
@@ -27,7 +28,7 @@ module Pagination
   end
 
   def paginated_data(collection, config, serializer, options)
-    options[:meta] = paginate(config)
+    options[:meta] = paginate(config, options[:meta])
     options[:params] = { current_user: current_user }
     {
       json: collection_serializer(collection, serializer).new(collection, options).serialized_json,
