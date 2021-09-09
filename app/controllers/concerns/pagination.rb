@@ -14,9 +14,9 @@ module Pagination
     }.merge(extras)
   end
 
-  def render_paginated_collection(resource, serializer = nil, options = {})
+  def render_paginated_collection(resource, options = {})
     config, collection = paginated_collection(resource)
-    render paginated_data(collection, config, serializer, options)
+    render paginated_data(collection, config, options)
   end
 
   def paginated_collection(resource)
@@ -27,11 +27,11 @@ module Pagination
     end
   end
 
-  def paginated_data(collection, config, serializer, options)
+  def paginated_data(collection, config, options)
     options[:meta] = paginate(config, options[:meta])
     options[:params] = { current_user: current_user }
     {
-      json: collection_serializer(collection, serializer).new(collection, options).serialized_json,
+      json: collection_serializer(collection, options[:serializer]).new(collection, options).serialized_json,
       status: :ok
     }
   end
