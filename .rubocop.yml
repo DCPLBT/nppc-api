@@ -1,5 +1,10 @@
 AllCops:
   NewCops: enable
+  Exclude:
+    - 'node_modules/**/*'
+    - 'tmp/**/*'
+    - 'vendor/**/*'
+    - '.git/**/*'
 
 Style/Documentation:
   Description: 'Document classes and non-namespace modules.'
@@ -16,8 +21,8 @@ Metrics/MethodLength:
   VersionChanged: '1.5'
   CountComments: false  # count full line comments?
   Max: 10
-  CountAsOne: [ ]
-  IgnoredMethods: [ 'activate_bundler', 'cli_arg_version', 'change', 'up', 'down' ]
+  CountAsOne: []
+  IgnoredMethods: ['activate_bundler', 'cli_arg_version', 'change', 'up', 'down']
 
 Metrics/PerceivedComplexity:
   Description: >-
@@ -26,7 +31,7 @@ Metrics/PerceivedComplexity:
   Enabled: true
   VersionAdded: '0.25'
   VersionChanged: '0.81'
-  IgnoredMethods: [ 'cli_arg_version' ]
+  IgnoredMethods: ['cli_arg_version']
   Max: 8
 
 # Avoid complex methods.
@@ -37,7 +42,7 @@ Metrics/CyclomaticComplexity:
   Enabled: true
   VersionAdded: '0.25'
   VersionChanged: '0.81'
-  IgnoredMethods: [ 'cli_arg_version' ]
+  IgnoredMethods: ['cli_arg_version']
   Max: 7
 
 Style/PercentLiteralDelimiters:
@@ -64,7 +69,7 @@ Metrics/BlockLength:
   VersionChanged: '1.5'
   CountComments: false  # count full line comments?
   Max: 25
-  CountAsOne: [ ]
+  CountAsOne: []
   IgnoredMethods:
     # By default, exclude the `#refine` method, as it tends to have larger
     # associated blocks.
@@ -104,4 +109,4 @@ Layout/LineLength:
   # The IgnoredPatterns option is a list of !ruby/regexp and/or string
   # elements. Strings will be converted to Regexp objects. A line that matches
   # any regular expression listed in this option will be ignored by LineLength.
-  IgnoredPatterns: [ 'db/migrate/*', 'config/*' ]
+  IgnoredPatterns: ['db/migrate/*', 'config/*']
