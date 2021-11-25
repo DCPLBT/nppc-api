@@ -33,7 +33,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.0]
       t.datetime :locked_at
 
       # JWT authentication
-      t.string :jti, null: false
+      # t.string :jti, null: false
 
       # Other extra attr
       t.string :username
@@ -44,7 +44,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.0]
     end
 
     add_index :users, :email, unique: true
-    add_index :users, :jti, unique: true
+    # add_index :users, :jti, unique: true
     add_index :users, :phone, unique: true
     add_index :users, :username, unique: true
     add_index :users, :reset_password_token, unique: true

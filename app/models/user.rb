@@ -59,7 +59,6 @@ class User < ApplicationRecord
   include Overrides::User
   include Relations::User
   include Validations::User
-  include Devise::JWT::RevocationStrategies::JTIMatcher
 
   devise(
     :lockable,
@@ -71,8 +70,6 @@ class User < ApplicationRecord
     :validatable,
     :registerable,
     :rememberable,
-    :jwt_authenticatable,
-    :database_authenticatable,
-    jwt_revocation_strategy: self
+    :database_authenticatable
   )
 end

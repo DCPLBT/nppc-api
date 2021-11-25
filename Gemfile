@@ -52,7 +52,6 @@ end
 gem 'annotate', '~> 3.1'
 gem 'devise', '~> 4.7'
 gem 'devise_invitable', '~> 2.0'
-gem 'devise-jwt', '~> 0.8.1'
 gem 'dotenv-rails', '~> 2.7'
 gem 'fast_jsonapi', '~> 1.5'
 gem 'haml-rails', '~> 2.0'
