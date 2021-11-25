@@ -44,7 +44,12 @@ module BackendApi
     end
 
     config.middleware.use ActionDispatch::Cookies
-    config.middleware.use ActionDispatch::Session::CookieStore, key: :_backend_key, domain: :all
+    config.middleware.use ActionDispatch::Session::CookieStore,
+                          key: :_backend_key,
+                          httponly: true,
+                          secure: Rails.env.production?,
+                          expire_after: 7.days,
+                          domain: :all
 
     # Disabling some tests we don't need by default so we can create by hand if it is appropriate.
     config.generators do |g|
