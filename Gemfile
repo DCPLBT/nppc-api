@@ -60,5 +60,4 @@ gem 'letter_opener', '~> 1.7'
 gem 'overcommit', '~> 0.57.0'
 gem 'pagy', '~> 3.11'
 gem 'pundit', '~> 2.1'
-gem 'react-rails', '~> 2.6'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
