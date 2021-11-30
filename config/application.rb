@@ -21,7 +21,7 @@ require 'rails/test_unit/railtie'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module BackendApi
+module NppcApi
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
@@ -45,7 +45,7 @@ module BackendApi
 
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore,
-                          key: :_backend_key,
+                          key: :_nppc_key,
                           httponly: true,
                           secure: Rails.env.production?,
                           expire_after: 7.days,
