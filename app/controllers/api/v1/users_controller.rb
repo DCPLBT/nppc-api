@@ -17,7 +17,7 @@ module Api
       end
 
       def profile
-        render json: UserSerializer.new(current_user, include: %i[roles])
+        render json: UserSerializer.new(current_user, include: %i[roles profile photo])
       end
 
       def update
@@ -48,7 +48,7 @@ module Api
         @user_attrs ||= {
           current_user: current_user,
           id: params[:id],
-          include: [:roles]
+          include: %i[roles profile photo]
         }
       end
 

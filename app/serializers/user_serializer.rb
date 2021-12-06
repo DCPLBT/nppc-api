@@ -6,6 +6,7 @@
 #
 #  id                     :bigint           not null, primary key
 #  active                 :boolean          default(FALSE)
+#  cid                    :string
 #  confirmation_sent_at   :datetime
 #  confirmation_token     :string
 #  confirmed_at           :datetime
@@ -58,6 +59,9 @@ class UserSerializer < ApplicationSerializer
     :phone,
     :active
   )
+
+  has_one :profile
+  has_one :photo
 
   has_many :roles
 end

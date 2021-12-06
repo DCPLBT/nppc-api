@@ -6,6 +6,7 @@
 #
 #  id                     :bigint           not null, primary key
 #  active                 :boolean          default(FALSE)
+#  cid                    :string
 #  confirmation_sent_at   :datetime
 #  confirmation_token     :string
 #  confirmed_at           :datetime

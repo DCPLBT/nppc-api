@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ParamsSanitizer
-  def user_attributes
+  def user_attributes # rubocop:disable Metrics/MethodLength
     [
       :id,
       :email,
@@ -9,7 +9,17 @@ module ParamsSanitizer
       :username,
       :current_password,
       :active,
-      { role_ids: [] }
+      :cid,
+      { role_ids: [] },
+      { profile_attributes: [
+        :firstname,
+        :lastname,
+        :gender,
+        :region_id,
+        :district_id,
+        :extension_id,
+        { photo_attributes: [:image] }
+      ] }
     ]
   end
 end
