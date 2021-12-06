@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_210_219_105_011) do
+ActiveRecord::Schema.define(version: 20_211_206_132_819) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -55,6 +55,28 @@ ActiveRecord::Schema.define(version: 20_210_219_105_011) do
     t.index %w[attachable_type attachable_id], name: 'index_attachments_on_attachable_type_and_attachable_id'
   end
 
+  create_table 'districts', force: :cascade do |t|
+    t.string 'name'
+    t.text 'description'
+    t.bigint 'user_id', null: false
+    t.bigint 'region_id'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['region_id'], name: 'index_districts_on_region_id'
+    t.index ['user_id'], name: 'index_districts_on_user_id'
+  end
+
+  create_table 'extensions', force: :cascade do |t|
+    t.string 'name'
+    t.text 'description'
+    t.bigint 'user_id', null: false
+    t.bigint 'district_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['district_id'], name: 'index_extensions_on_district_id'
+    t.index ['user_id'], name: 'index_extensions_on_user_id'
+  end
+
   create_table 'photos', force: :cascade do |t|
     t.boolean 'default', default: false
     t.string 'type'
@@ -65,10 +87,20 @@ ActiveRecord::Schema.define(version: 20_210_219_105_011) do
     t.index %w[imageable_type imageable_id], name: 'index_photos_on_imageable_type_and_imageable_id'
   end
 
+  create_table 'regions', force: :cascade do |t|
+    t.string 'name'
+    t.text 'description'
+    t.bigint 'user_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['user_id'], name: 'index_regions_on_user_id'
+  end
+
   create_table 'roles', force: :cascade do |t|
     t.string 'name'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.text 'description'
   end
 
   create_table 'roles_users', id: false, force: :cascade do |t|
@@ -94,7 +126,6 @@ ActiveRecord::Schema.define(version: 20_210_219_105_011) do
     t.integer 'failed_attempts', default: 0, null: false
     t.string 'unlock_token'
     t.datetime 'locked_at'
-    t.string 'jti', null: false
     t.string 'username'
     t.string 'phone'
     t.boolean 'active', default: false
@@ -114,7 +145,6 @@ ActiveRecord::Schema.define(version: 20_210_219_105_011) do
     t.index ['invitations_count'], name: 'index_users_on_invitations_count'
     t.index ['invited_by_id'], name: 'index_users_on_invited_by_id'
     t.index %w[invited_by_type invited_by_id], name: 'index_users_on_invited_by_type_and_invited_by_id'
-    t.index ['jti'], name: 'index_users_on_jti', unique: true
     t.index ['phone'], name: 'index_users_on_phone', unique: true
     t.index ['reset_password_token'], name: 'index_users_on_reset_password_token', unique: true
     t.index ['unlock_token'], name: 'index_users_on_unlock_token', unique: true
@@ -133,4 +163,9 @@ ActiveRecord::Schema.define(version: 20_210_219_105_011) do
 
   add_foreign_key 'active_storage_attachments', 'active_storage_blobs', column: 'blob_id'
   add_foreign_key 'active_storage_variant_records', 'active_storage_blobs', column: 'blob_id'
+  add_foreign_key 'districts', 'regions'
+  add_foreign_key 'districts', 'users'
+  add_foreign_key 'extensions', 'districts'
+  add_foreign_key 'extensions', 'users'
+  add_foreign_key 'regions', 'users'
 end

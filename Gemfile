@@ -59,5 +59,6 @@ gem 'http_accept_language', '~> 2.1'
 gem 'letter_opener', '~> 1.7'
 gem 'overcommit', '~> 0.57.0'
 gem 'pagy', '~> 3.11'
+gem 'pry', '~> 0.14.1'
 gem 'pundit', '~> 2.1'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]

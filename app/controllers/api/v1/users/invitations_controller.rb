@@ -11,7 +11,7 @@ module Api
           if resource.errors?
             invalid_resource(resource)
           else
-            render json: UserSerializer.new(resource, include: %i[roles])
+            render json: UserSerializer.new(resource, include: %i[roles profile photo])
           end
         end
 

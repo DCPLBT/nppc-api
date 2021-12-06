@@ -97,6 +97,11 @@ Rails.application.routes.draw do
           get :profile
         end
       end
+      resources :regions, shallow: true do
+        resources :districts do
+          resources :extensions
+        end
+      end
     end
   end
 end
