@@ -21,8 +21,8 @@
 #
 FactoryBot.define do
   factory :region do
-    name { 'MyString' }
-    description { 'MyText' }
+    name { Faker::Name.name }
+    description { Faker::Show.adult_musical }
     user { nil }
   end
 end

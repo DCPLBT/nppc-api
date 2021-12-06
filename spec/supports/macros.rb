@@ -2,7 +2,7 @@
 
 def user_token(user)
   post user_session_url, params: { user: { login: user.email, password: user.password } }
-  response.header['Authorization']
+  response.header
 end
 
 def json

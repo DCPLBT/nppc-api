@@ -18,12 +18,18 @@ RSpec.describe '/regions', type: :request do
   # This should return the minimal set of attributes required to create a valid
   # Region. As you add validations to Region, be sure to
   # adjust the attributes here as well.
+  let(:user) { create(:admin) }
+  let(:token) { user_token(user) }
   let(:valid_attributes) do
-    skip('Add a hash of attributes valid for your model')
+    {
+      name: Faker::Name.name,
+      description: Faker::Restaurant.review,
+      user_id: user.id
+    }
   end
 
   let(:invalid_attributes) do
-    skip('Add a hash of attributes invalid for your model')
+    { name: nil, description: '', user_id: user.id }
   end
 
   # This should return the minimal set of values that should be in the headers
@@ -37,7 +43,7 @@ RSpec.describe '/regions', type: :request do
   describe 'GET /index' do
     it 'renders a successful response' do
       Region.create! valid_attributes
-      get regions_url, headers: valid_headers, as: :json
+      get api_v1_regions_url, headers: valid_headers, as: :json
       expect(response).to be_successful
     end
   end
@@ -45,7 +51,7 @@ RSpec.describe '/regions', type: :request do
   describe 'GET /show' do
     it 'renders a successful response' do
       region = Region.create! valid_attributes
-      get region_url(region), as: :json
+      get api_v1_region_url(region), as: :json
       expect(response).to be_successful
     end
   end
@@ -54,13 +60,13 @@ RSpec.describe '/regions', type: :request do
     context 'with valid parameters' do
       it 'creates a new Region' do
         expect do
-          post regions_url,
+          post api_v1_regions_url,
                params: { region: valid_attributes }, headers: valid_headers, as: :json
         end.to change(Region, :count).by(1)
       end
 
       it 'renders a JSON response with the new region' do
-        post regions_url,
+        post api_v1_regions_url,
              params: { region: valid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:created)
         expect(response.content_type).to match(a_string_including('application/json'))
@@ -70,13 +76,13 @@ RSpec.describe '/regions', type: :request do
     context 'with invalid parameters' do
       it 'does not create a new Region' do
         expect do
-          post regions_url,
+          post api_v1_regions_url,
                params: { region: invalid_attributes }, as: :json
         end.to change(Region, :count).by(0)
       end
 
       it 'renders a JSON response with errors for the new region' do
-        post regions_url,
+        post api_v1_regions_url,
              params: { region: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/json')
@@ -92,7 +98,7 @@ RSpec.describe '/regions', type: :request do
 
       it 'updates the requested region' do
         region = Region.create! valid_attributes
-        patch region_url(region),
+        patch api_v1_region_url(region),
               params: { region: new_attributes }, headers: valid_headers, as: :json
         region.reload
         skip('Add assertions for updated state')
@@ -100,7 +106,7 @@ RSpec.describe '/regions', type: :request do
 
       it 'renders a JSON response with the region' do
         region = Region.create! valid_attributes
-        patch region_url(region),
+        patch api_v1_region_url(region),
               params: { region: new_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
@@ -110,7 +116,7 @@ RSpec.describe '/regions', type: :request do
     context 'with invalid parameters' do
       it 'renders a JSON response with errors for the region' do
         region = Region.create! valid_attributes
-        patch region_url(region),
+        patch api_v1_region_url(region),
               params: { region: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/json')
@@ -122,8 +128,8 @@ RSpec.describe '/regions', type: :request do
     it 'destroys the requested region' do
       region = Region.create! valid_attributes
       expect do
-        delete region_url(region), headers: valid_headers, as: :json
-      end.to change(Region, :count).by(-1)
+        delete api_v1_region_url(region), headers: valid_headers, as: :json
+      end.to change(Region, :count).by(0)
     end
   end
 end
