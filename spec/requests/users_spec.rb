@@ -10,7 +10,7 @@ RSpec.describe 'Users', type: :request do
 
   context 'As a admin' do
     before(:each) do
-      user_token(admin)
+      sign_in(admin)
     end
 
     it 'should see the list of users' do
@@ -55,7 +55,7 @@ RSpec.describe 'Users', type: :request do
 
   context 'As a normal user' do
     before(:each) do
-      user_token(user)
+      sign_in(user)
     end
 
     it 'should not be able to see the list of user' do
@@ -86,7 +86,7 @@ RSpec.describe 'Users', type: :request do
   context 'Anonymous user' do
     it 'Unable to login' do
       admin.assign_attributes(email: Faker::Internet.email)
-      user_token(admin)
+      sign_in(admin)
       expect(json[:error]).to eq(I18n.t('devise.failure.invalid', authentication_keys: 'Login'))
     end
   end

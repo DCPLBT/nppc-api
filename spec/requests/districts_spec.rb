@@ -18,26 +18,24 @@ RSpec.describe '/districts', type: :request do
   # This should return the minimal set of attributes required to create a valid
   # District. As you add validations to District, be sure to
   # adjust the attributes here as well.
+  let(:user) { create(:admin) }
+  before(:each) do
+    sign_in(user)
+  end
+  let(:region) { create(:region, user: user) }
+
   let(:valid_attributes) do
-    skip('Add a hash of attributes valid for your model')
+    { name: Faker::Name.name, description: Faker::Restaurant.review, user_id: user.id }
   end
 
   let(:invalid_attributes) do
-    skip('Add a hash of attributes invalid for your model')
-  end
-
-  # This should return the minimal set of values that should be in the headers
-  # in order to pass any filters (e.g. authentication) defined in
-  # DistrictsController, or in your router and rack
-  # middleware. Be sure to keep this updated too.
-  let(:valid_headers) do
-    {}
+    { name: nil, description: 'Hello' }
   end
 
   describe 'GET /index' do
     it 'renders a successful response' do
       District.create! valid_attributes
-      get districts_url, headers: valid_headers, as: :json
+      get api_v1_region_districts_url(region), as: :json
       expect(response).to be_successful
     end
   end
@@ -45,7 +43,7 @@ RSpec.describe '/districts', type: :request do
   describe 'GET /show' do
     it 'renders a successful response' do
       district = District.create! valid_attributes
-      get district_url(district), as: :json
+      get api_v1_district_url(district), as: :json
       expect(response).to be_successful
     end
   end
@@ -54,15 +52,15 @@ RSpec.describe '/districts', type: :request do
     context 'with valid parameters' do
       it 'creates a new District' do
         expect do
-          post districts_url,
-               params: { district: valid_attributes }, headers: valid_headers, as: :json
+          post api_v1_region_districts_url(region),
+               params: { district: valid_attributes }, as: :json
         end.to change(District, :count).by(1)
       end
 
       it 'renders a JSON response with the new district' do
-        post districts_url,
-             params: { district: valid_attributes }, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:created)
+        post api_v1_region_districts_url(region),
+             params: { district: valid_attributes }, as: :json
+        expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
       end
     end
@@ -70,16 +68,16 @@ RSpec.describe '/districts', type: :request do
     context 'with invalid parameters' do
       it 'does not create a new District' do
         expect do
-          post districts_url,
+          post api_v1_region_districts_url(region),
                params: { district: invalid_attributes }, as: :json
         end.to change(District, :count).by(0)
       end
 
       it 'renders a JSON response with errors for the new district' do
-        post districts_url,
-             params: { district: invalid_attributes }, headers: valid_headers, as: :json
+        post api_v1_region_districts_url(region),
+             params: { district: invalid_attributes }, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json')
+        expect(response.content_type).to eq('application/json; charset=utf-8')
       end
     end
   end
@@ -87,21 +85,21 @@ RSpec.describe '/districts', type: :request do
   describe 'PATCH /update' do
     context 'with valid parameters' do
       let(:new_attributes) do
-        skip('Add a hash of attributes valid for your model')
+        { name: 'Thimphu', description: 'Thimphu district' }
       end
 
       it 'updates the requested district' do
         district = District.create! valid_attributes
-        patch district_url(district),
-              params: { district: new_attributes }, headers: valid_headers, as: :json
+        patch api_v1_district_url(district),
+              params: { district: new_attributes }, as: :json
         district.reload
-        skip('Add assertions for updated state')
+        expect(status).to eq(200)
       end
 
       it 'renders a JSON response with the district' do
         district = District.create! valid_attributes
-        patch district_url(district),
-              params: { district: new_attributes }, headers: valid_headers, as: :json
+        patch api_v1_district_url(district),
+              params: { district: new_attributes }, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
       end
@@ -110,10 +108,10 @@ RSpec.describe '/districts', type: :request do
     context 'with invalid parameters' do
       it 'renders a JSON response with errors for the district' do
         district = District.create! valid_attributes
-        patch district_url(district),
-              params: { district: invalid_attributes }, headers: valid_headers, as: :json
+        patch api_v1_district_url(district),
+              params: { district: invalid_attributes }, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json')
+        expect(response.content_type).to eq('application/json; charset=utf-8')
       end
     end
   end
@@ -122,7 +120,7 @@ RSpec.describe '/districts', type: :request do
     it 'destroys the requested district' do
       district = District.create! valid_attributes
       expect do
-        delete district_url(district), headers: valid_headers, as: :json
+        delete api_v1_district_url(district), as: :json
       end.to change(District, :count).by(-1)
     end
   end

@@ -6,7 +6,7 @@ RSpec.describe 'Roles', type: :request do
   let!(:user) { create(:admin) }
 
   before(:each) do
-    user_token(user)
+    sign_in(user)
   end
 
   describe 'GET /roles' do

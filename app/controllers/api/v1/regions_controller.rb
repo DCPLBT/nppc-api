@@ -7,7 +7,6 @@ module Api
 
       # GET /regions
       def index
-        binding.pry
         populate = RegionPopulator.new(params: query_params)
         render_paginated_collection(populate.run)
       end
