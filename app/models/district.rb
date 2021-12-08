@@ -24,6 +24,7 @@
 #
 class District < ApplicationRecord
   include Scopes::District
+  include Delegates::District
   include Relations::District
   include Validations::District
 end
