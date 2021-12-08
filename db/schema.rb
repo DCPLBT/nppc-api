@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_211_206_163_638) do
+ActiveRecord::Schema.define(version: 20_211_208_123_154) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -87,6 +87,28 @@ ActiveRecord::Schema.define(version: 20_211_206_163_638) do
     t.index %w[imageable_type imageable_id], name: 'index_photos_on_imageable_type_and_imageable_id'
   end
 
+  create_table 'product_types', force: :cascade do |t|
+    t.string 'name'
+    t.text 'description'
+    t.bigint 'user_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['user_id'], name: 'index_product_types_on_user_id'
+  end
+
+  create_table 'products', force: :cascade do |t|
+    t.string 'name'
+    t.text 'description'
+    t.string 'unit'
+    t.string 'size'
+    t.bigint 'user_id', null: false
+    t.bigint 'product_type_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['product_type_id'], name: 'index_products_on_product_type_id'
+    t.index ['user_id'], name: 'index_products_on_user_id'
+  end
+
   create_table 'profiles', force: :cascade do |t|
     t.string 'firstname'
     t.string 'lastname'
@@ -97,6 +119,10 @@ ActiveRecord::Schema.define(version: 20_211_206_163_638) do
     t.bigint 'user_id', null: false
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.integer 'employee_type'
+    t.string 'employee_id'
+    t.integer 'designation'
+    t.integer 'agency'
     t.index ['district_id'], name: 'index_profiles_on_district_id'
     t.index ['extension_id'], name: 'index_profiles_on_extension_id'
     t.index ['region_id'], name: 'index_profiles_on_region_id'
@@ -122,6 +148,24 @@ ActiveRecord::Schema.define(version: 20_211_206_163_638) do
   create_table 'roles_users', id: false, force: :cascade do |t|
     t.bigint 'user_id', null: false
     t.bigint 'role_id', null: false
+  end
+
+  create_table 'stocks', force: :cascade do |t|
+    t.bigint 'product_type_id', null: false
+    t.bigint 'product_id', null: false
+    t.bigint 'user_id', null: false
+    t.decimal 'quantity'
+    t.string 'unit'
+    t.decimal 'unit_price'
+    t.date 'expiry_date'
+    t.date 'procured_on'
+    t.date 'obsolete_date'
+    t.text 'remark'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['product_id'], name: 'index_stocks_on_product_id'
+    t.index ['product_type_id'], name: 'index_stocks_on_product_type_id'
+    t.index ['user_id'], name: 'index_stocks_on_user_id'
   end
 
   create_table 'users', force: :cascade do |t|
@@ -184,9 +228,15 @@ ActiveRecord::Schema.define(version: 20_211_206_163_638) do
   add_foreign_key 'districts', 'users'
   add_foreign_key 'extensions', 'districts'
   add_foreign_key 'extensions', 'users'
+  add_foreign_key 'product_types', 'users'
+  add_foreign_key 'products', 'product_types'
+  add_foreign_key 'products', 'users'
   add_foreign_key 'profiles', 'districts'
   add_foreign_key 'profiles', 'extensions'
   add_foreign_key 'profiles', 'regions'
   add_foreign_key 'profiles', 'users'
   add_foreign_key 'regions', 'users'
+  add_foreign_key 'stocks', 'product_types'
+  add_foreign_key 'stocks', 'products'
+  add_foreign_key 'stocks', 'users'
 end

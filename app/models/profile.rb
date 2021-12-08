@@ -4,16 +4,20 @@
 #
 # Table name: profiles
 #
-#  id           :bigint           not null, primary key
-#  firstname    :string
-#  gender       :integer
-#  lastname     :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  district_id  :bigint           not null
-#  extension_id :bigint           not null
-#  region_id    :bigint           not null
-#  user_id      :bigint           not null
+#  id            :bigint           not null, primary key
+#  agency        :integer
+#  designation   :integer
+#  employee_type :integer
+#  firstname     :string
+#  gender        :integer
+#  lastname      :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  district_id   :bigint           not null
+#  employee_id   :string
+#  extension_id  :bigint           not null
+#  region_id     :bigint           not null
+#  user_id       :bigint           not null
 #
 # Indexes
 #
@@ -31,6 +35,7 @@
 #
 class Profile < ApplicationRecord
   include Enums::Profile
+  include Helpers::Profile
   include Delegates::Profile
   include Relations::Profile
 end
