@@ -100,7 +100,7 @@ ActiveRecord::Schema.define(version: 20_211_208_123_154) do
     t.string 'name'
     t.text 'description'
     t.string 'unit'
-    t.string 'size'
+    t.string 'unit_size'
     t.bigint 'user_id', null: false
     t.bigint 'product_type_id', null: false
     t.datetime 'created_at', precision: 6, null: false

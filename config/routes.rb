@@ -104,6 +104,11 @@ Rails.application.routes.draw do
       end
       resources :districts, only: :index
       resources :extensions, only: :index
+      resources :product_types, shallow: true do
+        resources :products
+      end
+      resources :products, only: :index
+      resources :stocks
     end
   end
 end
