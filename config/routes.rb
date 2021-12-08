@@ -102,6 +102,8 @@ Rails.application.routes.draw do
           resources :extensions
         end
       end
+      resources :districts, only: :index
+      resources :extensions, only: :index
     end
   end
 end
