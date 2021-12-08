@@ -5,7 +5,7 @@ module Delegates
     extend ActiveSupport::Concern
 
     included do
-      delegate(:name, to: :region, district: true, allow_nil: true)
+      delegate(:name, to: :district, prefix: true, allow_nil: true)
     end
   end
 end
