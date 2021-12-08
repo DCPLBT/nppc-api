@@ -58,7 +58,10 @@ class UserSerializer < ApplicationSerializer
     :username,
     :phone,
     :active,
-    :cid
+    :cid,
+    :region_name,
+    :district_name,
+    :extension_name
   )
 
   has_one :profile

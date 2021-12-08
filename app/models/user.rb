@@ -56,6 +56,7 @@ class User < ApplicationRecord
   include Helpers::User
   include Booleans::User
   include Overrides::User
+  include Delegates::User
   include Relations::User
   include Validations::User
 
