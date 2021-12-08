@@ -24,6 +24,7 @@
 #
 class Extension < ApplicationRecord
   include Scopes::Extension
+  include Delegates::Extension
   include Relations::Extension
   include Validations::Extension
 end

@@ -23,5 +23,5 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class ExtensionSerializer < ApplicationSerializer
-  attributes :name, :description, :user_id, :district_id
+  attributes :name, :description, :user_id, :district_id, :district_name
 end

@@ -23,5 +23,5 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class DistrictSerializer < ApplicationSerializer
-  attributes :name, :description, :user_id, :region_id
+  attributes :name, :description, :user_id, :region_id, :region_name
 end
