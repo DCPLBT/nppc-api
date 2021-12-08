@@ -31,5 +31,6 @@
 #
 class Profile < ApplicationRecord
   include Enums::Profile
+  include Delegates::Profile
   include Relations::Profile
 end

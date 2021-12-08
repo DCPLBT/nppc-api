@@ -34,9 +34,12 @@ class ProfileSerializer < ApplicationSerializer
     :firstname,
     :lastname,
     :gender,
-    :region,
+    :region_id,
+    :region_name,
     :district_id,
+    :district_name,
     :extension_id,
+    :extension_name,
     :user_id
   )
 
