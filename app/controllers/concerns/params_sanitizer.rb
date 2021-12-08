@@ -18,6 +18,10 @@ module ParamsSanitizer
         :region_id,
         :district_id,
         :extension_id,
+        :employee_type,
+        :employee_id,
+        :designation,
+        :agency,
         { photo_attributes: [:image] }
       ] }
     ]

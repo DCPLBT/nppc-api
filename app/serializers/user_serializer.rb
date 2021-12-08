@@ -61,7 +61,12 @@ class UserSerializer < ApplicationSerializer
     :cid,
     :region_name,
     :district_name,
-    :extension_name
+    :extension_name,
+    :name,
+    :employee_type,
+    :employee_id,
+    :designation,
+    :agency
   )
 
   has_one :profile
