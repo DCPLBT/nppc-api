@@ -96,7 +96,9 @@ Rails.application.routes.draw do
         collection do
           get :profile
         end
+        resources :settings, shallow: true
       end
+      resources :settings, only: :index
       resources :regions, shallow: true do
         resources :districts do
           resources :extensions

@@ -13,10 +13,10 @@
 #  lastname      :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  district_id   :bigint           not null
+#  district_id   :bigint
 #  employee_id   :string
-#  extension_id  :bigint           not null
-#  region_id     :bigint           not null
+#  extension_id  :bigint
+#  region_id     :bigint
 #  user_id       :bigint           not null
 #
 # Indexes
