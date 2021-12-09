@@ -21,7 +21,6 @@ module Api
       end
 
       def update
-        authorize(User)
         update_user_form(user_form)
       end
 
