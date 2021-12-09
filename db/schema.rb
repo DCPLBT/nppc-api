@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_211_208_123_154) do
+ActiveRecord::Schema.define(version: 20_211_208_103_314) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -107,26 +107,6 @@ ActiveRecord::Schema.define(version: 20_211_208_123_154) do
     t.datetime 'updated_at', precision: 6, null: false
     t.index ['product_type_id'], name: 'index_products_on_product_type_id'
     t.index ['user_id'], name: 'index_products_on_user_id'
-  end
-
-  create_table 'profiles', force: :cascade do |t|
-    t.string 'firstname'
-    t.string 'lastname'
-    t.integer 'gender'
-    t.bigint 'region_id', null: false
-    t.bigint 'district_id', null: false
-    t.bigint 'extension_id', null: false
-    t.bigint 'user_id', null: false
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
-    t.integer 'employee_type'
-    t.string 'employee_id'
-    t.integer 'designation'
-    t.integer 'agency'
-    t.index ['district_id'], name: 'index_profiles_on_district_id'
-    t.index ['extension_id'], name: 'index_profiles_on_extension_id'
-    t.index ['region_id'], name: 'index_profiles_on_region_id'
-    t.index ['user_id'], name: 'index_profiles_on_user_id'
   end
 
   create_table 'regions', force: :cascade do |t|
@@ -231,10 +211,6 @@ ActiveRecord::Schema.define(version: 20_211_208_123_154) do
   add_foreign_key 'product_types', 'users'
   add_foreign_key 'products', 'product_types'
   add_foreign_key 'products', 'users'
-  add_foreign_key 'profiles', 'districts'
-  add_foreign_key 'profiles', 'extensions'
-  add_foreign_key 'profiles', 'regions'
-  add_foreign_key 'profiles', 'users'
   add_foreign_key 'regions', 'users'
   add_foreign_key 'stocks', 'product_types'
   add_foreign_key 'stocks', 'products'
