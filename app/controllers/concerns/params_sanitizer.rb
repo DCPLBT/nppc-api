@@ -8,6 +8,7 @@ module ParamsSanitizer
       :phone,
       :username,
       :active,
+      :password,
       :cid,
       { role_ids: [] },
       { profile_attributes: [
