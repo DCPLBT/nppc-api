@@ -65,7 +65,7 @@ RSpec.describe 'Users', type: :request do
     end
 
     it 'should not permit to activate or deactivate user' do
-      put api_v1_user_path(user), params: { user: { active: false } }
+      put api_v1_user_path(user1), params: { user: { active: false } }
       expect(status).to eq(403)
       expect(json[:errors]).to eq([I18n.t('pundit')])
     end

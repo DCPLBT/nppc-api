@@ -55,14 +55,10 @@ FactoryBot.define do
   factory :user do
     email { Faker::Internet.email }
     password { Faker::Internet.password }
-    role_ids { [2] }
+    role_ids { [8] }
     active { true }
     factory :admin do
       role_ids { [1] }
-    end
-
-    factory :customer do
-      role_ids { [3] }
     end
 
     after(:build) { |u| u.confirm } # rubocop:disable Style/SymbolProc

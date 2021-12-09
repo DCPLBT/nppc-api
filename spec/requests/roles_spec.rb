@@ -13,7 +13,7 @@ RSpec.describe 'Roles', type: :request do
     it 'Get list of roles' do
       get api_v1_roles_path
       expect(response).to have_http_status(200)
-      expect(json[:data].size).to eq(3)
+      expect(json[:data].size).to eq(8)
       expect(json[:data].pluck(:attributes).pluck(:name)).to eq(Role.pluck(:name))
     end
   end
