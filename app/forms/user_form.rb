@@ -6,6 +6,7 @@ class UserForm < BaseForm
   end
 
   def update
+    authorize(user, :update?)
     user.update(params)
   end
 
