@@ -5,6 +5,10 @@ def sign_in(user)
   response.header
 end
 
+def sign_out
+  delete destroy_user_session_url
+end
+
 def json
   result = JSON.parse(response.body)
   result.is_a?(Array) ? result : HashWithIndifferentAccess.new(result)
@@ -16,5 +20,5 @@ def load_task(task)
 end
 
 def image
-  fixture_file_upload(Rails.root.join('spec', 'support', 'assets', 'image.png'), 'image/png')
+  Rack::Test::UploadedFile.new(Rails.root.join('spec', 'supports', 'assets', 'image.png'), 'image/png')
 end

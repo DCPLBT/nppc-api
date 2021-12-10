@@ -111,6 +111,7 @@ Rails.application.routes.draw do
       end
       resources :products, only: :index
       resources :stocks
+      resources :indents
     end
   end
 end

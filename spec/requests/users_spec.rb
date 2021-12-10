@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Users', type: :request do
-  let!(:user) { create(:user) }
+  let!(:user) { create(:user, profile_attributes: { photo_attributes: { image: image } }) }
   let!(:user1) { create(:user) }
   let!(:user2) { create(:user) }
   let!(:admin) { create(:admin) }
@@ -11,6 +11,12 @@ RSpec.describe 'Users', type: :request do
   context 'As a admin' do
     before(:each) do
       sign_in(admin)
+    end
+
+    it 'should see the list of users' do
+      sign_out
+      post user_session_url, params: { user: { login: 'dummy@dummy.com', password: 'dummy' } }
+      expect(status).to eq(401)
     end
 
     it 'should see the list of users' do

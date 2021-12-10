@@ -21,7 +21,7 @@ class UserPopulator < BasePopulator
   def status_filters(users)
     return users unless status.present?
 
-    users.filter_by_status(determine_status)
+    users.filter_by_status(determine_boolean(status))
   end
 
   def users
@@ -31,9 +31,5 @@ class UserPopulator < BasePopulator
       :photo,
       :roles_users
     )
-  end
-
-  def determine_status
-    [true, 'true'].include?(status)
   end
 end
