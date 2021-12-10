@@ -44,6 +44,7 @@ class StockSerializer < ApplicationSerializer
     :expiry_date,
     :procured_on,
     :obsolete_date,
-    :remark
+    :remark,
+    :created_at
   )
 end
