@@ -36,7 +36,8 @@ module Api
       # Only allow a list of trusted parameters through.
       def indent_params
         params.require(:indent).permit(
-          :product_type_id, :product_id, :forwarded_to_id, :quantity, :unit, :draft, :state
+          :forwarded_to_id, :draft, :state,
+          line_items_attributes: %i[id product_type_id product_id quantity unit _destroy]
         )
       end
 

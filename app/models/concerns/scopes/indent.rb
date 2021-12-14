@@ -6,8 +6,8 @@ module Scopes
 
     included do
       scope :search, lambda { |query|
-        joins(:product, :product_type).where(
-          "CONCAT_WS(' ', products.name, product_types.name) iLIKE ?", "%#{query&.squish}%"
+        left_joins(requester: :profile, forwarded_to: :profile).where(
+          "CONCAT_WS(' ', profiles.firstname, profiles.lastname) iLIKE ?", "%#{query&.squish}%"
         )
       }
     end

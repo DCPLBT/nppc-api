@@ -26,48 +26,83 @@ RSpec.describe '/indents', type: :request do
   # Indent. As you add validations to Indent, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    { product_type_id: product_type.id, product_id: product.id, requester: user, quantity: 120 }
+    { requester: user, draft: false, line_items_attributes: [
+      { product_type_id: product_type.id, product_id: product.id, quantity: 120 }
+    ] }
   end
 
   let(:invalid_attributes) do
-    { quantity: nil }
+    { draft: nil }
   end
 
   describe 'GET /index' do
     it 'renders a successful response' do
-      create(:indent, product_type: product_type, product: product, requester: user, quantity: 10, draft: true)
-      create(:indent, product_type: product_type, product: product, requester: user, quantity: 10)
-      create(:indent, product_type: product_type, product: product, requester: user, quantity: 10, forwarded_to_id: ea)
+      create(
+        :indent, requester: user, draft: true,
+                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+      )
+      create(
+        :indent, requester: user, draft: false,
+                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+      )
+      create(
+        :indent, requester: user, forwarded_to_id: ea.id, draft: false,
+                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+      )
 
       get api_v1_indents_url, as: :json
       expect(response).to be_successful
     end
 
     it 'filter by draft' do
-      create(:indent, product_type: product_type, product: product, requester: user, quantity: 10, draft: true)
-      create(:indent, product_type: product_type, product: product, requester: user, quantity: 10)
-      create(:indent, product_type: product_type, product: product, requester: user, quantity: 10, forwarded_to_id: ea)
-
+      create(
+        :indent, requester: user, draft: true,
+                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+      )
+      create(
+        :indent, requester: user, draft: false,
+                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+      )
+      create(
+        :indent, requester: user, forwarded_to_id: ea.id, draft: false,
+                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+      )
       get api_v1_indents_url(draft: true), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(1)
     end
 
     it 'filter by requested' do
-      create(:indent, product_type: product_type, product: product, requester: user, quantity: 10, draft: true)
-      create(:indent, product_type: product_type, product: product, requester: user, quantity: 10)
-      create(:indent, product_type: product_type, product: product, requester: user, quantity: 10, forwarded_to_id: ea)
-
+      create(
+        :indent, requester: user, draft: true,
+                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+      )
+      create(
+        :indent, requester: user, draft: false,
+                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+      )
+      create(
+        :indent, requester: user, forwarded_to_id: ea.id, draft: false,
+                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+      )
       get api_v1_indents_url(requested: true), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(3)
     end
 
     it 'filter by received' do
-      create(:indent, product_type: product_type, product: product, requester: user, quantity: 10, draft: true)
-      create(:indent, product_type: product_type, product: product, requester: user, quantity: 10)
-      create(:indent, product_type: product_type, product: product, requester: user, quantity: 10,
-                      forwarded_to_id: ea.id)
+      create(
+        :indent, requester: user, draft: true,
+                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+      )
+      create(
+        :indent, requester: user, draft: false,
+                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+      )
+      create(
+        :indent, requester: user, forwarded_to_id: ea.id, draft: false,
+                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+      )
       sign_out
       sign_in(ea)
       get api_v1_indents_url(received: true), as: :json
@@ -121,7 +156,7 @@ RSpec.describe '/indents', type: :request do
   describe 'PATCH /update' do
     context 'with valid parameters' do
       let(:new_attributes) do
-        { quantity: 100 }
+        { draft: false }
       end
 
       it 'updates the requested indent' do
@@ -129,7 +164,7 @@ RSpec.describe '/indents', type: :request do
         patch api_v1_indent_url(indent),
               params: { indent: new_attributes }, as: :json
         indent.reload
-        expect(json.dig(:data, :attributes, :quantity)).to eq(new_attributes[:quantity])
+        expect(json.dig(:data, :attributes, :draft)).to eq(new_attributes[:draft])
       end
 
       it 'renders a JSON response with the indent' do

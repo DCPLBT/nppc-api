@@ -90,6 +90,10 @@ Rails.application.routes.draw do
         resources :videos
       end
 
+      concern :itemable do
+        resources :line_items
+      end
+
       resources :profiles, concerns: :imageable
       resources :roles
       resources :users do
@@ -111,7 +115,7 @@ Rails.application.routes.draw do
       end
       resources :products, only: :index
       resources :stocks
-      resources :indents
+      resources :indents, concerns: :itemable, shallow: true
     end
   end
 end

@@ -5,10 +5,15 @@ module Relations
     extend ActiveSupport::Concern
 
     included do
-      belongs_to :product_type
-      belongs_to :product
       belongs_to :requester, class_name: 'User'
       belongs_to :forwarded_to, optional: true, class_name: 'User'
+
+      has_many :line_items, as: :itemable, dependent: :destroy
+
+      accepts_nested_attributes_for(
+        :line_items,
+        allow_destroy: true
+      )
     end
   end
 end

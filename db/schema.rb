@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_211_210_121_305) do
+ActiveRecord::Schema.define(version: 20_211_214_145_454) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -78,20 +78,28 @@ ActiveRecord::Schema.define(version: 20_211_210_121_305) do
   end
 
   create_table 'indents', force: :cascade do |t|
-    t.bigint 'product_type_id', null: false
-    t.bigint 'product_id', null: false
     t.bigint 'requester_id'
     t.bigint 'forwarded_to_id'
-    t.decimal 'quantity'
-    t.string 'unit'
     t.boolean 'draft'
     t.integer 'state'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
     t.index ['forwarded_to_id'], name: 'index_indents_on_forwarded_to_id'
-    t.index ['product_id'], name: 'index_indents_on_product_id'
-    t.index ['product_type_id'], name: 'index_indents_on_product_type_id'
     t.index ['requester_id'], name: 'index_indents_on_requester_id'
+  end
+
+  create_table 'line_items', force: :cascade do |t|
+    t.bigint 'product_type_id', null: false
+    t.bigint 'product_id', null: false
+    t.string 'itemable_type', null: false
+    t.bigint 'itemable_id', null: false
+    t.decimal 'quantity'
+    t.string 'unit'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index %w[itemable_type itemable_id], name: 'index_line_items_on_itemable'
+    t.index ['product_id'], name: 'index_line_items_on_product_id'
+    t.index ['product_type_id'], name: 'index_line_items_on_product_type_id'
   end
 
   create_table 'photos', force: :cascade do |t|
@@ -254,8 +262,8 @@ ActiveRecord::Schema.define(version: 20_211_210_121_305) do
   add_foreign_key 'districts', 'users'
   add_foreign_key 'extensions', 'districts'
   add_foreign_key 'extensions', 'users'
-  add_foreign_key 'indents', 'product_types'
-  add_foreign_key 'indents', 'products'
+  add_foreign_key 'line_items', 'product_types'
+  add_foreign_key 'line_items', 'products'
   add_foreign_key 'product_types', 'users'
   add_foreign_key 'products', 'product_types'
   add_foreign_key 'products', 'users'
