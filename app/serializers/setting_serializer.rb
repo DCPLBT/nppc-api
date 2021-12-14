@@ -20,5 +20,5 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class SettingSerializer < ApplicationSerializer
-  attributes :user_id, :category, :meta
+  attributes :user_id, :category, :meta, :created_at
 end
