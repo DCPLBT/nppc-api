@@ -3,7 +3,15 @@
 require 'rails_helper'
 
 RSpec.describe 'Users', type: :request do
-  let!(:user) { create(:user, profile_attributes: { photo_attributes: { image: image } }) }
+  let!(:agency) { create(:agency, user: create(:admin)) }
+  let!(:designation) { create(:designation, user: create(:admin)) }
+  let!(:employee_type) { create(:employee_type, user: create(:admin)) }
+  let!(:user) do
+    create(:user, profile_attributes: {
+             agency: agency, employee_type: employee_type, designation: designation,
+             photo_attributes: { image: image }
+           })
+  end
   let!(:user1) { create(:user) }
   let!(:user2) { create(:user) }
   let!(:admin) { create(:admin) }
@@ -22,7 +30,7 @@ RSpec.describe 'Users', type: :request do
     it 'should see the list of users' do
       get api_v1_users_path
       expect(status).to eq(200)
-      expect(json[:data].size).to eq(4)
+      expect(json[:data].size).to eq(7)
     end
 
     it 'check others user' do

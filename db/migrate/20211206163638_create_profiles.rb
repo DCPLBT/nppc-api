@@ -6,14 +6,14 @@ class CreateProfiles < ActiveRecord::Migration[6.1]
       t.string :firstname
       t.string :lastname
       t.integer :gender
-      t.integer :employee_type
-      t.integer :designation
-      t.integer :agency
       t.string :employee_id
       t.references :region, foreign_key: true
       t.references :district, foreign_key: true
       t.references :extension, foreign_key: true
       t.references :user, null: false, foreign_key: true
+      t.references :employee_type, null: false, foreign_key: true
+      t.references :designation, null: false, foreign_key: true
+      t.references :agency, null: false, foreign_key: true
 
       t.timestamps
     end

@@ -179,17 +179,20 @@ ActiveRecord::Schema.define(version: 20_211_230_132_902) do
     t.string 'firstname'
     t.string 'lastname'
     t.integer 'gender'
-    t.integer 'employee_type'
-    t.integer 'designation'
-    t.integer 'agency'
     t.string 'employee_id'
     t.bigint 'region_id'
     t.bigint 'district_id'
     t.bigint 'extension_id'
     t.bigint 'user_id', null: false
+    t.bigint 'employee_type_id', null: false
+    t.bigint 'designation_id', null: false
+    t.bigint 'agency_id', null: false
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.index ['agency_id'], name: 'index_profiles_on_agency_id'
+    t.index ['designation_id'], name: 'index_profiles_on_designation_id'
     t.index ['district_id'], name: 'index_profiles_on_district_id'
+    t.index ['employee_type_id'], name: 'index_profiles_on_employee_type_id'
     t.index ['extension_id'], name: 'index_profiles_on_extension_id'
     t.index ['region_id'], name: 'index_profiles_on_region_id'
     t.index ['user_id'], name: 'index_profiles_on_user_id'
@@ -322,7 +325,10 @@ ActiveRecord::Schema.define(version: 20_211_230_132_902) do
   add_foreign_key 'products', 'product_types'
   add_foreign_key 'products', 'units'
   add_foreign_key 'products', 'users'
+  add_foreign_key 'profiles', 'agencies'
+  add_foreign_key 'profiles', 'designations'
   add_foreign_key 'profiles', 'districts'
+  add_foreign_key 'profiles', 'employee_types'
   add_foreign_key 'profiles', 'extensions'
   add_foreign_key 'profiles', 'regions'
   add_foreign_key 'profiles', 'users'

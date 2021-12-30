@@ -9,6 +9,9 @@ module Relations
       belongs_to :district, optional: true
       belongs_to :extension, optional: true
       belongs_to :user, inverse_of: :profile
+      belongs_to :agency
+      belongs_to :designation
+      belongs_to :employee_type
 
       has_one :photo, as: :imageable, dependent: :destroy
 

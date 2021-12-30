@@ -7,7 +7,7 @@ module Scopes
     included do
       scope :search, lambda { |query|
         left_joins(requester: :profile, forwarded_to: :profile).where(
-          "CONCAT_WS(' ', profiles.firstname, profiles.lastname) iLIKE ?", "%#{query&.squish}%"
+          "CONCAT_WS(' ', profiles.firstname, profiles.lastname, indents.reference_no) iLIKE ?", "%#{query&.squish}%"
         )
       }
     end
