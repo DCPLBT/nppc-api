@@ -8,6 +8,8 @@ module Relations
       belongs_to :requester, class_name: 'User'
       belongs_to :forwarded_to, optional: true, class_name: 'User'
 
+      has_rich_text :remark
+
       has_many :line_items, as: :itemable, dependent: :destroy
 
       accepts_nested_attributes_for(

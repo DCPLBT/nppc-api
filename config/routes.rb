@@ -118,6 +118,7 @@ Rails.application.routes.draw do
       resources :indents, concerns: :itemable, shallow: true
       resources :units
       resources :agencies
+      resources :designations
     end
   end
 end

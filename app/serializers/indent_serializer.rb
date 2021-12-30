@@ -36,6 +36,10 @@ class IndentSerializer < ApplicationSerializer
     :created_at
   )
 
+  attribute :remark do |object|
+    object.remark&.to_s
+  end
+
   attribute :total_product do |object|
     object.line_items&.size
   end
