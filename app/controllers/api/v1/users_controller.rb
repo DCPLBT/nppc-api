@@ -59,6 +59,9 @@ module Api
         params.permit(
           :q,
           :status,
+          :region_id,
+          :district_id,
+          :extension_id,
           roles: []
         )
       end
