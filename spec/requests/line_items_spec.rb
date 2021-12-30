@@ -16,8 +16,9 @@ require 'rails_helper'
 
 RSpec.describe '/line_items', type: :request do
   let(:user) { create(:admin) }
+  let(:unit) { create(:unit, user: user) }
   let(:product_type) { create(:product_type, user: user) }
-  let(:product) { create(:product, user: user, product_type: product_type) }
+  let(:product) { create(:product, user: user, product_type: product_type, unit: unit) }
   let(:indent) { create(:indent, requester: user) }
   before(:each) do
     sign_in(user)

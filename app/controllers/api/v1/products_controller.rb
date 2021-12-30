@@ -35,7 +35,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def product_params
-        params.require(:product).permit(:name, :description, :unit, :unit_size)
+        params.require(:product).permit(:name, :description, :unit_id)
       end
 
       def product_form

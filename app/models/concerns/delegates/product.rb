@@ -6,6 +6,7 @@ module Delegates
 
     included do
       delegate(:name, to: :product_type, prefix: true)
+      delegate(:name, to: :unit, prefix: true)
     end
   end
 end

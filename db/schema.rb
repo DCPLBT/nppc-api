@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(version: 20_211_214_145_454) do
   create_table 'indents', force: :cascade do |t|
     t.bigint 'requester_id'
     t.bigint 'forwarded_to_id'
+    t.bigint 'stock_id'
     t.boolean 'draft'
     t.integer 'state'
     t.string 'reference_no'
@@ -96,6 +97,7 @@ ActiveRecord::Schema.define(version: 20_211_214_145_454) do
     t.datetime 'updated_at', precision: 6, null: false
     t.index ['forwarded_to_id'], name: 'index_indents_on_forwarded_to_id'
     t.index ['requester_id'], name: 'index_indents_on_requester_id'
+    t.index ['stock_id'], name: 'index_indents_on_stock_id'
   end
 
   create_table 'line_items', force: :cascade do |t|
@@ -135,13 +137,13 @@ ActiveRecord::Schema.define(version: 20_211_214_145_454) do
   create_table 'products', force: :cascade do |t|
     t.string 'name'
     t.text 'description'
-    t.string 'unit'
-    t.string 'unit_size'
+    t.bigint 'unit_id', null: false
     t.bigint 'user_id', null: false
     t.bigint 'product_type_id', null: false
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
     t.index ['product_type_id'], name: 'index_products_on_product_type_id'
+    t.index ['unit_id'], name: 'index_products_on_unit_id'
     t.index ['user_id'], name: 'index_products_on_user_id'
   end
 
@@ -283,10 +285,12 @@ ActiveRecord::Schema.define(version: 20_211_214_145_454) do
   add_foreign_key 'districts', 'users'
   add_foreign_key 'extensions', 'districts'
   add_foreign_key 'extensions', 'users'
+  add_foreign_key 'indents', 'stocks'
   add_foreign_key 'line_items', 'product_types'
   add_foreign_key 'line_items', 'products'
   add_foreign_key 'product_types', 'users'
   add_foreign_key 'products', 'product_types'
+  add_foreign_key 'products', 'units'
   add_foreign_key 'products', 'users'
   add_foreign_key 'profiles', 'districts'
   add_foreign_key 'profiles', 'extensions'

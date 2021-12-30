@@ -17,7 +17,8 @@ require 'rails_helper'
 RSpec.describe '/stocks', type: :request do
   let(:user) { create(:admin) }
   let(:product_type) { create(:product_type, user: user) }
-  let(:product) { create(:product, user: user, product_type: product_type) }
+  let(:unit) { create(:unit, user: user) }
+  let(:product) { create(:product, user: user, product_type: product_type, unit: unit) }
   before(:each) do
     sign_in(user)
   end

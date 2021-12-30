@@ -6,6 +6,7 @@ module Relations
 
     included do
       belongs_to :user
+      belongs_to :unit
       belongs_to :product_type, inverse_of: :products
     end
   end

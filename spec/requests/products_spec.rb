@@ -16,6 +16,7 @@ require 'rails_helper'
 
 RSpec.describe '/products', type: :request do
   let(:user) { create(:admin) }
+  let(:unit) { create(:unit, user: user) }
   let(:product_type) { create(:product_type, user: user) }
   before(:each) do
     sign_in(user)
@@ -24,7 +25,8 @@ RSpec.describe '/products', type: :request do
   # Product. As you add validations to Product, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    { name: Faker::Book.name, description: Faker::Restaurant.review, user: user, product_type: product_type }
+    { name: Faker::Book.name, description: Faker::Restaurant.review, user: user,
+      product_type: product_type, unit_id: unit.id }
   end
 
   let(:invalid_attributes) do
