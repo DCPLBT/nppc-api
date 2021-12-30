@@ -28,7 +28,7 @@ RSpec.describe '/indents', type: :request do
   # adjust the attributes here as well.
   let(:valid_attributes) do
     { requester: user, draft: false, line_items_attributes: [
-      { product_type_id: product_type.id, product_id: product.id, quantity: 120 }
+      { product_type_id: product_type.id, product_id: product.id, quantity: 120, unit_id: unit.id }
     ] }
   end
 
@@ -40,15 +40,21 @@ RSpec.describe '/indents', type: :request do
     it 'renders a successful response' do
       create(
         :indent, requester: user, draft: true,
-                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+                 line_items_attributes: [
+                   { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                 ]
       )
       create(
         :indent, requester: user, draft: false,
-                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+                 line_items_attributes: [
+                   { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                 ]
       )
       create(
         :indent, requester: user, forwarded_to_id: ea.id, draft: false,
-                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+                 line_items_attributes: [
+                   { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                 ]
       )
 
       get api_v1_indents_url, as: :json
@@ -58,15 +64,21 @@ RSpec.describe '/indents', type: :request do
     it 'filter by draft' do
       create(
         :indent, requester: user, draft: true,
-                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+                 line_items_attributes: [
+                   { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                 ]
       )
       create(
         :indent, requester: user, draft: false,
-                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+                 line_items_attributes: [
+                   { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                 ]
       )
       create(
         :indent, requester: user, forwarded_to_id: ea.id, draft: false,
-                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+                 line_items_attributes: [
+                   { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                 ]
       )
       get api_v1_indents_url(draft: true), as: :json
       expect(response).to be_successful
@@ -76,15 +88,21 @@ RSpec.describe '/indents', type: :request do
     it 'filter by requested' do
       create(
         :indent, requester: user, draft: true,
-                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+                 line_items_attributes: [
+                   { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                 ]
       )
       create(
         :indent, requester: user, draft: false,
-                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+                 line_items_attributes: [
+                   { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                 ]
       )
       create(
         :indent, requester: user, forwarded_to_id: ea.id, draft: false,
-                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+                 line_items_attributes: [
+                   { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                 ]
       )
       get api_v1_indents_url(requested: true), as: :json
       expect(response).to be_successful
@@ -94,15 +112,21 @@ RSpec.describe '/indents', type: :request do
     it 'filter by received' do
       create(
         :indent, requester: user, draft: true,
-                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+                 line_items_attributes: [
+                   { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                 ]
       )
       create(
         :indent, requester: user, draft: false,
-                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+                 line_items_attributes: [
+                   { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                 ]
       )
       create(
         :indent, requester: user, forwarded_to_id: ea.id, draft: false,
-                 line_items_attributes: [{ product_type: product_type, product: product, quantity: 10 }]
+                 line_items_attributes: [
+                   { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                 ]
       )
       sign_out
       sign_in(ea)

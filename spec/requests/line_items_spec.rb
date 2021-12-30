@@ -27,7 +27,7 @@ RSpec.describe '/line_items', type: :request do
   # line_item. As you add validations to line_item, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    { product_type_id: product_type.id, product_id: product.id, quantity: 10, unit: 'kg', itemable: indent }
+    { product_type_id: product_type.id, product_id: product.id, quantity: 10, unit_id: unit.id, itemable: indent }
   end
 
   let(:invalid_attributes) do

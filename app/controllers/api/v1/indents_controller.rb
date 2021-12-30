@@ -37,7 +37,7 @@ module Api
       def indent_params
         params.require(:indent).permit(
           :forwarded_to_id, :draft, :state, :remark,
-          line_items_attributes: %i[id product_type_id product_id quantity unit _destroy]
+          line_items_attributes: %i[id product_type_id product_id quantity unit_id _destroy]
         )
       end
 

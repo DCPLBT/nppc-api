@@ -131,16 +131,17 @@ ActiveRecord::Schema.define(version: 20_211_230_132_902) do
   create_table 'line_items', force: :cascade do |t|
     t.bigint 'product_type_id', null: false
     t.bigint 'product_id', null: false
+    t.bigint 'unit_id', null: false
     t.string 'itemable_type', null: false
     t.bigint 'itemable_id', null: false
     t.decimal 'quantity'
     t.decimal 'unit_price'
-    t.string 'unit'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
     t.index %w[itemable_type itemable_id], name: 'index_line_items_on_itemable'
     t.index ['product_id'], name: 'index_line_items_on_product_id'
     t.index ['product_type_id'], name: 'index_line_items_on_product_type_id'
+    t.index ['unit_id'], name: 'index_line_items_on_unit_id'
   end
 
   create_table 'photos', force: :cascade do |t|
@@ -321,6 +322,7 @@ ActiveRecord::Schema.define(version: 20_211_230_132_902) do
   add_foreign_key 'indents', 'stocks'
   add_foreign_key 'line_items', 'product_types'
   add_foreign_key 'line_items', 'products'
+  add_foreign_key 'line_items', 'units'
   add_foreign_key 'product_types', 'users'
   add_foreign_key 'products', 'product_types'
   add_foreign_key 'products', 'units'
