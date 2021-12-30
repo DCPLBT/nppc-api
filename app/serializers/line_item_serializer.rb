@@ -8,6 +8,7 @@
 #  itemable_type   :string           not null
 #  quantity        :decimal(, )
 #  unit            :string
+#  unit_price      :decimal(, )
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  itemable_id     :bigint           not null
@@ -34,6 +35,7 @@ class LineItemSerializer < ApplicationSerializer
     :itemable_id,
     :itemable_type,
     :quantity,
+    :unit_price,
     :unit
   )
 

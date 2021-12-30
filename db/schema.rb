@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 20_211_214_145_454) do
     t.bigint 'forwarded_to_id'
     t.boolean 'draft'
     t.integer 'state'
+    t.string 'reference_no'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
     t.index ['forwarded_to_id'], name: 'index_indents_on_forwarded_to_id'
@@ -94,6 +95,7 @@ ActiveRecord::Schema.define(version: 20_211_214_145_454) do
     t.string 'itemable_type', null: false
     t.bigint 'itemable_id', null: false
     t.decimal 'quantity'
+    t.decimal 'unit_price'
     t.string 'unit'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false

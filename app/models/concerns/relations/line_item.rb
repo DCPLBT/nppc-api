@@ -8,6 +8,7 @@ module Relations
       belongs_to :product_type
       belongs_to :product
       belongs_to :itemable, polymorphic: true
+      belongs_to :stock, optional: true
     end
   end
 end

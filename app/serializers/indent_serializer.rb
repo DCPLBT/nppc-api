@@ -6,6 +6,7 @@
 #
 #  id              :bigint           not null, primary key
 #  draft           :boolean
+#  reference_no    :string
 #  state           :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -24,6 +25,16 @@ class IndentSerializer < ApplicationSerializer
     :forwarded_to_id,
     :forwarded_to_name,
     :draft,
-    :state
+    :state,
+    :reference_no,
+    :created_at
   )
+
+  attribute :total_product do |object|
+    object.line_items&.size
+  end
+
+  attribute :total_quantity do |object|
+    object.line_items&.sum(&:quantity)
+  end
 end

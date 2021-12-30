@@ -6,7 +6,6 @@ module Api
       before_action :assign_params, only: :update
 
       def index
-        authorize(User)
         populator = UserPopulator.new(current_user: current_user, params: query_params)
         render_paginated_collection(populator.run)
       end

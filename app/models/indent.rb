@@ -6,6 +6,7 @@
 #
 #  id              :bigint           not null, primary key
 #  draft           :boolean
+#  reference_no    :string
 #  state           :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -18,8 +19,10 @@
 #  index_indents_on_requester_id     (requester_id)
 #
 class Indent < ApplicationRecord
+  include Enums::Indent
   include Scopes::Indent
   include Delegates::Indent
   include Relations::Indent
   include Validations::Indent
+  include ::Callbacks::Indent
 end

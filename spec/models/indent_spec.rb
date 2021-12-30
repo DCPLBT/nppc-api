@@ -6,6 +6,7 @@
 #
 #  id              :bigint           not null, primary key
 #  draft           :boolean
+#  reference_no    :string
 #  state           :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null

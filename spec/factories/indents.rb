@@ -6,6 +6,7 @@
 #
 #  id              :bigint           not null, primary key
 #  draft           :boolean
+#  reference_no    :string
 #  state           :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -22,6 +23,6 @@ FactoryBot.define do
     requester { nil }
     forwarded_to { nil }
     draft { false }
-    state { 1 }
+    state { 0 }
   end
 end

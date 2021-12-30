@@ -8,6 +8,7 @@
 #  itemable_type   :string           not null
 #  quantity        :decimal(, )
 #  unit            :string
+#  unit_price      :decimal(, )
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  itemable_id     :bigint           not null
@@ -27,7 +28,9 @@
 #
 class LineItem < ApplicationRecord
   include Scopes::LineItem
+  include Helpers::LineItem
   include Delegates::LineItem
   include Relations::LineItem
   include Validations::LineItem
+  include ::Callbacks::LineItem
 end
