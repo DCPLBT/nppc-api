@@ -119,6 +119,7 @@ Rails.application.routes.draw do
       resources :units
       resources :agencies
       resources :designations
+      resources :employee_types
     end
   end
 end

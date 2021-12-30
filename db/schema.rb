@@ -94,6 +94,15 @@ ActiveRecord::Schema.define(version: 20_211_230_132_902) do
     t.index ['user_id'], name: 'index_districts_on_user_id'
   end
 
+  create_table 'employee_types', force: :cascade do |t|
+    t.string 'name'
+    t.text 'description'
+    t.bigint 'user_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['user_id'], name: 'index_employee_types_on_user_id'
+  end
+
   create_table 'extensions', force: :cascade do |t|
     t.string 'name'
     t.text 'description'
@@ -303,6 +312,7 @@ ActiveRecord::Schema.define(version: 20_211_230_132_902) do
   add_foreign_key 'designations', 'users'
   add_foreign_key 'districts', 'regions'
   add_foreign_key 'districts', 'users'
+  add_foreign_key 'employee_types', 'users'
   add_foreign_key 'extensions', 'districts'
   add_foreign_key 'extensions', 'users'
   add_foreign_key 'indents', 'stocks'
