@@ -9,6 +9,6 @@ class UnitPopulator < BasePopulator
   private
 
   def units
-    @units ||= parent ? parent.units : Unit
+    @units ||= (parent ? parent.units : Unit).includes(:user)
   end
 end
