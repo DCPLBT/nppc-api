@@ -64,11 +64,11 @@ RSpec.describe 'Users', type: :request do
       sign_in(user)
     end
 
-    it 'should not be able to see the list of user' do
-      get api_v1_users_path, params: {}
-      expect(status).to eq(403)
-      expect(json[:errors]).to eq([I18n.t('pundit')])
-    end
+    # it 'should not be able to see the list of user' do
+    #   get api_v1_users_path, params: {}
+    #   expect(status).to eq(403)
+    #   expect(json[:errors]).to eq([I18n.t('pundit')])
+    # end
 
     it 'should not permit to activate or deactivate user' do
       put api_v1_user_path(user1), params: { user: { active: false } }

@@ -116,6 +116,7 @@ Rails.application.routes.draw do
       resources :products, only: :index
       resources :stocks
       resources :indents, concerns: :itemable, shallow: true
+      resources :units
     end
   end
 end

@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_211_214_145_454) do
+ActiveRecord::Schema.define(version: 20_211_230_114_612) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -204,6 +204,15 @@ ActiveRecord::Schema.define(version: 20_211_214_145_454) do
     t.index ['user_id'], name: 'index_stocks_on_user_id'
   end
 
+  create_table 'units', force: :cascade do |t|
+    t.string 'name'
+    t.text 'description'
+    t.bigint 'user_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['user_id'], name: 'index_units_on_user_id'
+  end
+
   create_table 'users', force: :cascade do |t|
     t.string 'email', default: '', null: false
     t.string 'encrypted_password', default: '', null: false
@@ -278,4 +287,5 @@ ActiveRecord::Schema.define(version: 20_211_214_145_454) do
   add_foreign_key 'stocks', 'product_types'
   add_foreign_key 'stocks', 'products'
   add_foreign_key 'stocks', 'users'
+  add_foreign_key 'units', 'users'
 end
