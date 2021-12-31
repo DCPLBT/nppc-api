@@ -1,14 +1,21 @@
 # frozen_string_literal: true
 
 class IndentPopulator < BasePopulator
-  attr_accessor :draft, :requested, :received
+  attr_accessor :draft, :requested, :received, :product_type_id, :product_id, :region_id, :district_id,
+                :extension_id, :year
 
-  def run
+  def run # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
     indents
       .public_send(:search, q)
       .yield_self { |indents| filter_by_draft(indents) }
       .yield_self { |indents| filter_by_requested(indents) }
       .yield_self { |indents| filter_by_received(indents) }
+      .yield_self { |indents| filter_by_product_type(indents) }
+      .yield_self { |indents| filter_by_product(indents) }
+      .yield_self { |indents| filter_by_region(indents) }
+      .yield_self { |indents| filter_by_district(indents) }
+      .yield_self { |indents| filter_by_extension(indents) }
+      .yield_self { |indents| filter_by_year(indents) }
   end
 
   private
@@ -33,5 +40,41 @@ class IndentPopulator < BasePopulator
     return indents unless received.present? || determine_boolean(received)
 
     indents.where(forwarded_to_id: current_user.id)
+  end
+
+  def filter_by_product_type(indents)
+    return indents unless product_type_id.present?
+
+    indents.filter_by_product_type(product_type_id)
+  end
+
+  def filter_by_product(indents)
+    return indents unless product_id.present?
+
+    indents.filter_by_product(product_id)
+  end
+
+  def filter_by_region(indents)
+    return indents unless region_id.present?
+
+    indents.filter_by_region(region_id)
+  end
+
+  def filter_by_district(indents)
+    return indents unless district_id.present?
+
+    indents.filter_by_district(district_id)
+  end
+
+  def filter_by_extension(indents)
+    return indents unless extension_id.present?
+
+    indents.filter_by_extension(extension_id)
+  end
+
+  def filter_by_year(indents)
+    return indents unless year.present?
+
+    indents.where(created_at: Date.new(year.to_i).all_year)
   end
 end
