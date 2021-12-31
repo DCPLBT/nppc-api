@@ -3,7 +3,7 @@
 module ResourceFinder
   def parent
     klass, param = parent_class
-    klass&.find(params[param.to_sym])
+    klass.find(params[param.to_sym]) if defined?(klass) && nested_route?
   end
 
   private
@@ -17,5 +17,9 @@ module ResourceFinder
       end
     end
     result
+  end
+
+  def nested_route?
+    request.url.split('v1/')[1].split('/').size >= 3
   end
 end
