@@ -21,7 +21,7 @@ class IndentPopulator < BasePopulator
   private
 
   def indents
-    @indents ||= Indent.includes(:requester, :forwarded_to, :line_items, :rich_text_remark)
+    @indents ||= Indent.includes(:line_items, :rich_text_remark, forwarded_to: :profile, requester: :profile)
   end
 
   def filter_by_draft(indents)

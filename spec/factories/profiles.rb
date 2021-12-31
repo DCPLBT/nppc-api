@@ -43,7 +43,7 @@ FactoryBot.define do
   factory :profile do
     firstname { 'MyString' }
     lastname { 'MyString' }
-    gender { 1 }
+    gender { 0 }
     region { nil }
     district { nil }
     extension { nil }
