@@ -10,11 +10,11 @@
 #  lastname         :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  agency_id        :bigint           not null
-#  designation_id   :bigint           not null
+#  agency_id        :bigint
+#  designation_id   :bigint
 #  district_id      :bigint
 #  employee_id      :string
-#  employee_type_id :bigint           not null
+#  employee_type_id :bigint
 #  extension_id     :bigint
 #  region_id        :bigint
 #  user_id          :bigint           not null

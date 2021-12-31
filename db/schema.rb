@@ -185,9 +185,9 @@ ActiveRecord::Schema.define(version: 20_211_230_132_902) do
     t.bigint 'district_id'
     t.bigint 'extension_id'
     t.bigint 'user_id', null: false
-    t.bigint 'employee_type_id', null: false
-    t.bigint 'designation_id', null: false
-    t.bigint 'agency_id', null: false
+    t.bigint 'employee_type_id'
+    t.bigint 'designation_id'
+    t.bigint 'agency_id'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
     t.index ['agency_id'], name: 'index_profiles_on_agency_id'
