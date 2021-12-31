@@ -233,8 +233,8 @@ ActiveRecord::Schema.define(version: 20_211_230_132_902) do
     t.bigint 'product_type_id', null: false
     t.bigint 'product_id', null: false
     t.bigint 'user_id', null: false
+    t.bigint 'unit_id', null: false
     t.decimal 'quantity'
-    t.string 'unit'
     t.decimal 'unit_price'
     t.date 'expiry_date'
     t.date 'procured_on'
@@ -244,6 +244,7 @@ ActiveRecord::Schema.define(version: 20_211_230_132_902) do
     t.datetime 'updated_at', precision: 6, null: false
     t.index ['product_id'], name: 'index_stocks_on_product_id'
     t.index ['product_type_id'], name: 'index_stocks_on_product_type_id'
+    t.index ['unit_id'], name: 'index_stocks_on_unit_id'
     t.index ['user_id'], name: 'index_stocks_on_user_id'
   end
 
@@ -338,6 +339,7 @@ ActiveRecord::Schema.define(version: 20_211_230_132_902) do
   add_foreign_key 'settings', 'users'
   add_foreign_key 'stocks', 'product_types'
   add_foreign_key 'stocks', 'products'
+  add_foreign_key 'stocks', 'units'
   add_foreign_key 'stocks', 'users'
   add_foreign_key 'units', 'users'
 end

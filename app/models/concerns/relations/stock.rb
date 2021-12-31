@@ -8,6 +8,7 @@ module Relations
       belongs_to :product_type
       belongs_to :product
       belongs_to :user
+      belongs_to :unit
     end
   end
 end

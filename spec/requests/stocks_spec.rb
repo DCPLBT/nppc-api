@@ -34,7 +34,8 @@ RSpec.describe '/stocks', type: :request do
       expiry_date: Time.now + 2.months,
       procured_on: Time.now,
       remark: Faker::Restaurant.review,
-      user: user
+      user: user,
+      unit_id: unit.id
     }
   end
 
