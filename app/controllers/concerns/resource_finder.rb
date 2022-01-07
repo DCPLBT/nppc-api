@@ -2,8 +2,29 @@
 
 module ResourceFinder
   def parent
+    return unless nested_route?
+
     klass, param = parent_class
-    klass.find(params[param.to_sym]) if defined?(klass) && nested_route?
+    klass.find(params[param.to_sym])
+  end
+
+  def current_role
+    @current_role ||= Role.find_by(id: params[:current_role_id])
+  end
+
+  def current_role_name
+    @current_role_name ||= current_role&.name&.delete(' ')&.underscore
+  end
+
+  def next_role_name
+    case current_role_name
+    when 'user'
+      'ea'
+    when 'ea'
+      'dao'
+    else
+      'nppc'
+    end
   end
 
   private

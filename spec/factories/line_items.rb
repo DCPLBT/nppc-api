@@ -13,6 +13,7 @@
 #  itemable_id     :bigint           not null
 #  product_id      :bigint           not null
 #  product_type_id :bigint           not null
+#  stock_id        :bigint
 #  unit_id         :bigint           not null
 #
 # Indexes
@@ -20,12 +21,14 @@
 #  index_line_items_on_itemable         (itemable_type,itemable_id)
 #  index_line_items_on_product_id       (product_id)
 #  index_line_items_on_product_type_id  (product_type_id)
+#  index_line_items_on_stock_id         (stock_id)
 #  index_line_items_on_unit_id          (unit_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (product_id => products.id)
 #  fk_rails_...  (product_type_id => product_types.id)
+#  fk_rails_...  (stock_id => stocks.id)
 #  fk_rails_...  (unit_id => units.id)
 #
 FactoryBot.define do

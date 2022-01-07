@@ -12,6 +12,11 @@ module Scopes
       }
       scope :filter_by_roles, ->(roles) { joins(:roles).where(roles: { id: roles }) }
       scope :filter_by_status, ->(status) { where(active: status) }
+      scope :similar_users, lambda { |role, region_id, district_id, extension_id|
+        left_joins(:profile).where(profiles: {
+                                     region_id: region_id, district_id: district_id, extension_id: extension_id
+                                   }).find_all { |x| x.send("#{role}?") }
+      }
     end
   end
 end

@@ -19,7 +19,7 @@ RSpec.describe '/line_items', type: :request do
   let(:unit) { create(:unit, user: user) }
   let(:product_type) { create(:product_type, user: user) }
   let(:product) { create(:product, user: user, product_type: product_type, unit: unit) }
-  let(:indent) { create(:indent, requester: user) }
+  let(:indent) { create(:indent) }
   before(:each) do
     sign_in(user)
   end

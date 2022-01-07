@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_211_230_132_902) do
+ActiveRecord::Schema.define(version: 20_220_106_162_219) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -114,17 +114,29 @@ ActiveRecord::Schema.define(version: 20_211_230_132_902) do
     t.index ['user_id'], name: 'index_extensions_on_user_id'
   end
 
+  create_table 'forwardable_forwarded_tos', force: :cascade do |t|
+    t.string 'forwardable_type', null: false
+    t.bigint 'forwardable_id', null: false
+    t.bigint 'forwarded_to_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index %w[forwardable_type forwardable_id], name: 'index_forwardable_forwarded_tos_on_forwardable'
+    t.index ['forwarded_to_id'], name: 'index_forwardable_forwarded_tos_on_forwarded_to_id'
+  end
+
   create_table 'indents', force: :cascade do |t|
-    t.bigint 'requester_id'
-    t.bigint 'forwarded_to_id'
     t.bigint 'stock_id'
+    t.bigint 'region_id'
+    t.bigint 'district_id'
+    t.bigint 'extension_id'
     t.boolean 'draft'
     t.integer 'state'
     t.string 'reference_no'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
-    t.index ['forwarded_to_id'], name: 'index_indents_on_forwarded_to_id'
-    t.index ['requester_id'], name: 'index_indents_on_requester_id'
+    t.index ['district_id'], name: 'index_indents_on_district_id'
+    t.index ['extension_id'], name: 'index_indents_on_extension_id'
+    t.index ['region_id'], name: 'index_indents_on_region_id'
     t.index ['stock_id'], name: 'index_indents_on_stock_id'
   end
 
@@ -132,6 +144,7 @@ ActiveRecord::Schema.define(version: 20_211_230_132_902) do
     t.bigint 'product_type_id', null: false
     t.bigint 'product_id', null: false
     t.bigint 'unit_id', null: false
+    t.bigint 'stock_id'
     t.string 'itemable_type', null: false
     t.bigint 'itemable_id', null: false
     t.decimal 'quantity'
@@ -141,6 +154,7 @@ ActiveRecord::Schema.define(version: 20_211_230_132_902) do
     t.index %w[itemable_type itemable_id], name: 'index_line_items_on_itemable'
     t.index ['product_id'], name: 'index_line_items_on_product_id'
     t.index ['product_type_id'], name: 'index_line_items_on_product_type_id'
+    t.index ['stock_id'], name: 'index_line_items_on_stock_id'
     t.index ['unit_id'], name: 'index_line_items_on_unit_id'
   end
 
@@ -206,6 +220,16 @@ ActiveRecord::Schema.define(version: 20_211_230_132_902) do
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
     t.index ['user_id'], name: 'index_regions_on_user_id'
+  end
+
+  create_table 'requestable_requesters', force: :cascade do |t|
+    t.string 'requestable_type', null: false
+    t.bigint 'requestable_id', null: false
+    t.bigint 'requester_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index %w[requestable_type requestable_id], name: 'index_requestable_requesters_on_requestable'
+    t.index ['requester_id'], name: 'index_requestable_requesters_on_requester_id'
   end
 
   create_table 'roles', force: :cascade do |t|
@@ -320,9 +344,13 @@ ActiveRecord::Schema.define(version: 20_211_230_132_902) do
   add_foreign_key 'employee_types', 'users'
   add_foreign_key 'extensions', 'districts'
   add_foreign_key 'extensions', 'users'
+  add_foreign_key 'indents', 'districts'
+  add_foreign_key 'indents', 'extensions'
+  add_foreign_key 'indents', 'regions'
   add_foreign_key 'indents', 'stocks'
   add_foreign_key 'line_items', 'product_types'
   add_foreign_key 'line_items', 'products'
+  add_foreign_key 'line_items', 'stocks'
   add_foreign_key 'line_items', 'units'
   add_foreign_key 'product_types', 'users'
   add_foreign_key 'products', 'product_types'

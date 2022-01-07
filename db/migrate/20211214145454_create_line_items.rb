@@ -6,6 +6,7 @@ class CreateLineItems < ActiveRecord::Migration[6.1]
       t.references :product_type, null: false, foreign_key: true
       t.references :product, null: false, foreign_key: true
       t.references :unit, null: false, foreign_key: true
+      t.references :stock, foreign_key: true
       t.references :itemable, polymorphic: true, null: false
       t.decimal :quantity
       t.decimal :unit_price

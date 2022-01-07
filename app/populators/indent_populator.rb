@@ -21,7 +21,7 @@ class IndentPopulator < BasePopulator
   private
 
   def indents
-    @indents ||= Indent.includes(:line_items, :rich_text_remark, forwarded_to: :profile, requester: :profile)
+    @indents ||= Indent.includes(:line_items, :rich_text_remark, :region, :district, :extension)
   end
 
   def filter_by_draft(indents)
@@ -33,13 +33,13 @@ class IndentPopulator < BasePopulator
   def filter_by_requested(indents)
     return indents unless requested.present? || determine_boolean(requested)
 
-    indents.where(requester_id: current_user.id)
+    indents.where(id: current_user.requested_indents.ids)
   end
 
   def filter_by_received(indents)
     return indents unless received.present? || determine_boolean(received)
 
-    indents.where(forwarded_to_id: current_user.id)
+    indents.where(id: current_user.forwarded_indents.ids)
   end
 
   def filter_by_product_type(indents)
