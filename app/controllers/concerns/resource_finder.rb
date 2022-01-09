@@ -13,7 +13,9 @@ module ResourceFinder
   end
 
   def current_role_name
-    @current_role_name ||= current_role&.name&.delete(' ')&.underscore
+    @current_role_name ||= (
+      current_role.nil? ? current_user.roles.first.name : current_role&.name
+    )&.delete(' ')&.underscore
   end
 
   def next_role_name
