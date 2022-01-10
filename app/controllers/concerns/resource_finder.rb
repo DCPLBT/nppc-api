@@ -5,6 +5,8 @@ module ResourceFinder
     return unless nested_route?
 
     klass, param = parent_class
+    return if klass.nil?
+
     klass.find(params[param.to_sym])
   end
 
@@ -27,6 +29,18 @@ module ResourceFinder
     else
       'nppc'
     end
+  end
+
+  def forwarded_to_ids
+    @forwarded_to_ids ||= User.similar_users(
+      next_role_name, current_user.region_id, current_user.district_id, current_user.extension_id
+    ).pluck(:id)
+  end
+
+  def requester_ids
+    @requester_ids ||= User.similar_users(
+      current_role_name, current_user.region_id, current_user.district_id, current_user.extension_id
+    ).pluck(:id)
   end
 
   private

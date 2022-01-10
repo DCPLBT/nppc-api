@@ -115,7 +115,11 @@ Rails.application.routes.draw do
       end
       resources :products, only: :index
       resources :stocks
-      resources :indents, concerns: :itemable, shallow: true
+      resources :indents, concerns: :itemable, shallow: true do
+        member do
+          get :forward
+        end
+      end
       resources :units
       resources :agencies
       resources :designations

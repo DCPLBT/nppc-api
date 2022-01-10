@@ -15,6 +15,10 @@ class IndentForm < BaseForm
     indent.update(params)
   end
 
+  def forward
+    create_requester_forwarded_to
+  end
+
   def destroy
     indent.destroy
   end
@@ -34,14 +38,10 @@ class IndentForm < BaseForm
     Indent.new(params)
   end
 
-  def create_requester_forwarded_to # rubocop:disable Metrics/AbcSize
+  def create_requester_forwarded_to
     indent.update(
-      forwarded_to_ids: User.similar_users(
-        next_role_name, current_user.region_id, current_user.district_id, current_user.extension_id
-      ).pluck(:id),
-      requester_ids: User.similar_users(
-        current_role_name, current_user.region_id, current_user.district_id, current_user.extension_id
-      ).pluck(:id)
+      forwarded_to_ids: forwarded_to_ids,
+      requester_ids: requester_ids
     )
   end
 end

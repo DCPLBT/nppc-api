@@ -31,6 +31,11 @@ module Api
         destroy_indent_form(indent_form)
       end
 
+      # GET /indents/1/forward
+      def forward
+        forward_indent_form(indent_form)
+      end
+
       private
 
       # Only allow a list of trusted parameters through.
@@ -50,10 +55,11 @@ module Api
       def indent_attributes
         @indent_attributes ||= {
           current_user: current_user,
-          parent: parent,
           id: params[:id],
           current_role_name: current_role_name,
-          next_role_name: next_role_name
+          next_role_name: next_role_name,
+          requester_ids: requester_ids,
+          forwarded_to_ids: forwarded_to_ids
         }
       end
 

@@ -162,6 +162,14 @@ RSpec.describe '/indents', type: :request do
     end
   end
 
+  describe 'GET /forward' do
+    it 'renders a successful response' do
+      indent = Indent.create! valid_attributes
+      get forward_api_v1_indent_url(indent), as: :json
+      expect(response).to be_successful
+    end
+  end
+
   describe 'POST /create' do
     context 'with valid parameters' do
       it 'creates a new Indent' do
