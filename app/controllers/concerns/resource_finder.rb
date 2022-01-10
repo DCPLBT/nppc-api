@@ -32,15 +32,30 @@ module ResourceFinder
   end
 
   def forwarded_to_ids
+    region_id, district_id, extension_id = extract_ids(next_role_name)
     @forwarded_to_ids ||= User.similar_users(
-      next_role_name, current_user.region_id, current_user.district_id, current_user.extension_id
+      next_role_name, region_id, district_id, extension_id
     ).pluck(:id)
   end
 
   def requester_ids
+    region_id, district_id, extension_id = extract_ids(current_role_name)
     @requester_ids ||= User.similar_users(
-      current_role_name, current_user.region_id, current_user.district_id, current_user.extension_id
+      current_role_name, region_id, district_id, extension_id
     ).pluck(:id)
+  end
+
+  def extract_ids(role_name)
+    case role_name
+    when 'ea', 'user'
+      [current_user.region_id, current_user.district_id, current_user.extension_id]
+    when 'dao'
+      [current_user.region_id, current_user.district_id]
+    when 'adrc'
+      [current_user.region_id]
+    else
+      []
+    end
   end
 
   private
