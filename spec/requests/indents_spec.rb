@@ -44,7 +44,7 @@ RSpec.describe '/indents', type: :request do
   # Indent. As you add validations to Indent, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    { draft: false, line_items_attributes: [
+    { draft: false, user_id: user.id, line_items_attributes: [
       { product_type_id: product_type.id, product_id: product.id, quantity: 120, unit_id: unit.id }
     ] }
   end
@@ -56,38 +56,38 @@ RSpec.describe '/indents', type: :request do
   describe 'GET /index' do
     let!(:indent1) do
       create(
-        :indent, draft: true, requester_ids: [user.id], forwarded_to_ids: [ea.id],
-                 region: user.region, district: user.district, extension: user.extension,
-                 line_items_attributes: [
-                   { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
-                 ]
+        :indent, draft: true, user_id: user.id, requester_ids: [user.id], forwarded_to_ids: [ea.id],
+        region: user.region, district: user.district, extension: user.extension,
+        line_items_attributes: [
+          { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+        ]
       )
     end
     let!(:indent2) do
       create(
-        :indent, draft: false, requester_ids: [user.id], forwarded_to_ids: [ea.id],
-                 region: user.region, district: user.district, extension: user.extension,
-                 line_items_attributes: [
-                   { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
-                 ]
+        :indent, draft: false, user_id: user.id, requester_ids: [user.id], forwarded_to_ids: [ea.id],
+        region: user.region, district: user.district, extension: user.extension,
+        line_items_attributes: [
+          { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+        ]
       )
     end
     let!(:indent3) do
       create(
-        :indent, draft: false, requester_ids: [user.id], forwarded_to_ids: [ea.id],
-                 region: user.region, district: user.district, extension: user.extension,
-                 line_items_attributes: [
-                   { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
-                 ]
+        :indent, draft: false, user_id: user.id, requester_ids: [user.id], forwarded_to_ids: [ea.id],
+        region: user.region, district: user.district, extension: user.extension,
+        line_items_attributes: [
+          { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+        ]
       )
     end
     let!(:indent4) do
       create(
-        :indent, draft: false, requester_ids: [user1.id], forwarded_to_ids: [ea1.id],
-                 region: user1.region, district: user1.district, extension: user1.extension,
-                 line_items_attributes: [
-                   { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
-                 ]
+        :indent, draft: false, user_id: user.id, requester_ids: [user1.id], forwarded_to_ids: [ea1.id],
+        region: user1.region, district: user1.district, extension: user1.extension,
+        line_items_attributes: [
+          { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+        ]
       )
     end
 
