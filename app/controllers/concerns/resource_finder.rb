@@ -31,14 +31,14 @@ module ResourceFinder
 
   def destination_ids
     region_id, district_id, extension_id = extract_ids(next_role_name)
-    @forwarded_to_ids ||= User.similar_users(
+    @destination_ids ||= User.includes(:roles).similar_users(
       next_role_name, region_id, district_id, extension_id
     ).pluck(:id)
   end
 
   def source_ids
     region_id, district_id, extension_id = extract_ids(current_role_name)
-    @requester_ids ||= User.similar_users(
+    @source_ids ||= User.includes(:roles).similar_users(
       current_role_name, region_id, district_id, extension_id
     ).pluck(:id)
   end

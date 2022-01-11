@@ -44,3 +44,5 @@ en:
           max_size_exceeded: 'Video size cannot exceed more than 25MB'
         role:
           name_is_reserved: '%{name} is reserved keyword, cannot be deleted or updated!'
+        distribution:
+          line_item_required: 'is required for distribution to happen.'

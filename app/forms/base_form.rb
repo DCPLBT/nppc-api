@@ -13,7 +13,8 @@ class BaseForm
     :next_role_name,
     :current_role_name,
     :source_ids,
-    :destination_ids
+    :destination_ids,
+    :cart
   )
 
   def initialize(attributes = {})
