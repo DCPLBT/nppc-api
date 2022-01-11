@@ -33,15 +33,16 @@ class IndentForm < BaseForm
     params.merge!(
       region: current_user.region,
       district: current_user.district,
-      extension: current_user.extension
+      extension: current_user.extension,
+      user: current_user
     )
     Indent.new(params)
   end
 
   def create_requester_forwarded_to
     indent.update(
-      forwarded_to_ids: forwarded_to_ids,
-      requester_ids: requester_ids
+      forwarded_to_ids: destination_ids,
+      requester_ids: source_ids
     )
   end
 end
