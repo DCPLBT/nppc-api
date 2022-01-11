@@ -3,6 +3,7 @@
 class ApplicationController < ActionController::API
   include Pundit
   include Renderer
+  include CartHelper
   include Pagination
   include PreFilters
   include Pagy::Backend

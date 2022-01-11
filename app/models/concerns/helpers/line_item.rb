@@ -5,7 +5,7 @@ module Helpers
     extend ActiveSupport::Concern
 
     def total_price
-      quantity * (unit_price || 0)
+      quantity * unit_price
     end
   end
 end

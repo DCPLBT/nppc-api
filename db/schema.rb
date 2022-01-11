@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_220_106_162_219) do
+ActiveRecord::Schema.define(version: 20_220_110_122_313) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -74,6 +74,17 @@ ActiveRecord::Schema.define(version: 20_220_106_162_219) do
     t.index %w[attachable_type attachable_id], name: 'index_attachments_on_attachable_type_and_attachable_id'
   end
 
+  create_table 'carts', force: :cascade do |t|
+    t.string 'cartable_type', null: false
+    t.bigint 'cartable_id', null: false
+    t.decimal 'quantity'
+    t.decimal 'amount'
+    t.bigint 'session_id'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index %w[cartable_type cartable_id], name: 'index_carts_on_cartable'
+  end
+
   create_table 'designations', force: :cascade do |t|
     t.string 'name'
     t.text 'description'
@@ -81,6 +92,20 @@ ActiveRecord::Schema.define(version: 20_220_106_162_219) do
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
     t.index ['user_id'], name: 'index_designations_on_user_id'
+  end
+
+  create_table 'distributions', force: :cascade do |t|
+    t.bigint 'region_id', null: false
+    t.bigint 'district_id', null: false
+    t.bigint 'extension_id', null: false
+    t.integer 'state'
+    t.string 'reference_no'
+    t.boolean 'draft'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['district_id'], name: 'index_distributions_on_district_id'
+    t.index ['extension_id'], name: 'index_distributions_on_extension_id'
+    t.index ['region_id'], name: 'index_distributions_on_region_id'
   end
 
   create_table 'districts', force: :cascade do |t|
@@ -339,6 +364,9 @@ ActiveRecord::Schema.define(version: 20_220_106_162_219) do
   add_foreign_key 'active_storage_variant_records', 'active_storage_blobs', column: 'blob_id'
   add_foreign_key 'agencies', 'users'
   add_foreign_key 'designations', 'users'
+  add_foreign_key 'distributions', 'districts'
+  add_foreign_key 'distributions', 'extensions'
+  add_foreign_key 'distributions', 'regions'
   add_foreign_key 'districts', 'regions'
   add_foreign_key 'districts', 'users'
   add_foreign_key 'employee_types', 'users'

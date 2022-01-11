@@ -9,6 +9,7 @@ module Relations
 
       has_one :profile, inverse_of: :user, dependent: :destroy
       has_one :photo, through: :profile
+      has_one :cart, as: :cartable, dependent: :destroy
 
       has_many :settings, inverse_of: :user, dependent: :destroy
       has_many :forwardable_forwarded_tos, foreign_key: :forwarded_to_id
