@@ -58,8 +58,8 @@ module Api
           id: params[:id],
           current_role_name: current_role_name,
           next_role_name: next_role_name,
-          requester_ids: requester_ids,
-          forwarded_to_ids: forwarded_to_ids
+          requester_ids: source_ids,
+          forwarded_to_ids: destination_ids
         }
       end
 

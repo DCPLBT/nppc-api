@@ -12,8 +12,8 @@ class BaseForm
     :id,
     :next_role_name,
     :current_role_name,
-    :requester_ids,
-    :forwarded_to_ids
+    :source_ids,
+    :destination_ids
   )
 
   def initialize(attributes = {})

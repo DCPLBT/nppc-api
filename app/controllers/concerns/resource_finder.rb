@@ -29,14 +29,14 @@ module ResourceFinder
     end
   end
 
-  def forwarded_to_ids
+  def destination_ids
     region_id, district_id, extension_id = extract_ids(next_role_name)
     @forwarded_to_ids ||= User.similar_users(
       next_role_name, region_id, district_id, extension_id
     ).pluck(:id)
   end
 
-  def requester_ids
+  def source_ids
     region_id, district_id, extension_id = extract_ids(current_role_name)
     @requester_ids ||= User.similar_users(
       current_role_name, region_id, district_id, extension_id
