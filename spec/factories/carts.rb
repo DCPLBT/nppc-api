@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: carts
@@ -18,8 +20,8 @@
 FactoryBot.define do
   factory :cart do
     cartable { nil }
-    quantity { "9.99" }
-    amount { "9.99" }
-    session_id { "" }
+    quantity { '9.99' }
+    amount { '9.99' }
+    session_id { '' }
   end
 end
