@@ -70,6 +70,8 @@ module Api
       end
 
       def destination_ids
+        return unless params[:distribution]
+
         @destination_ids ||= User.includes(:roles).similar_users(
           distribute_to_role, distribution_params[:region_id], distribution_params[:district_id],
           distribution_params[:extension_id]
