@@ -15,26 +15,26 @@ require 'rails_helper'
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
 RSpec.describe '/indents', type: :request do
-  let(:admin) { create(:admin) }
-  let(:region) { create(:region, user: admin) }
-  let(:region1) { create(:region, user: admin) }
-  let(:district) { create(:district, region: region, user: admin) }
-  let(:district1) { create(:district, region: region1, user: admin) }
-  let(:extension) { create(:extension, district: district, user: admin) }
-  let(:extension1) { create(:extension, district: district1, user: admin) }
-  let(:user) do
+  let!(:admin) { create(:admin) }
+  let!(:region) { create(:region, user: admin) }
+  let!(:region1) { create(:region, user: admin) }
+  let!(:district) { create(:district, region: region, user: admin) }
+  let!(:district1) { create(:district, region: region1, user: admin) }
+  let!(:extension) { create(:extension, district: district, user: admin) }
+  let!(:extension1) { create(:extension, district: district1, user: admin) }
+  let!(:user) do
     create(:user, role_ids: [8], profile_attributes: { region: region, district: district, extension: extension })
   end
-  let(:user1) do
+  let!(:user1) do
     create(:user, role_ids: [8], profile_attributes: { region: region1, district: district1, extension: extension1 })
   end
-  let(:unit) { create(:unit, user: user) }
-  let(:product_type) { create(:product_type, user: user) }
-  let(:product) { create(:product, user: user, product_type: product_type, unit: unit) }
-  let(:ea) do
+  let!(:unit) { create(:unit, user: user) }
+  let!(:product_type) { create(:product_type, user: user) }
+  let!(:product) { create(:product, user: user, product_type: product_type, unit: unit) }
+  let!(:ea) do
     create(:user, role_ids: [4], profile_attributes: { region: region, district: district, extension: extension })
   end
-  let(:ea1) do
+  let!(:ea1) do
     create(:user, role_ids: [4], profile_attributes: { region: region1, district: district1, extension: extension1 })
   end
   before(:each) do
@@ -43,13 +43,13 @@ RSpec.describe '/indents', type: :request do
   # This should return the minimal set of attributes required to create a valid
   # Indent. As you add validations to Indent, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) do
+  let!(:valid_attributes) do
     { draft: false, user_id: user.id, line_items_attributes: [
       { product_type_id: product_type.id, product_id: product.id, quantity: 120, unit_id: unit.id }
     ] }
   end
 
-  let(:invalid_attributes) do
+  let!(:invalid_attributes) do
     { draft: nil }
   end
 
@@ -177,6 +177,8 @@ RSpec.describe '/indents', type: :request do
           post api_v1_indents_url,
                params: { indent: valid_attributes }, as: :json
         end.to change(Indent, :count).by(1)
+        expect(json.dig(:data, :attributes, :requester_id)).to eq(user.id)
+        expect(json.dig(:data, :attributes, :forwarded_to_id)).to eq(ea.id)
       end
 
       it 'renders a JSON response with the new indent' do
@@ -206,7 +208,7 @@ RSpec.describe '/indents', type: :request do
 
   describe 'PATCH /update' do
     context 'with valid parameters' do
-      let(:new_attributes) do
+      let!(:new_attributes) do
         { draft: false }
       end
 
