@@ -31,7 +31,7 @@ module Pagination
     options[:meta] = paginate(config, options[:meta])
     options[:params] = { current_user: current_user }
     {
-      json: collection_serializer(collection, options[:serializer]).new(collection, options).serialized_json,
+      json: collection_serializer(collection, options[:serializer]).new(collection, options).serializable_hash.to_json,
       status: :ok
     }
   end

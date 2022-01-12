@@ -15,7 +15,7 @@ module Renderer
       params: { current_user: current_user }
     }
     {
-      json: single_serializer(object, serializer.try(:serializer)).new(object, options).serialized_json,
+      json: single_serializer(object, serializer.try(:serializer)).new(object, options).serializable_hash.to_json,
       status: :ok
     }
   end
