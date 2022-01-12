@@ -37,7 +37,7 @@ module Api
       def distribution_params
         params.require(:distribution).permit(
           :region_id, :district_id, :extension_id, :state,
-          :distributed_type, consumer_ids: []
+          :distributed_type, consumer_ids: [], attachment_attributes: [:file]
         )
       end
 
@@ -53,7 +53,8 @@ module Api
           id: params[:id],
           source_ids: source_ids,
           destination_ids: destination_ids,
-          cart: cart
+          cart: cart,
+          include: [:attachment]
         }
       end
 

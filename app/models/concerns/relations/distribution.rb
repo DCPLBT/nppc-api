@@ -10,6 +10,8 @@ module Relations
       belongs_to :extension, optional: true
       belongs_to :user
 
+      has_one :attachment, as: :attachable, dependent: :destroy
+
       has_many :line_items, as: :itemable, dependent: :destroy
       has_many :forwardable_forwarded_tos, as: :forwardable, dependent: :destroy
       has_many :requestable_requesters, as: :requestable, dependent: :destroy
@@ -18,6 +20,10 @@ module Relations
 
       has_rich_text :received_remark
 
+      accepts_nested_attributes_for(
+        :attachment,
+        update_only: true
+      )
       accepts_nested_attributes_for(
         :line_items,
         limit: 1,

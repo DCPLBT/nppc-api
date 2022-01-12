@@ -45,6 +45,8 @@ class DistributionSerializer < ApplicationSerializer
     :distributed_type
   )
 
+  has_one :attachment
+
   attribute :received_remark do |object|
     object.received_remark&.to_s
   end
