@@ -51,7 +51,7 @@ class IndentSerializer < ApplicationSerializer
   )
 
   attribute :remark do |object|
-    object.remark&.to_s
+    object.remark&.to_plain_text
   end
 
   attribute :total_product do |object|

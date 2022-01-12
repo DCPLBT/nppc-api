@@ -205,6 +205,15 @@ RSpec.describe '/distributions', type: :request do
         { state: :received, received_remark: 'Hello I have received the item' }
       end
 
+      it 'upload receipt' do
+        valid_attributes[:attachment_attributes] = { file: image }
+        distribution = Distribution.create! valid_attributes
+        patch api_v1_distribution_url(distribution),
+              params: { distribution: new_attributes }, as: :json
+        distribution.reload
+        expect(response).to have_http_status(:ok)
+      end
+
       it 'updates the requested distribution' do
         distribution = Distribution.create! valid_attributes
         patch api_v1_distribution_url(distribution),

@@ -17,6 +17,7 @@ module Booleans
           application/msword application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
           application/vnd.openxmlformats-officedocument.wordprocessingml.document text/plain
           application/vnd.openxmlformats-officedocument.presentationml.presentation
+          image/png image/jpg image/gif image/jpeg video/mp4 video/quicktime video/webm
         ]
       )
     end

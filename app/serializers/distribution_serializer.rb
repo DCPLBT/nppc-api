@@ -58,7 +58,7 @@ class DistributionSerializer < ApplicationSerializer
   has_one :attachment
 
   attribute :received_remark do |object|
-    object.received_remark&.to_s
+    object.received_remark&.to_plain_text
   end
 
   attribute :total_product do |object|
