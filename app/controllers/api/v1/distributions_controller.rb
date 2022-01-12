@@ -7,7 +7,7 @@ module Api
 
       # GET /distributions
       def index
-        populate = DistributionPopulator.new(params: query_params, parent: parent)
+        populate = DistributionPopulator.new(params: query_params, parent: parent, current_user: current_user)
         render_paginated_collection(populate.run)
       end
 
@@ -36,7 +36,7 @@ module Api
       # Only allow a list of trusted parameters through.
       def distribution_params
         params.require(:distribution).permit(
-          :region_id, :district_id, :extension_id, :state,
+          :region_id, :district_id, :extension_id, :state, :received_remark,
           :distributed_type, consumer_ids: [], attachment_attributes: [:file]
         )
       end
@@ -70,7 +70,7 @@ module Api
       end
 
       def destination_ids
-        return unless params[:distribution]
+        return unless params[:distribution].present?
 
         @destination_ids ||= User.includes(:roles).similar_users(
           distribute_to_role, distribution_params[:region_id], distribution_params[:district_id],

@@ -36,7 +36,7 @@ FactoryBot.define do
     region { nil }
     district { nil }
     extension { nil }
-    state { 1 }
+    state { 0 }
     reference_no { 'MyString' }
     draft { false }
   end

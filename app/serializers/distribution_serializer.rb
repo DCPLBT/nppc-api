@@ -42,12 +42,34 @@ class DistributionSerializer < ApplicationSerializer
     :state,
     :reference_no,
     :draft,
-    :distributed_type
+    :distributed_type,
+    :distributor_id,
+    :distributor_name,
+    :distributor_region_name,
+    :distributor_district_name,
+    :distributor_extension_name,
+    :distributed_to_id,
+    :distributed_to_name,
+    :distributed_to_region_name,
+    :distributed_to_district_name,
+    :distributed_to_extension_name
   )
 
   has_one :attachment
 
   attribute :received_remark do |object|
     object.received_remark&.to_s
+  end
+
+  attribute :total_product do |object|
+    object.line_items&.size
+  end
+
+  attribute :total_quantity do |object|
+    object.line_items&.sum(&:quantity)
+  end
+
+  attribute :total_price do |object|
+    object.line_items&.sum(&:total_price)
   end
 end

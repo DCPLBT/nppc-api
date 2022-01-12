@@ -15,10 +15,6 @@ class DistributionForm < BaseForm
     distribution.update(params)
   end
 
-  def forward
-    create_distributor_distributed_to
-  end
-
   def destroy
     distribution.destroy
   end

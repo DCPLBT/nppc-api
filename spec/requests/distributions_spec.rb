@@ -15,37 +15,151 @@ require 'rails_helper'
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
 RSpec.describe '/distributions', type: :request do
+  let!(:user) { create(:user, role_ids: [2]) }
+  let!(:unit) { create(:unit, user: user) }
+
+  let(:region) { create(:region, user: user) }
+  let(:region1) { create(:region, user: user) }
+  let(:district) { create(:district, region: region, user: user) }
+  let(:district1) { create(:district, region: region1, user: user) }
+  let(:extension) { create(:extension, district: district, user: user) }
+  let(:extension1) { create(:extension, district: district1, user: user) }
+
+  let(:user1) do
+    create(:user, role_ids: [8], profile_attributes: { region: region, district: district, extension: extension })
+  end
+  let(:ea) do
+    create(:user, role_ids: [4], profile_attributes: { region: region, district: district, extension: extension })
+  end
+  let(:ea1) do
+    create(:user, role_ids: [4], profile_attributes: { region: region1, district: district1, extension: extension1 })
+  end
+
+  let!(:product_type) { create(:product_type, user: user) }
+  let!(:product) { create(:product, product_type: product_type, user: user, unit: unit) }
+  let!(:stock) { create(:stock, product_type: product_type, product: product, user: user, unit: unit) }
+
+  let!(:cart) { create(:cart, cartable: user, session_id: 2) }
+  let!(:line_item) do
+    create(:line_item, product_type: product_type, product: product, unit: unit, stock: stock, itemable: cart)
+  end
+
+  before(:each) do
+    sign_in(user)
+  end
+
   # This should return the minimal set of attributes required to create a valid
   # Distribution. As you add validations to Distribution, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    skip('Add a hash of attributes valid for your model')
+    { region_id: region.id, district_id: district.id, extension_id: extension.id, user_id: user.id,
+      distributed_type: 'ea', line_items: [line_item] }
   end
 
   let(:invalid_attributes) do
-    skip('Add a hash of attributes invalid for your model')
-  end
-
-  # This should return the minimal set of values that should be in the headers
-  # in order to pass any filters (e.g. authentication) defined in
-  # DistributionsController, or in your router and rack
-  # middleware. Be sure to keep this updated too.
-  let(:valid_headers) do
-    {}
+    { distributed_type: nil }
   end
 
   describe 'GET /index' do
+    let!(:distribution1) do
+      create(
+        :distribution, user_id: user.id, distributor_ids: [user.id], distributed_to_ids: [ea.id],
+                       region: user.region, district: user.district, extension: user.extension, distributed_type: 'ea',
+                       line_items_attributes: [
+                         { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                       ]
+      )
+    end
+    let!(:distribution2) do
+      create(
+        :distribution, draft: false, user_id: user.id, distributor_ids: [user.id], distributed_to_ids: [ea.id],
+                       region: user.region, district: user.district, extension: user.extension, distributed_type: 'ea',
+                       line_items_attributes: [
+                         { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                       ]
+      )
+    end
+    let!(:distribution3) do
+      create(
+        :distribution, draft: false, user_id: user.id, distributor_ids: [user.id], distributed_to_ids: [ea.id],
+                       region: user.region, district: user.district, extension: user.extension, distributed_type: 'ea',
+                       line_items_attributes: [
+                         { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                       ]
+      )
+    end
+    let!(:distribution4) do
+      create(
+        :distribution, draft: false, user_id: user.id, distributor_ids: [user.id], distributed_to_ids: [ea1.id],
+                       region: user1.region, district: user1.district, extension: user1.extension,
+                       distributed_type: 'ea',
+                       line_items_attributes: [
+                         { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                       ]
+      )
+    end
+
     it 'renders a successful response' do
-      Distribution.create! valid_attributes
-      get distributions_url, headers: valid_headers, as: :json
+      get api_v1_distributions_url, as: :json
       expect(response).to be_successful
+    end
+
+    it 'filter by distributor' do
+      get api_v1_distributions_url(distributed: true), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(4)
+    end
+
+    it 'filter by product type' do
+      get api_v1_distributions_url(product_type_id: product_type.id), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(4)
+    end
+
+    it 'filter by product' do
+      get api_v1_distributions_url(product_id: product.id), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(4)
+    end
+
+    it 'filter by region' do
+      get api_v1_distributions_url(region_id: user1.profile.region_id), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(1)
+    end
+
+    it 'filter by district' do
+      get api_v1_distributions_url(district_id: user1.profile.district_id), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(1)
+    end
+
+    it 'filter by extension' do
+      get api_v1_distributions_url(extension_id: user1.profile.extension_id), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(1)
+    end
+
+    it 'filter by year' do
+      distribution4.update_columns(created_at: Date.new(2000))
+      get api_v1_distributions_url(year: '2000'), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(1)
+    end
+
+    it 'filter by received' do
+      sign_out
+      sign_in(ea)
+      get api_v1_distributions_url(received: true), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(3)
     end
   end
 
   describe 'GET /show' do
     it 'renders a successful response' do
       distribution = Distribution.create! valid_attributes
-      get distribution_url(distribution), as: :json
+      get api_v1_distribution_url(distribution), as: :json
       expect(response).to be_successful
     end
   end
@@ -54,15 +168,16 @@ RSpec.describe '/distributions', type: :request do
     context 'with valid parameters' do
       it 'creates a new Distribution' do
         expect do
-          post distributions_url,
-               params: { distribution: valid_attributes }, headers: valid_headers, as: :json
+          post api_v1_distributions_url,
+               params: { distribution: valid_attributes }, as: :json
         end.to change(Distribution, :count).by(1)
       end
 
       it 'renders a JSON response with the new distribution' do
-        post distributions_url,
-             params: { distribution: valid_attributes }, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:created)
+        valid_attributes[:distributed_type] = 'individual'
+        post api_v1_distributions_url,
+             params: { distribution: valid_attributes }, as: :json
+        expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
       end
     end
@@ -70,16 +185,16 @@ RSpec.describe '/distributions', type: :request do
     context 'with invalid parameters' do
       it 'does not create a new Distribution' do
         expect do
-          post distributions_url,
+          post api_v1_distributions_url,
                params: { distribution: invalid_attributes }, as: :json
         end.to change(Distribution, :count).by(0)
       end
 
       it 'renders a JSON response with errors for the new distribution' do
-        post distributions_url,
-             params: { distribution: invalid_attributes }, headers: valid_headers, as: :json
+        post api_v1_distributions_url,
+             params: { distribution: invalid_attributes }, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json')
+        expect(response.content_type).to eq('application/json; charset=utf-8')
       end
     end
   end
@@ -87,21 +202,21 @@ RSpec.describe '/distributions', type: :request do
   describe 'PATCH /update' do
     context 'with valid parameters' do
       let(:new_attributes) do
-        skip('Add a hash of attributes valid for your model')
+        { state: :received, received_remark: 'Hello I have received the item' }
       end
 
       it 'updates the requested distribution' do
         distribution = Distribution.create! valid_attributes
-        patch distribution_url(distribution),
-              params: { distribution: new_attributes }, headers: valid_headers, as: :json
+        patch api_v1_distribution_url(distribution),
+              params: { distribution: new_attributes }, as: :json
         distribution.reload
-        skip('Add assertions for updated state')
+        expect(response).to have_http_status(:ok)
       end
 
       it 'renders a JSON response with the distribution' do
         distribution = Distribution.create! valid_attributes
-        patch distribution_url(distribution),
-              params: { distribution: new_attributes }, headers: valid_headers, as: :json
+        patch api_v1_distribution_url(distribution),
+              params: { distribution: new_attributes }, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
       end
@@ -110,10 +225,10 @@ RSpec.describe '/distributions', type: :request do
     context 'with invalid parameters' do
       it 'renders a JSON response with errors for the distribution' do
         distribution = Distribution.create! valid_attributes
-        patch distribution_url(distribution),
-              params: { distribution: invalid_attributes }, headers: valid_headers, as: :json
+        patch api_v1_distribution_url(distribution),
+              params: { distribution: invalid_attributes }, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json')
+        expect(response.content_type).to eq('application/json; charset=utf-8')
       end
     end
   end
@@ -122,7 +237,7 @@ RSpec.describe '/distributions', type: :request do
     it 'destroys the requested distribution' do
       distribution = Distribution.create! valid_attributes
       expect do
-        delete distribution_url(distribution), headers: valid_headers, as: :json
+        delete api_v1_distribution_url(distribution), as: :json
       end.to change(Distribution, :count).by(-1)
     end
   end
