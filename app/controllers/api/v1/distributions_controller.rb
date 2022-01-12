@@ -63,7 +63,10 @@ module Api
       end
 
       def query_params
-        params.permit(:q)
+        params.permit(
+          :q, :distributed, :received, :product_type_id, :product_id, :region_id, :district_id,
+          :extension_id, :year
+        )
       end
 
       def destination_ids

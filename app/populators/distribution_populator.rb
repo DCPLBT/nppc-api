@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
 class DistributionPopulator < BasePopulator
-  attr_accessor :draft, :requested, :received, :product_type_id, :product_id, :region_id, :district_id,
+  attr_accessor :draft, :distributed, :received, :product_type_id, :product_id, :region_id, :district_id,
                 :extension_id, :year
 
-  def run # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
+  def run # rubocop:disable Metrics/AbcSize
     distributions
       .public_send(:search, q)
-      .yield_self { |distributions| filter_by_draft(distributions) }
-      .yield_self { |distributions| filter_by_requested(distributions) }
+      .yield_self { |distributions| filter_by_distributed(distributions) }
       .yield_self { |distributions| filter_by_received(distributions) }
       .yield_self { |distributions| filter_by_product_type(distributions) }
       .yield_self { |distributions| filter_by_product(distributions) }
@@ -22,27 +21,21 @@ class DistributionPopulator < BasePopulator
 
   def distributions
     @distributions ||= Distribution.includes(
-      :line_items, :rich_text_remark, :region, :district, :extension, :forwarded_tos, :requesters,
-      :requestable_requesters, :forwardable_forwarded_tos
+      :line_items, :rich_text_received_remark, :region, :district, :extension, :distributed_tos, :distributors,
+      :requestable_requesters, :forwardable_forwarded_tos, :attachment
     )
   end
 
-  def filter_by_draft(distributions)
-    return distributions unless draft.present?
+  def filter_by_distributed(distributions)
+    return distributions unless distributed.present? || determine_boolean(distributed)
 
-    distributions.where(draft: determine_boolean(draft))
-  end
-
-  def filter_by_requested(distributions)
-    return distributions unless requested.present? || determine_boolean(requested)
-
-    distributions.where(id: current_user.requested_distributions.ids)
+    distributions.where(id: current_user.distributors_distributions.ids)
   end
 
   def filter_by_received(distributions)
     return distributions unless received.present? || determine_boolean(received)
 
-    distributions.where(id: current_user.forwarded_distributions.ids)
+    distributions.where(id: current_user.distributed_tos_distributions.ids)
   end
 
   def filter_by_product_type(distributions)

@@ -33,6 +33,7 @@
 #
 class Distribution < ApplicationRecord
   include Enums::Distribution
+  include Scopes::Distribution
   include Delegates::Distribution
   include Relations::Distribution
   include Validations::Distribution
