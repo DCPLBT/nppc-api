@@ -11,11 +11,9 @@ class CartForm < BaseForm
   private
 
   def update_cart
-    return if line_items.empty?
-
     cart.update(
-      quantity: line_items.sum(&:quantity),
-      amount: line_items.sum(&:total_price)
+      quantity: line_items&.sum(&:quantity),
+      amount: line_items&.sum(&:total_price)
     )
   end
 
