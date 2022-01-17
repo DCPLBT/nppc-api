@@ -12,6 +12,9 @@ class CreateDistributions < ActiveRecord::Migration[6.1]
       t.integer :state
       t.string :reference_no
       t.boolean :draft
+      t.string :consumer_cid
+      t.string :consumer_name
+      t.string :consumer_village
 
       t.timestamps
     end

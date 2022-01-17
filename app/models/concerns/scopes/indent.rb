@@ -5,6 +5,7 @@ module Scopes
     extend ActiveSupport::Concern
 
     included do
+      default_scope -> { order(created_at: :desc) }
       scope :search, lambda { |query|
         where(
           "CONCAT_WS(' ', indents.reference_no) iLIKE ?", "%#{query&.squish}%"

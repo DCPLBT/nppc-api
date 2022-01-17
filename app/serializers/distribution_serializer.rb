@@ -5,7 +5,10 @@
 # Table name: distributions
 #
 #  id               :bigint           not null, primary key
+#  consumer_cid     :string
 #  consumer_ids     :string           is an Array
+#  consumer_name    :string
+#  consumer_village :string
 #  distributed_type :integer
 #  draft            :boolean
 #  reference_no     :string
@@ -52,24 +55,18 @@ class DistributionSerializer < ApplicationSerializer
     :distributed_to_name,
     :distributed_to_region_name,
     :distributed_to_district_name,
-    :distributed_to_extension_name
+    :distributed_to_extension_name,
+    :consumer_cid,
+    :consumer_name,
+    :consumer_village,
+    :total_quantity,
+    :total_price,
+    :total_product
   )
 
   has_one :attachment
 
   attribute :received_remark do |object|
     object.received_remark&.to_plain_text
-  end
-
-  attribute :total_product do |object|
-    object.line_items&.size
-  end
-
-  attribute :total_quantity do |object|
-    object.line_items&.sum(&:quantity)
-  end
-
-  attribute :total_price do |object|
-    object.line_items&.sum(&:total_price)
   end
 end

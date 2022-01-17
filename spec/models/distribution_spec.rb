@@ -5,7 +5,10 @@
 # Table name: distributions
 #
 #  id               :bigint           not null, primary key
+#  consumer_cid     :string
 #  consumer_ids     :string           is an Array
+#  consumer_name    :string
+#  consumer_village :string
 #  distributed_type :integer
 #  draft            :boolean
 #  reference_no     :string

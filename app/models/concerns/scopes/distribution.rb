@@ -5,6 +5,7 @@ module Scopes
     extend ActiveSupport::Concern
 
     included do
+      default_scope -> { order(created_at: :desc) }
       scope :search, lambda { |query|
         joins(line_items: %i[product_type product]).where(
           "CONCAT_WS(' ', reference_no, product_types.name, products.name) iLIKE ?", "%#{query&.squish}%"
