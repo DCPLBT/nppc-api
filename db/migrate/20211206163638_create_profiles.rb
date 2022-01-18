@@ -10,6 +10,7 @@ class CreateProfiles < ActiveRecord::Migration[6.1]
       t.references :region, foreign_key: true
       t.references :district, foreign_key: true
       t.references :extension, foreign_key: true
+      t.references :company, foreign_key: true
       t.references :user, null: false, foreign_key: true
       t.references :employee_type, foreign_key: true
       t.references :designation, foreign_key: true

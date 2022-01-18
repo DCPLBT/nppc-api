@@ -15,6 +15,7 @@
 #  state            :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  company_id       :bigint
 #  district_id      :bigint
 #  extension_id     :bigint
 #  region_id        :bigint
@@ -22,6 +23,7 @@
 #
 # Indexes
 #
+#  index_distributions_on_company_id    (company_id)
 #  index_distributions_on_district_id   (district_id)
 #  index_distributions_on_extension_id  (extension_id)
 #  index_distributions_on_region_id     (region_id)
@@ -29,6 +31,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (company_id => companies.id)
 #  fk_rails_...  (district_id => districts.id)
 #  fk_rails_...  (extension_id => extensions.id)
 #  fk_rails_...  (region_id => regions.id)
@@ -42,6 +45,8 @@ class DistributionSerializer < ApplicationSerializer
     :district_name,
     :extension_id,
     :extension_name,
+    :company_id,
+    :company_name,
     :state,
     :reference_no,
     :draft,
@@ -51,11 +56,13 @@ class DistributionSerializer < ApplicationSerializer
     :distributor_region_name,
     :distributor_district_name,
     :distributor_extension_name,
+    :distributor_company_name,
     :distributed_to_id,
     :distributed_to_name,
     :distributed_to_region_name,
     :distributed_to_district_name,
     :distributed_to_extension_name,
+    :distributed_to_company_name,
     :consumer_cid,
     :consumer_name,
     :consumer_village,

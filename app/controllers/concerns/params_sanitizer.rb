@@ -18,6 +18,7 @@ module ParamsSanitizer
         :region_id,
         :district_id,
         :extension_id,
+        :company_id,
         :employee_type_id,
         :employee_id,
         :designation_id,

@@ -34,6 +34,7 @@ class IndentForm < BaseForm
       region: current_user.region,
       district: current_user.district,
       extension: current_user.extension,
+      company: current_user.company,
       user: current_user
     )
     Indent.new(params)

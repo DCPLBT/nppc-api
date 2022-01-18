@@ -11,6 +11,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  agency_id        :bigint
+#  company_id       :bigint
 #  designation_id   :bigint
 #  district_id      :bigint
 #  employee_id      :string
@@ -22,6 +23,7 @@
 # Indexes
 #
 #  index_profiles_on_agency_id         (agency_id)
+#  index_profiles_on_company_id        (company_id)
 #  index_profiles_on_designation_id    (designation_id)
 #  index_profiles_on_district_id       (district_id)
 #  index_profiles_on_employee_type_id  (employee_type_id)
@@ -32,6 +34,7 @@
 # Foreign Keys
 #
 #  fk_rails_...  (agency_id => agencies.id)
+#  fk_rails_...  (company_id => companies.id)
 #  fk_rails_...  (designation_id => designations.id)
 #  fk_rails_...  (district_id => districts.id)
 #  fk_rails_...  (employee_type_id => employee_types.id)
@@ -50,6 +53,8 @@ class ProfileSerializer < ApplicationSerializer
     :district_name,
     :extension_id,
     :extension_name,
+    :company_id,
+    :company_name,
     :user_id,
     :employee_type_id,
     :employee_type_name,

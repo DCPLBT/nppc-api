@@ -8,6 +8,7 @@ module Relations
       belongs_to :region, optional: true
       belongs_to :district, optional: true
       belongs_to :extension, optional: true
+      belongs_to :company, optional: true
       belongs_to :user
 
       has_one :attachment, as: :attachable, dependent: :destroy

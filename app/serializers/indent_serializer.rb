@@ -10,6 +10,7 @@
 #  state        :integer
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  company_id   :bigint
 #  district_id  :bigint
 #  extension_id :bigint
 #  region_id    :bigint
@@ -17,6 +18,7 @@
 #
 # Indexes
 #
+#  index_indents_on_company_id    (company_id)
 #  index_indents_on_district_id   (district_id)
 #  index_indents_on_extension_id  (extension_id)
 #  index_indents_on_region_id     (region_id)
@@ -24,6 +26,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (company_id => companies.id)
 #  fk_rails_...  (district_id => districts.id)
 #  fk_rails_...  (extension_id => extensions.id)
 #  fk_rails_...  (region_id => regions.id)
@@ -36,18 +39,20 @@ class IndentSerializer < ApplicationSerializer
     :requester_region_name,
     :requester_district_name,
     :requester_extension_name,
+    :requester_company_name,
     :forwarded_to_id,
     :forwarded_to_name,
     :forwarded_to_region_name,
     :forwarded_to_district_name,
-    :forwarded_to_extension_name,
+    :forwarded_to_company_name,
     :draft,
     :state,
     :reference_no,
     :created_at,
     :region_name,
     :district_name,
-    :extension_name
+    :extension_name,
+    :company_name
   )
 
   attribute :remark do |object|

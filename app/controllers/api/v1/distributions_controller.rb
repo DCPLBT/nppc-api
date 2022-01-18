@@ -36,8 +36,8 @@ module Api
       # Only allow a list of trusted parameters through.
       def distribution_params
         params.require(:distribution).permit(
-          :region_id, :district_id, :extension_id, :state, :received_remark, :consumer_cid, :consumer_name,
-          :consumer_village, :distributed_type, consumer_ids: [], attachment_attributes: [:file]
+          :region_id, :district_id, :extension_id, :company_id, :state, :received_remark, :consumer_cid,
+          :consumer_name, :consumer_village, :distributed_type, consumer_ids: [], attachment_attributes: [:file]
         )
       end
 
@@ -74,7 +74,7 @@ module Api
 
         @destination_ids ||= User.includes(:roles).similar_users(
           distribute_to_role, distribution_params[:region_id], distribution_params[:district_id],
-          distribution_params[:extension_id]
+          distribution_params[:extension_id], distribution_params[:company_id]
         ).pluck(:id)
       end
 

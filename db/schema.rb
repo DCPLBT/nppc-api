@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_220_117_205_001) do
+ActiveRecord::Schema.define(version: 20_220_110_122_314) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -106,6 +106,7 @@ ActiveRecord::Schema.define(version: 20_220_117_205_001) do
     t.bigint 'region_id'
     t.bigint 'district_id'
     t.bigint 'extension_id'
+    t.bigint 'company_id'
     t.bigint 'user_id', null: false
     t.integer 'distributed_type'
     t.string 'consumer_ids', array: true
@@ -117,6 +118,7 @@ ActiveRecord::Schema.define(version: 20_220_117_205_001) do
     t.string 'consumer_village'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.index ['company_id'], name: 'index_distributions_on_company_id'
     t.index ['district_id'], name: 'index_distributions_on_district_id'
     t.index ['extension_id'], name: 'index_distributions_on_extension_id'
     t.index ['region_id'], name: 'index_distributions_on_region_id'
@@ -168,12 +170,14 @@ ActiveRecord::Schema.define(version: 20_220_117_205_001) do
     t.bigint 'region_id'
     t.bigint 'district_id'
     t.bigint 'extension_id'
+    t.bigint 'company_id'
     t.bigint 'user_id', null: false
     t.boolean 'draft'
     t.integer 'state'
     t.string 'reference_no'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.index ['company_id'], name: 'index_indents_on_company_id'
     t.index ['district_id'], name: 'index_indents_on_district_id'
     t.index ['extension_id'], name: 'index_indents_on_extension_id'
     t.index ['region_id'], name: 'index_indents_on_region_id'
@@ -238,6 +242,7 @@ ActiveRecord::Schema.define(version: 20_220_117_205_001) do
     t.bigint 'region_id'
     t.bigint 'district_id'
     t.bigint 'extension_id'
+    t.bigint 'company_id'
     t.bigint 'user_id', null: false
     t.bigint 'employee_type_id'
     t.bigint 'designation_id'
@@ -245,6 +250,7 @@ ActiveRecord::Schema.define(version: 20_220_117_205_001) do
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
     t.index ['agency_id'], name: 'index_profiles_on_agency_id'
+    t.index ['company_id'], name: 'index_profiles_on_company_id'
     t.index ['designation_id'], name: 'index_profiles_on_designation_id'
     t.index ['district_id'], name: 'index_profiles_on_district_id'
     t.index ['employee_type_id'], name: 'index_profiles_on_employee_type_id'
@@ -380,6 +386,7 @@ ActiveRecord::Schema.define(version: 20_220_117_205_001) do
   add_foreign_key 'agencies', 'users'
   add_foreign_key 'companies', 'users'
   add_foreign_key 'designations', 'users'
+  add_foreign_key 'distributions', 'companies'
   add_foreign_key 'distributions', 'districts'
   add_foreign_key 'distributions', 'extensions'
   add_foreign_key 'distributions', 'regions'
@@ -389,6 +396,7 @@ ActiveRecord::Schema.define(version: 20_220_117_205_001) do
   add_foreign_key 'employee_types', 'users'
   add_foreign_key 'extensions', 'districts'
   add_foreign_key 'extensions', 'users'
+  add_foreign_key 'indents', 'companies'
   add_foreign_key 'indents', 'districts'
   add_foreign_key 'indents', 'extensions'
   add_foreign_key 'indents', 'regions'
@@ -402,6 +410,7 @@ ActiveRecord::Schema.define(version: 20_220_117_205_001) do
   add_foreign_key 'products', 'units'
   add_foreign_key 'products', 'users'
   add_foreign_key 'profiles', 'agencies'
+  add_foreign_key 'profiles', 'companies'
   add_foreign_key 'profiles', 'designations'
   add_foreign_key 'profiles', 'districts'
   add_foreign_key 'profiles', 'employee_types'

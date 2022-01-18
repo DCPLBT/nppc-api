@@ -30,19 +30,20 @@ module ResourceFinder
   end
 
   def destination_ids
-    region_id, district_id, extension_id = extract_ids(next_role_name)
+    region_id, district_id, extension_id, company_id = extract_ids(next_role_name)
     @destination_ids ||= User.includes(:roles).similar_users(
-      next_role_name, region_id, district_id, extension_id
+      next_role_name, region_id, district_id, extension_id, company_id
     ).pluck(:id)
   end
 
   def source_ids
-    region_id, district_id, extension_id = extract_ids(current_role_name)
+    region_id, district_id, extension_id, company_id = extract_ids(current_role_name)
     @source_ids ||= User.includes(:roles).similar_users(
-      current_role_name, region_id, district_id, extension_id
+      current_role_name, region_id, district_id, extension_id, company_id
     ).pluck(:id)
   end
 
+  # rubocop:disable Metrics/MethodLength
   def extract_ids(role_name)
     case role_name
     when 'ea', 'user'
@@ -51,10 +52,13 @@ module ResourceFinder
       [current_user.region_id, current_user.district_id]
     when 'adrc'
       [current_user.region_id]
+    when 'mvh'
+      [nil, nil, nil, current_user.company_id]
     else
       []
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
   private
 
