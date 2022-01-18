@@ -22,6 +22,6 @@ class CompanySerializer < ApplicationSerializer
   attributes :name, :user_id
 
   attribute :description do |obj|
-    obj.description.body.to_plain_text
+    obj.description.body&.to_plain_text
   end
 end
