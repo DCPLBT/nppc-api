@@ -16,7 +16,7 @@ module Booleans
 
     # rubocop:disable Style/MissingRespondToMissing
     def method_missing(method_sym, *_args)
-      role?(method_sym.to_s.delete('?').to_sym)
+      role?(method_sym.to_s.delete('?').underscore.to_sym)
     end
     # rubocop:enable Style/MissingRespondToMissing
   end

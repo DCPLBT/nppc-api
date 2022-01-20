@@ -72,9 +72,9 @@ module Api
       def destination_ids
         return unless params[:distribution].present?
 
+        region_id, district_id, extension_id, company_id = extract_ids(distribute_to_role)
         @destination_ids ||= User.includes(:roles).similar_users(
-          distribute_to_role, distribution_params[:region_id], distribution_params[:district_id],
-          distribution_params[:extension_id], distribution_params[:company_id]
+          distribute_to_role, region_id, district_id, extension_id, company_id
         ).pluck(:id)
       end
 
