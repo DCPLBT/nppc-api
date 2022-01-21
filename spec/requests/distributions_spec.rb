@@ -200,6 +200,10 @@ RSpec.describe '/distributions', type: :request do
         get api_v1_distributions_url(received: true), as: :json
         expect(status).to eq(200)
         expect(json[:data].size).to eq(1)
+
+        put api_v1_distribution_url(Distribution.first), params: { distribution: { state: :received } }, as: :json
+        expect(status).to eq(200)
+        expect(company_user.stocks.size).to eq(1)
       end
     end
 
