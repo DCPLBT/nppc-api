@@ -49,11 +49,12 @@ class DistributionForm < BaseForm
     end
   end
 
-  def adjust_stock # rubocop:disable Metrics/AbcSize
+  def adjust_stock # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     distribution.line_items.each do |li|
       existing_stock = current_user.stocks.find_by(procured_on: li.stock.procured_on)
       stock = existing_stock || (x = li.stock.dup
                                  x.quantity = 0
+                                 x.user = current_user
                                  x)
       stock.update(
         quantity: stock.quantity + li.quantity,
