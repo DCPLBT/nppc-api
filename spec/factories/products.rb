@@ -28,7 +28,7 @@
 FactoryBot.define do
   factory :product do
     name { Faker::Name.name }
-    description { 'MyText' }
+    description { Faker::Restaurant.review }
     unit { nil }
     user { nil }
   end

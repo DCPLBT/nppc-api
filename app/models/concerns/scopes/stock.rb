@@ -10,6 +10,12 @@ module Scopes
           "CONCAT_WS(' ', products.name, product_types.name) iLIKE ?", "%#{query&.squish}%"
         )
       }
+      scope :filter_by_product_type, lambda { |id|
+        where(product_type_id: id).distinct
+      }
+      scope :filter_by_product, lambda { |id|
+        where(product_id: id).distinct
+      }
     end
   end
 end

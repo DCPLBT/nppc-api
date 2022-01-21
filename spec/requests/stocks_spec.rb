@@ -17,8 +17,12 @@ require 'rails_helper'
 RSpec.describe '/stocks', type: :request do
   let(:user) { create(:admin) }
   let(:product_type) { create(:product_type, user: user) }
+  let(:product_type1) { create(:product_type, user: user) }
   let(:unit) { create(:unit, user: user) }
   let(:product) { create(:product, user: user, product_type: product_type, unit: unit) }
+  let(:product1) { create(:product, user: user, product_type: product_type, unit: unit) }
+  let(:product2) { create(:product, user: user, product_type: product_type1, unit: unit) }
+  let(:product3) { create(:product, user: user, product_type: product_type1, unit: unit) }
   before(:each) do
     sign_in(user)
   end
@@ -44,10 +48,41 @@ RSpec.describe '/stocks', type: :request do
   end
 
   describe 'GET /index' do
+    let!(:stock) do
+      create(:stock, product_type: product_type1, product: product2, unit: unit, user: user, user_ids: [user.id])
+    end
+    let!(:stock1) do
+      create(:stock, product_type: product_type, product: product1, unit: unit, user: user, user_ids: [user.id])
+    end
+    let!(:stock2) do
+      create(:stock, product_type: product_type, product: product, unit: unit, user: user, user_ids: [user.id])
+    end
+    let!(:stock3) do
+      create(:stock, product_type: product_type, product: product, unit: unit, user: user, user_ids: [user.id])
+    end
+
     it 'renders a successful response' do
       Stock.create! valid_attributes
       get api_v1_stocks_url, as: :json
       expect(response).to be_successful
+    end
+
+    it 'filter by product' do
+      get api_v1_stocks_url(product_id: product.id), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(2)
+    end
+
+    it 'filter by product type' do
+      get api_v1_stocks_url(product_type_id: product_type.id), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(3)
+    end
+
+    it 'search stock' do
+      get api_v1_stocks_url(q: product_type1.name), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(1)
     end
   end
 
