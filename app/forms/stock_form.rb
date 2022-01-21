@@ -20,6 +20,11 @@ class StockForm < BaseForm
   private
 
   def stock
-    @stock ||= id ? Stock.find(id) : Stock.new(params.merge(user_id: current_user.id))
+    @stock ||= id ? Stock.find(id) : build_stock
+  end
+
+  def build_stock
+    params.merge!(user_id: current_user.id, user_ids: source_ids)
+    Stock.new(params)
   end
 end

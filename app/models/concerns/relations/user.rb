@@ -20,6 +20,8 @@ module Relations
                                                source_type: 'Distribution'
       has_many :distributors_distributions, through: :requestable_requesters, source: :requestable,
                                             source_type: 'Distribution'
+      has_many :user_stocks, dependent: :destroy
+      has_many :stocks, through: :user_stocks
 
       has_and_belongs_to_many :roles, inverse_of: :users
 

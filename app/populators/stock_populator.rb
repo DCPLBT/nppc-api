@@ -9,6 +9,6 @@ class StockPopulator < BasePopulator
   private
 
   def stocks
-    @stocks ||= Stock.includes(:product_type, :product)
+    @stocks ||= current_user.stocks.includes(:product_type, :product)
   end
 end

@@ -7,7 +7,7 @@ module Api
 
       # GET /stocks
       def index
-        populate = StockPopulator.new(params: query_params)
+        populate = StockPopulator.new(params: query_params, current_user: current_user)
         render_paginated_collection(populate.run)
       end
 
@@ -49,7 +49,8 @@ module Api
       def stock_attributes
         @stock_attributes ||= {
           current_user: current_user,
-          id: params[:id]
+          id: params[:id],
+          source_ids: source_ids
         }
       end
 
