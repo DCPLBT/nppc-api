@@ -5,11 +5,11 @@ module Helpers
     extend ActiveSupport::Concern
 
     def surrenderer
-      @surrenderer ||= surrenderers.last
+      @surrenderer ||= surrenderers.includes(:profile).last
     end
 
     def surrendered_to
-      @surrendered_to ||= surrendered_tos.last
+      @surrendered_to ||= surrendered_tos.includes(:profile).last
     end
 
     def total_price

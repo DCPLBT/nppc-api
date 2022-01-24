@@ -4,7 +4,7 @@ class SurrenderPopulator < BasePopulator
   attr_accessor :surrendered, :received, :product_type_id, :product_id, :region_id, :district_id,
                 :extension_id, :year
 
-  def run # rubocop:disable Metrics/AbcSize
+  def run # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     surrenders
       .public_send(:search, q)
       .yield_self { |surrenders| filter_by_surrendered(surrenders) }
@@ -15,6 +15,7 @@ class SurrenderPopulator < BasePopulator
       .yield_self { |surrenders| filter_by_district(surrenders) }
       .yield_self { |surrenders| filter_by_extension(surrenders) }
       .yield_self { |surrenders| filter_by_year(surrenders) }
+      .distinct
   end
 
   private
