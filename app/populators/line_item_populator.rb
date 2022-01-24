@@ -9,6 +9,6 @@ class LineItemPopulator < BasePopulator
   private
 
   def line_items
-    @line_items ||= (parent ? parent.line_items : LineItem).includes(:product, :product_type)
+    @line_items ||= (parent ? parent.line_items : LineItem).includes(:product, :product_type, :unit)
   end
 end
