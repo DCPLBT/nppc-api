@@ -59,7 +59,7 @@ module Api
       end
 
       def query_params
-        params.permit(:q, :product_type_id, :product_id)
+        params.permit(:q, :product_type_id, :product_id, :obsolete)
       end
     end
   end

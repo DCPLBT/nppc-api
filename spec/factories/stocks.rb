@@ -40,9 +40,9 @@ FactoryBot.define do
     quantity { '9.99' }
     unit { nil }
     unit_price { '9.99' }
-    expiry_date { '2021-12-08' }
-    procured_on { '2021-12-08' }
-    obsolete_date { '2021-12-08' }
+    expiry_date { Time.current }
+    procured_on { Time.current }
+    obsolete_date { Time.current }
     remark { 'MyText' }
   end
 end

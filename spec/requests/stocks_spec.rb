@@ -48,6 +48,7 @@ RSpec.describe '/stocks', type: :request do
   end
 
   describe 'GET /index' do
+    let!(:setting) { create(:setting, category: :obsolete, user: user, meta: { period: 3 }) }
     let!(:stock) do
       create(:stock, product_type: product_type1, product: product2, unit: unit, user: user, user_ids: [user.id])
     end
@@ -81,6 +82,13 @@ RSpec.describe '/stocks', type: :request do
 
     it 'search stock' do
       get api_v1_stocks_url(q: product_type1.name), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(1)
+    end
+
+    it 'Get obsolete stocks' do
+      stock.update(obsolete_date: Time.current - (setting.meta['period'] + 1).days)
+      get api_v1_stocks_url(obsolete: true), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(1)
     end
