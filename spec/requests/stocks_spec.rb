@@ -87,7 +87,7 @@ RSpec.describe '/stocks', type: :request do
     end
 
     it 'Get obsolete stocks' do
-      stock.update(obsolete_date: Time.current - (setting.meta['period'] + 1).days)
+      stock.update(obsolete_date: Time.current - (setting.meta['period'] + 2).days)
       get api_v1_stocks_url(obsolete: true), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(1)

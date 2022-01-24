@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_220_121_102_909) do
+ActiveRecord::Schema.define(version: 20_220_124_172_018) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -318,6 +318,22 @@ ActiveRecord::Schema.define(version: 20_220_121_102_909) do
     t.index ['user_id'], name: 'index_stocks_on_user_id'
   end
 
+  create_table 'surrenders', force: :cascade do |t|
+    t.bigint 'region_id'
+    t.bigint 'district_id'
+    t.bigint 'extension_id'
+    t.bigint 'user_id', null: false
+    t.integer 'surrender_type'
+    t.integer 'state'
+    t.string 'reference_no'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['district_id'], name: 'index_surrenders_on_district_id'
+    t.index ['extension_id'], name: 'index_surrenders_on_extension_id'
+    t.index ['region_id'], name: 'index_surrenders_on_region_id'
+    t.index ['user_id'], name: 'index_surrenders_on_user_id'
+  end
+
   create_table 'units', force: :cascade do |t|
     t.string 'name'
     t.text 'description'
@@ -432,6 +448,10 @@ ActiveRecord::Schema.define(version: 20_220_121_102_909) do
   add_foreign_key 'stocks', 'products'
   add_foreign_key 'stocks', 'units'
   add_foreign_key 'stocks', 'users'
+  add_foreign_key 'surrenders', 'districts'
+  add_foreign_key 'surrenders', 'extensions'
+  add_foreign_key 'surrenders', 'regions'
+  add_foreign_key 'surrenders', 'users'
   add_foreign_key 'units', 'users'
   add_foreign_key 'user_stocks', 'stocks'
   add_foreign_key 'user_stocks', 'users'

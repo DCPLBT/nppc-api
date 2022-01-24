@@ -126,6 +126,7 @@ Rails.application.routes.draw do
       resources :employee_types
       resources :carts, concerns: :itemable, shallow: true
       resources :distributions, concerns: :itemable, shallow: true
+      resources :surrenders, concerns: :itemable, shallow: true
       resources :companies
     end
   end
