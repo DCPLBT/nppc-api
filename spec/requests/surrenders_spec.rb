@@ -34,6 +34,9 @@ RSpec.describe '/surrenders', type: :request do
   let!(:nppc) do
     create(:user, role_ids: [2], profile_attributes: { region: region, district: district, extension: extension })
   end
+  let!(:adrc) do
+    create(:user, role_ids: [5], profile_attributes: { region: region, district: district, extension: extension })
+  end
   let!(:nppc1) do
     create(:user, role_ids: [2], profile_attributes: { region: region1, district: district1, extension: extension1 })
   end
@@ -206,6 +209,24 @@ RSpec.describe '/surrenders', type: :request do
         put api_v1_surrender_url(Surrender.first), params: { surrender: { state: :received } }, as: :json
         expect(status).to eq(200)
         expect(nppc.stocks.size).to eq(1)
+      end
+
+      it 'surrender to region' do
+        valid_attributes[:surrender_type] = 'adrc'
+        post api_v1_surrenders_url,
+             params: { surrender: valid_attributes }, as: :json
+        expect(response).to have_http_status(:ok)
+        expect(response.content_type).to match(a_string_including('application/json'))
+
+        sign_out
+        sign_in(adrc)
+        get api_v1_surrenders_url(received: true), as: :json
+        expect(status).to eq(200)
+        expect(json[:data].size).to eq(1)
+
+        put api_v1_surrender_url(Surrender.first), params: { surrender: { state: :received } }, as: :json
+        expect(status).to eq(200)
+        expect(adrc.stocks.size).to eq(1)
       end
 
       it 'validate stock' do
