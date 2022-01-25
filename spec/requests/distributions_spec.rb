@@ -67,12 +67,13 @@ RSpec.describe '/distributions', type: :request do
   end
 
   describe 'GET /index' do
+    let!(:stock1) { create(:stock, product: product, product_type: product_type, unit: unit, user: user) }
     let!(:distribution1) do
       create(
         :distribution, user_id: user.id, distributor_ids: [user.id], distributed_to_ids: [ea.id],
                        region: user.region, district: user.district, extension: user.extension, distributed_type: 'ea',
                        line_items_attributes: [
-                         { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                         { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
                        ]
       )
     end
@@ -81,7 +82,7 @@ RSpec.describe '/distributions', type: :request do
         :distribution, draft: false, user_id: user.id, distributor_ids: [user.id], distributed_to_ids: [ea.id],
                        region: user.region, district: user.district, extension: user.extension, distributed_type: 'ea',
                        line_items_attributes: [
-                         { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                         { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
                        ]
       )
     end
@@ -90,7 +91,7 @@ RSpec.describe '/distributions', type: :request do
         :distribution, draft: false, user_id: user.id, distributor_ids: [user.id], distributed_to_ids: [ea.id],
                        region: user.region, district: user.district, extension: user.extension, distributed_type: 'ea',
                        line_items_attributes: [
-                         { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                         { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
                        ]
       )
     end
@@ -100,7 +101,7 @@ RSpec.describe '/distributions', type: :request do
                        region: user1.region, district: user1.district, extension: user1.extension,
                        distributed_type: 'ea',
                        line_items_attributes: [
-                         { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                         { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
                        ]
       )
     end
@@ -204,6 +205,14 @@ RSpec.describe '/distributions', type: :request do
         put api_v1_distribution_url(Distribution.first), params: { distribution: { state: :received } }, as: :json
         expect(status).to eq(200)
         expect(company_user.stocks.size).to eq(1)
+      end
+
+      it 'validate stock' do
+        valid_attributes[:distributed_type] = 'individual'
+        cart.line_items.first.update(quantity: 1001)
+        post api_v1_distributions_url,
+             params: { distribution: valid_attributes }, as: :json
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
 

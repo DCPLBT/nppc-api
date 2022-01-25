@@ -52,12 +52,17 @@ class SurrenderSerializer < ApplicationSerializer
     :surrendered_to_extension_name,
     :total_quantity,
     :total_price,
-    :total_product
+    :total_product,
+    :created_at
   )
 
   has_one :attachment
 
   attribute :received_remark do |object|
     object.received_remark&.to_plain_text
+  end
+
+  attribute :comments do |object|
+    object.comments&.to_plain_text
   end
 end

@@ -37,7 +37,7 @@ FactoryBot.define do
     product_type { nil }
     product { nil }
     user { nil }
-    quantity { '9.99' }
+    quantity { 1000 }
     unit { nil }
     unit_price { '9.99' }
     expiry_date { Time.current }

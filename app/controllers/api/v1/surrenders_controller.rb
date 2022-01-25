@@ -36,7 +36,7 @@ module Api
       # Only allow a list of trusted parameters through.][]
       def surrender_params
         params.require(:surrender).permit(
-          :region_id, :district_id, :extension_id, :state, :received_remark, :surrender_type,
+          :region_id, :district_id, :extension_id, :state, :received_remark, :comments, :surrender_type,
           attachment_attributes: [:file]
         )
       end

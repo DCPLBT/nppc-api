@@ -19,6 +19,7 @@ module Relations
       has_many :surrenderers, through: :requestable_requesters, source: :requester
 
       has_rich_text :received_remark
+      has_rich_text :comments
 
       accepts_nested_attributes_for(
         :attachment,

@@ -27,6 +27,7 @@ class SurrenderForm < BaseForm
   def surrender
     @surrender ||= if id
                      Surrender.includes(
+                       line_items: %i[unit stock product product_type],
                        surrendered_tos: :profile, surrenderers: :profile
                      ).find(id)
                    else
@@ -39,7 +40,10 @@ class SurrenderForm < BaseForm
       user: current_user,
       line_items: cart.line_items
     )
-    Surrender.includes(surrendered_tos: :profile, surrenderers: :profile).new(params)
+    Surrender.includes(
+      line_items: %i[unit stock product product_type],
+      surrendered_tos: :profile, surrenderers: :profile
+    ).new(params)
   end
 
   def create_surrenderer_surrendered_to
@@ -58,10 +62,12 @@ class SurrenderForm < BaseForm
   def adjust_stock # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     surrender.line_items.each do |li|
       existing_stock = current_user.stocks.find_by(procured_on: li.stock.procured_on)
-      stock = existing_stock || (x = li.stock.dup
-                                 x.quantity = 0
-                                 x.user = current_user
-                                 x)
+      stock = existing_stock || (
+        x = li.stock.dup
+        x.quantity = 0
+        x.user = current_user
+        x
+      )
       stock.update(
         quantity: stock.quantity + li.quantity,
         user_ids: surrender.surrendered_to_ids

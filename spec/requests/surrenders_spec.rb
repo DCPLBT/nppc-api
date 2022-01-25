@@ -69,12 +69,13 @@ RSpec.describe '/surrenders', type: :request do
   end
 
   describe 'GET /index' do
+    let!(:stock1) { create(:stock, product: product, product_type: product_type, unit: unit, user: nppc) }
     let!(:surrender1) do
       create(
         :surrender, user_id: ea.id, surrenderer_ids: [ea.id], surrendered_to_ids: [nppc.id],
                     region: user.region, district: user.district, extension: user.extension, surrender_type: 'nppc',
                     line_items_attributes: [
-                      { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                      { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
                     ]
       )
     end
@@ -83,7 +84,7 @@ RSpec.describe '/surrenders', type: :request do
         :surrender, user_id: ea.id, surrenderer_ids: [ea.id], surrendered_to_ids: [nppc.id],
                     region: user.region, district: user.district, extension: user.extension, surrender_type: 'nppc',
                     line_items_attributes: [
-                      { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                      { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
                     ]
       )
     end
@@ -92,7 +93,7 @@ RSpec.describe '/surrenders', type: :request do
         :surrender, user_id: ea.id, surrenderer_ids: [ea.id], surrendered_to_ids: [nppc.id],
                     region: user.region, district: user.district, extension: user.extension, surrender_type: 'nppc',
                     line_items_attributes: [
-                      { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                      { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
                     ]
       )
     end
@@ -102,7 +103,7 @@ RSpec.describe '/surrenders', type: :request do
                     region: user1.region, district: user1.district, extension: user1.extension,
                     surrender_type: 'nppc',
                     line_items_attributes: [
-                      { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+                      { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
                     ]
       )
     end
@@ -205,6 +206,14 @@ RSpec.describe '/surrenders', type: :request do
         put api_v1_surrender_url(Surrender.first), params: { surrender: { state: :received } }, as: :json
         expect(status).to eq(200)
         expect(nppc.stocks.size).to eq(1)
+      end
+
+      it 'validate stock' do
+        valid_attributes[:surrender_type] = 'nppc'
+        cart.line_items.first.update(quantity: 1001)
+        post api_v1_surrenders_url,
+             params: { surrender: valid_attributes }, as: :json
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
 

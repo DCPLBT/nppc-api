@@ -6,7 +6,6 @@ module Callbacks
 
     included do
       before_create :assign_defaults
-      after_create :update_stock
     end
 
     private
@@ -16,12 +15,6 @@ module Callbacks
         reference_no: CodeGenerator.new.generate,
         state: :distributed
       )
-    end
-
-    def update_stock
-      line_items.each do |li|
-        li.stock&.update(quantity: (li.stock&.quantity || 0) - li.quantity)
-      end
     end
   end
 end
