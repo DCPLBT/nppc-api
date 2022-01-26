@@ -46,11 +46,11 @@ RSpec.describe '/surrenders', type: :request do
   let!(:stock) do
     create(
       :stock, product_type: product_type, product: product, user: user, unit: unit,
-              obsolete_date: Time.current - 30.days
+              expiry_date: Time.current - 30.days
     )
   end
 
-  let!(:cart) { create(:cart, cartable: ea, session_id: 2) }
+  let!(:cart) { create(:cart, cartable: ea, session_id: 2, cart_user_ids: [ea.id], category: :surrender) }
   let!(:line_item) do
     create(:line_item, product_type: product_type, product: product, unit: unit, stock: stock, itemable: cart)
   end
@@ -112,49 +112,49 @@ RSpec.describe '/surrenders', type: :request do
     end
 
     it 'renders a successful response' do
-      get api_v1_surrenders_url, as: :json
+      get api_v1_surrenders_url(category: :surrender), as: :json
       expect(response).to be_successful
     end
 
     it 'filter by surrenderer' do
-      get api_v1_surrenders_url(surrendered: true), as: :json
+      get api_v1_surrenders_url(category: :surrender, surrendered: true), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(4)
     end
 
     it 'filter by product type' do
-      get api_v1_surrenders_url(product_type_id: product_type.id), as: :json
+      get api_v1_surrenders_url(category: :surrender, product_type_id: product_type.id), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(4)
     end
 
     it 'filter by product' do
-      get api_v1_surrenders_url(product_id: product.id), as: :json
+      get api_v1_surrenders_url(category: :surrender, product_id: product.id), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(4)
     end
 
     it 'filter by region' do
-      get api_v1_surrenders_url(region_id: user1.profile.region_id), as: :json
+      get api_v1_surrenders_url(category: :surrender, region_id: user1.profile.region_id), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(1)
     end
 
     it 'filter by district' do
-      get api_v1_surrenders_url(district_id: user1.profile.district_id), as: :json
+      get api_v1_surrenders_url(category: :surrender, district_id: user1.profile.district_id), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(1)
     end
 
     it 'filter by extension' do
-      get api_v1_surrenders_url(extension_id: user1.profile.extension_id), as: :json
+      get api_v1_surrenders_url(category: :surrender, extension_id: user1.profile.extension_id), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(1)
     end
 
     it 'filter by year' do
       surrender4.update_columns(created_at: Date.new(2000))
-      get api_v1_surrenders_url(year: '2000'), as: :json
+      get api_v1_surrenders_url(category: :surrender, year: '2000'), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(1)
     end
@@ -162,7 +162,7 @@ RSpec.describe '/surrenders', type: :request do
     it 'filter by received' do
       sign_out
       sign_in(nppc)
-      get api_v1_surrenders_url(received: true), as: :json
+      get api_v1_surrenders_url(category: :surrender, received: true), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(3)
     end
@@ -171,7 +171,7 @@ RSpec.describe '/surrenders', type: :request do
   describe 'GET /show' do
     it 'renders a successful response' do
       surrender = Surrender.create! valid_attributes
-      get api_v1_surrender_url(surrender), as: :json
+      get api_v1_surrender_url(surrender, category: :surrender), as: :json
       expect(response).to be_successful
     end
   end
@@ -180,14 +180,14 @@ RSpec.describe '/surrenders', type: :request do
     context 'with valid parameters' do
       it 'creates a new surrender' do
         expect do
-          post api_v1_surrenders_url,
+          post api_v1_surrenders_url(category: :surrender),
                params: { surrender: valid_attributes }, as: :json
         end.to change(Surrender, :count).by(1)
       end
 
       it 'renders a JSON response with the new surrender' do
         valid_attributes[:surrender_type] = 'nppc'
-        post api_v1_surrenders_url,
+        post api_v1_surrenders_url(category: :surrender),
              params: { surrender: valid_attributes }, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
@@ -195,36 +195,38 @@ RSpec.describe '/surrenders', type: :request do
 
       it 'surrender to nppc' do
         valid_attributes[:surrender_type] = 'nppc'
-        post api_v1_surrenders_url,
+        post api_v1_surrenders_url(category: :surrender),
              params: { surrender: valid_attributes }, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
 
         sign_out
         sign_in(nppc)
-        get api_v1_surrenders_url(received: true), as: :json
+        get api_v1_surrenders_url(category: :surrender, received: true), as: :json
         expect(status).to eq(200)
         expect(json[:data].size).to eq(1)
 
-        put api_v1_surrender_url(Surrender.first), params: { surrender: { state: :received } }, as: :json
+        put api_v1_surrender_url(Surrender.first, category: :surrender), params: { surrender: { state: :received } },
+                                                                         as: :json
         expect(status).to eq(200)
         expect(nppc.stocks.size).to eq(1)
       end
 
       it 'surrender to region' do
         valid_attributes[:surrender_type] = 'adrc'
-        post api_v1_surrenders_url,
+        post api_v1_surrenders_url(category: :surrender),
              params: { surrender: valid_attributes }, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
 
         sign_out
         sign_in(adrc)
-        get api_v1_surrenders_url(received: true), as: :json
+        get api_v1_surrenders_url(category: :surrender, received: true), as: :json
         expect(status).to eq(200)
         expect(json[:data].size).to eq(1)
 
-        put api_v1_surrender_url(Surrender.first), params: { surrender: { state: :received } }, as: :json
+        put api_v1_surrender_url(Surrender.first, category: :surrender), params: { surrender: { state: :received } },
+                                                                         as: :json
         expect(status).to eq(200)
         expect(adrc.stocks.size).to eq(1)
       end
@@ -232,7 +234,7 @@ RSpec.describe '/surrenders', type: :request do
       it 'validate stock' do
         valid_attributes[:surrender_type] = 'nppc'
         cart.line_items.first.update(quantity: 1001)
-        post api_v1_surrenders_url,
+        post api_v1_surrenders_url(category: :surrender),
              params: { surrender: valid_attributes }, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
       end
@@ -241,13 +243,13 @@ RSpec.describe '/surrenders', type: :request do
     context 'with invalid parameters' do
       it 'does not create a new surrender' do
         expect do
-          post api_v1_surrenders_url,
+          post api_v1_surrenders_url(category: :surrender),
                params: { surrender: invalid_attributes }, as: :json
         end.to change(Surrender, :count).by(0)
       end
 
       it 'renders a JSON response with errors for the new surrender' do
-        post api_v1_surrenders_url,
+        post api_v1_surrenders_url(category: :surrender),
              params: { surrender: invalid_attributes }, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/json; charset=utf-8')
@@ -264,7 +266,7 @@ RSpec.describe '/surrenders', type: :request do
       it 'upload receipt' do
         valid_attributes[:attachment_attributes] = { file: image }
         surrender = Surrender.create! valid_attributes
-        patch api_v1_surrender_url(surrender),
+        patch api_v1_surrender_url(surrender, category: :surrender),
               params: { surrender: new_attributes }, as: :json
         surrender.reload
         expect(response).to have_http_status(:ok)
@@ -272,7 +274,7 @@ RSpec.describe '/surrenders', type: :request do
 
       it 'updates the requested surrender' do
         surrender = Surrender.create! valid_attributes
-        patch api_v1_surrender_url(surrender),
+        patch api_v1_surrender_url(surrender, category: :surrender),
               params: { surrender: new_attributes }, as: :json
         surrender.reload
         expect(response).to have_http_status(:ok)
@@ -280,7 +282,7 @@ RSpec.describe '/surrenders', type: :request do
 
       it 'renders a JSON response with the surrender' do
         surrender = Surrender.create! valid_attributes
-        patch api_v1_surrender_url(surrender),
+        patch api_v1_surrender_url(surrender, category: :surrender),
               params: { surrender: new_attributes }, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
@@ -290,7 +292,7 @@ RSpec.describe '/surrenders', type: :request do
     context 'with invalid parameters' do
       it 'renders a JSON response with errors for the surrender' do
         surrender = Surrender.create! valid_attributes
-        patch api_v1_surrender_url(surrender),
+        patch api_v1_surrender_url(surrender, category: :surrender),
               params: { surrender: invalid_attributes }, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/json; charset=utf-8')
@@ -302,7 +304,7 @@ RSpec.describe '/surrenders', type: :request do
     it 'destroys the requested surrender' do
       surrender = Surrender.create! valid_attributes
       expect do
-        delete api_v1_surrender_url(surrender), as: :json
+        delete api_v1_surrender_url(surrender, category: :surrender), as: :json
       end.to change(Surrender, :count).by(-1)
     end
   end

@@ -16,8 +16,8 @@ module Scopes
       scope :filter_by_product, lambda { |id|
         where(product_id: id).distinct
       }
-      scope :filter_by_obsolete, lambda { |date|
-        where.not(quantity: [0, nil, '']).where('obsolete_date < ?', date).distinct
+      scope :filter_by_obsolete, lambda {
+        where.not(quantity: [0, nil, '']).where('obsolete_date < ?', Date.current).distinct
       }
     end
   end

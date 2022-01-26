@@ -7,6 +7,7 @@
 #  id            :bigint           not null, primary key
 #  amount        :decimal(, )
 #  cartable_type :string           not null
+#  category      :integer
 #  quantity      :decimal(, )
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null

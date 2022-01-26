@@ -4,13 +4,13 @@ module ApiErrors
   module ErrorHandler
     def self.included(base)
       base.class_eval do
-        # rescue_from StandardError, with: :bad_request
+        rescue_from StandardError, with: :bad_request
         rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
         rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
         rescue_from Pundit::NotAuthorizedError, with: :not_authorized_error
-        # rescue_from ActionController::ParameterMissing, with: :bad_request
-        # rescue_from NoMethodError, with: :bad_request
-        # rescue_from ArgumentError, with: :bad_request
+        rescue_from ActionController::ParameterMissing, with: :bad_request
+        rescue_from NoMethodError, with: :bad_request
+        rescue_from ArgumentError, with: :bad_request
         rescue_from ActionController::MissingFile, with: :file_not_found
       end
     end

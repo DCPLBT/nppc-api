@@ -45,7 +45,7 @@ RSpec.describe '/distributions', type: :request do
   let!(:product) { create(:product, product_type: product_type, user: user, unit: unit) }
   let!(:stock) { create(:stock, product_type: product_type, product: product, user: user, unit: unit) }
 
-  let!(:cart) { create(:cart, cartable: user, session_id: 2) }
+  let!(:cart) { create(:cart, cartable: user, session_id: 2, cart_user_ids: [user.id], category: :distribution) }
   let!(:line_item) do
     create(:line_item, product_type: product_type, product: product, unit: unit, stock: stock, itemable: cart)
   end
@@ -107,49 +107,49 @@ RSpec.describe '/distributions', type: :request do
     end
 
     it 'renders a successful response' do
-      get api_v1_distributions_url, as: :json
+      get api_v1_distributions_url(category: :distribution), as: :json
       expect(response).to be_successful
     end
 
     it 'filter by distributor' do
-      get api_v1_distributions_url(distributed: true), as: :json
+      get api_v1_distributions_url(category: :distribution, distributed: true), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(4)
     end
 
     it 'filter by product type' do
-      get api_v1_distributions_url(product_type_id: product_type.id), as: :json
+      get api_v1_distributions_url(category: :distribution, product_type_id: product_type.id), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(4)
     end
 
     it 'filter by product' do
-      get api_v1_distributions_url(product_id: product.id), as: :json
+      get api_v1_distributions_url(category: :distribution, product_id: product.id), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(4)
     end
 
     it 'filter by region' do
-      get api_v1_distributions_url(region_id: user1.profile.region_id), as: :json
+      get api_v1_distributions_url(category: :distribution, region_id: user1.profile.region_id), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(1)
     end
 
     it 'filter by district' do
-      get api_v1_distributions_url(district_id: user1.profile.district_id), as: :json
+      get api_v1_distributions_url(category: :distribution, district_id: user1.profile.district_id), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(1)
     end
 
     it 'filter by extension' do
-      get api_v1_distributions_url(extension_id: user1.profile.extension_id), as: :json
+      get api_v1_distributions_url(category: :distribution, extension_id: user1.profile.extension_id), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(1)
     end
 
     it 'filter by year' do
       distribution4.update_columns(created_at: Date.new(2000))
-      get api_v1_distributions_url(year: '2000'), as: :json
+      get api_v1_distributions_url(category: :distribution, year: '2000'), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(1)
     end
@@ -157,7 +157,7 @@ RSpec.describe '/distributions', type: :request do
     it 'filter by received' do
       sign_out
       sign_in(ea)
-      get api_v1_distributions_url(received: true), as: :json
+      get api_v1_distributions_url(category: :distribution, received: true), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(3)
     end
@@ -166,7 +166,7 @@ RSpec.describe '/distributions', type: :request do
   describe 'GET /show' do
     it 'renders a successful response' do
       distribution = Distribution.create! valid_attributes
-      get api_v1_distribution_url(distribution), as: :json
+      get api_v1_distribution_url(distribution, category: :distribution), as: :json
       expect(response).to be_successful
     end
   end
@@ -175,14 +175,14 @@ RSpec.describe '/distributions', type: :request do
     context 'with valid parameters' do
       it 'creates a new Distribution' do
         expect do
-          post api_v1_distributions_url,
+          post api_v1_distributions_url(category: :distribution),
                params: { distribution: valid_attributes }, as: :json
         end.to change(Distribution, :count).by(1)
       end
 
       it 'renders a JSON response with the new distribution' do
         valid_attributes[:distributed_type] = 'individual'
-        post api_v1_distributions_url,
+        post api_v1_distributions_url(category: :distribution),
              params: { distribution: valid_attributes }, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
@@ -191,18 +191,19 @@ RSpec.describe '/distributions', type: :request do
       it 'distribute to company' do
         valid_attributes[:company_id] = company.id
         valid_attributes[:distributed_type] = 'mhv'
-        post api_v1_distributions_url,
+        post api_v1_distributions_url(category: :distribution),
              params: { distribution: valid_attributes }, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
 
         sign_out
         sign_in(company_user)
-        get api_v1_distributions_url(received: true), as: :json
+        get api_v1_distributions_url(category: :distribution, received: true), as: :json
         expect(status).to eq(200)
         expect(json[:data].size).to eq(1)
 
-        put api_v1_distribution_url(Distribution.first), params: { distribution: { state: :received } }, as: :json
+        put api_v1_distribution_url(Distribution.first, category: :distribution),
+            params: { distribution: { state: :received } }, as: :json
         expect(status).to eq(200)
         expect(company_user.stocks.size).to eq(1)
       end
@@ -210,7 +211,7 @@ RSpec.describe '/distributions', type: :request do
       it 'validate stock' do
         valid_attributes[:distributed_type] = 'individual'
         cart.line_items.first.update(quantity: 1001)
-        post api_v1_distributions_url,
+        post api_v1_distributions_url(category: :distribution),
              params: { distribution: valid_attributes }, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
       end
@@ -219,13 +220,13 @@ RSpec.describe '/distributions', type: :request do
     context 'with invalid parameters' do
       it 'does not create a new Distribution' do
         expect do
-          post api_v1_distributions_url,
+          post api_v1_distributions_url(category: :distribution),
                params: { distribution: invalid_attributes }, as: :json
         end.to change(Distribution, :count).by(0)
       end
 
       it 'renders a JSON response with errors for the new distribution' do
-        post api_v1_distributions_url,
+        post api_v1_distributions_url(category: :distribution),
              params: { distribution: invalid_attributes }, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/json; charset=utf-8')
@@ -242,7 +243,7 @@ RSpec.describe '/distributions', type: :request do
       it 'upload receipt' do
         valid_attributes[:attachment_attributes] = { file: image }
         distribution = Distribution.create! valid_attributes
-        patch api_v1_distribution_url(distribution),
+        patch api_v1_distribution_url(distribution, category: :distribution),
               params: { distribution: new_attributes }, as: :json
         distribution.reload
         expect(response).to have_http_status(:ok)
@@ -250,7 +251,7 @@ RSpec.describe '/distributions', type: :request do
 
       it 'updates the requested distribution' do
         distribution = Distribution.create! valid_attributes
-        patch api_v1_distribution_url(distribution),
+        patch api_v1_distribution_url(distribution, category: :distribution),
               params: { distribution: new_attributes }, as: :json
         distribution.reload
         expect(response).to have_http_status(:ok)
@@ -258,7 +259,7 @@ RSpec.describe '/distributions', type: :request do
 
       it 'renders a JSON response with the distribution' do
         distribution = Distribution.create! valid_attributes
-        patch api_v1_distribution_url(distribution),
+        patch api_v1_distribution_url(distribution, category: :distribution),
               params: { distribution: new_attributes }, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
@@ -268,7 +269,7 @@ RSpec.describe '/distributions', type: :request do
     context 'with invalid parameters' do
       it 'renders a JSON response with errors for the distribution' do
         distribution = Distribution.create! valid_attributes
-        patch api_v1_distribution_url(distribution),
+        patch api_v1_distribution_url(distribution, category: :distribution),
               params: { distribution: invalid_attributes }, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/json; charset=utf-8')
@@ -280,7 +281,7 @@ RSpec.describe '/distributions', type: :request do
     it 'destroys the requested distribution' do
       distribution = Distribution.create! valid_attributes
       expect do
-        delete api_v1_distribution_url(distribution), as: :json
+        delete api_v1_distribution_url(distribution, category: :distribution), as: :json
       end.to change(Distribution, :count).by(-1)
     end
   end

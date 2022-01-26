@@ -30,11 +30,8 @@ class StockPopulator < BasePopulator
   end
 
   def filter_by_obsolete(stocks)
-    return stocks unless obsolete.present? && determine_boolean(obsolete)
+    return stocks unless obsolete.present? || determine_boolean(obsolete)
 
-    setting = Setting.obsolete.first
-    date = Time.current - (setting&.meta&.dig('period') || 0).days
-
-    stocks.filter_by_obsolete(date)
+    stocks.filter_by_obsolete
   end
 end

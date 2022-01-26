@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_220_124_172_018) do
+ActiveRecord::Schema.define(version: 20_220_126_140_248) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 20_220_124_172_018) do
     t.bigint 'session_id'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.integer 'category'
     t.index %w[cartable_type cartable_id], name: 'index_carts_on_cartable'
   end
 

@@ -5,12 +5,10 @@ module Relations
     extend ActiveSupport::Concern
 
     included do
-      has_many :regions, inverse_of: :user, dependent: :destroy
-
       has_one :profile, inverse_of: :user, dependent: :destroy
       has_one :photo, through: :profile
-      has_one :cart, as: :cartable, dependent: :destroy
 
+      has_many :regions, inverse_of: :user, dependent: :destroy
       has_many :settings, inverse_of: :user, dependent: :destroy
       has_many :forwardable_forwarded_tos, foreign_key: :forwarded_to_id
       has_many :requestable_requesters, foreign_key: :requester_id
@@ -24,6 +22,8 @@ module Relations
                                          source_type: 'Surrender'
       has_many :surrenderer_products, through: :requestable_requesters, source: :requestable,
                                       source_type: 'Surrender'
+      has_many :carts, through: :requestable_requesters, source: :requestable,
+                       source_type: 'Cart'
       has_many :user_stocks, dependent: :destroy
       has_many :stocks, through: :user_stocks
 

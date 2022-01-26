@@ -20,7 +20,7 @@ RSpec.describe '/carts', type: :request do
   let!(:product_type) { create(:product_type, user: user) }
   let!(:product) { create(:product, product_type: product_type, user: user, unit: unit) }
   let!(:stock) { create(:stock, product_type: product_type, product: product, user: user, unit: unit) }
-  let!(:cart) { create(:cart, cartable: user, session_id: 2) }
+  let!(:cart) { create(:cart, cartable: user, session_id: 2, category: :distribution, cart_user_ids: [user.id]) }
   let!(:line_items) do
     create(:line_item, product_type: product_type, product: product, unit: unit, stock: stock, itemable: cart)
   end
@@ -30,7 +30,7 @@ RSpec.describe '/carts', type: :request do
 
   describe 'GET /index' do
     it 'renders a successful response' do
-      get api_v1_carts_url, as: :json
+      get api_v1_carts_url(category: :distribution), as: :json
       expect(response).to be_successful
     end
   end
