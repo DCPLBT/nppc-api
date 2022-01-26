@@ -11,9 +11,5 @@ module Helpers
     def login
       @login || username || email || phone
     end
-
-    def cart
-      @cart ||= carts.first
-    end
   end
 end
