@@ -4,6 +4,7 @@ module Relations
   module User
     extend ActiveSupport::Concern
 
+    # rubocop:disable Metrics/BlockLength
     included do
       has_one :profile, inverse_of: :user, dependent: :destroy
       has_one :photo, through: :profile
@@ -26,6 +27,8 @@ module Relations
                        source_type: 'Cart'
       has_many :user_stocks, dependent: :destroy
       has_many :stocks, through: :user_stocks
+      has_many :recipients, inverse_of: :user
+      has_many :notifications, through: :recipients
 
       has_and_belongs_to_many :roles, inverse_of: :users
 
@@ -34,5 +37,6 @@ module Relations
         update_only: true
       )
     end
+    # rubocop:enable Metrics/BlockLength
   end
 end

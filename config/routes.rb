@@ -128,6 +128,7 @@ Rails.application.routes.draw do
       resources :distributions, concerns: :itemable, shallow: true
       resources :surrenders, concerns: :itemable, shallow: true
       resources :companies
+      resources :notifications, only: %i[index show]
     end
   end
 end
