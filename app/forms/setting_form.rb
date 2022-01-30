@@ -29,8 +29,8 @@ class SettingForm < BaseForm
     time = setting.meta['requisition_date'].to_time
     {
       title: 'Last date of indent submission',
-      text: "Notice for Last date for submission of indent is\n"\
-            "<center><h4>#{time.strftime("#{time.day.ordinalize} %B %Y")}</h4></center>"\
+      text: "Notice for Last date for submission of indent is"\
+            "\n<center><h4>#{time.strftime("#{time.day.ordinalize} %B %Y")}</h4></center>"\
             "\nThe PPP Information Management System will not allow submitting indent beyond the above mentioned date.",
       url: 'setting',
       recipient_ids: User.ids
