@@ -50,3 +50,7 @@ en:
         surrender:
           line_item_required: 'is required to surrender.'
           insufficient_stock: '%{product} has insufficient stock. Available stock is %{stock}.'
+        mobilization:
+          line_item_required: 'is required to surrender.'
+          insufficient_stock: '%{product} has insufficient stock. Available stock is %{stock}.'
+          only_nppc_can_approve: 'Only NPPC can approve the mobilization.'

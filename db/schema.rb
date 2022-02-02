@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_220_128_201_850) do
+ActiveRecord::Schema.define(version: 20_220_202_203_456) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -201,6 +201,26 @@ ActiveRecord::Schema.define(version: 20_220_128_201_850) do
     t.index ['product_type_id'], name: 'index_line_items_on_product_type_id'
     t.index ['stock_id'], name: 'index_line_items_on_stock_id'
     t.index ['unit_id'], name: 'index_line_items_on_unit_id'
+  end
+
+  create_table 'mobilizations', force: :cascade do |t|
+    t.bigint 'region_id'
+    t.bigint 'district_id'
+    t.bigint 'extension_id'
+    t.bigint 'company_id'
+    t.bigint 'user_id', null: false
+    t.bigint 'approved_by_id'
+    t.integer 'category'
+    t.integer 'state'
+    t.string 'reference_no'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['approved_by_id'], name: 'index_mobilizations_on_approved_by_id'
+    t.index ['company_id'], name: 'index_mobilizations_on_company_id'
+    t.index ['district_id'], name: 'index_mobilizations_on_district_id'
+    t.index ['extension_id'], name: 'index_mobilizations_on_extension_id'
+    t.index ['region_id'], name: 'index_mobilizations_on_region_id'
+    t.index ['user_id'], name: 'index_mobilizations_on_user_id'
   end
 
   create_table 'notifications', force: :cascade do |t|
@@ -449,6 +469,11 @@ ActiveRecord::Schema.define(version: 20_220_128_201_850) do
   add_foreign_key 'line_items', 'products'
   add_foreign_key 'line_items', 'stocks'
   add_foreign_key 'line_items', 'units'
+  add_foreign_key 'mobilizations', 'companies'
+  add_foreign_key 'mobilizations', 'districts'
+  add_foreign_key 'mobilizations', 'extensions'
+  add_foreign_key 'mobilizations', 'regions'
+  add_foreign_key 'mobilizations', 'users'
   add_foreign_key 'product_types', 'users'
   add_foreign_key 'products', 'product_types'
   add_foreign_key 'products', 'units'

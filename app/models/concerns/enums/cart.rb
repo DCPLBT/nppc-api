@@ -5,7 +5,7 @@ module Enums
     extend ActiveSupport::Concern
 
     included do
-      enum category: { distribution: 0, surrender: 10 }
+      enum category: { distribution: 0, surrender: 10, mobilization: 20 }
     end
   end
 end

@@ -23,6 +23,10 @@ module Relations
                                          source_type: 'Surrender'
       has_many :surrenderer_products, through: :requestable_requesters, source: :requestable,
                                       source_type: 'Surrender'
+      has_many :mobilized_tos_mobilizations, through: :forwardable_forwarded_tos, source: :forwardable,
+                                             source_type: 'Mobilization'
+      has_many :mobilizers_mobilizations, through: :requestable_requesters, source: :requestable,
+                                          source_type: 'Mobilization'
       has_many :carts, through: :requestable_requesters, source: :requestable,
                        source_type: 'Cart'
       has_many :user_stocks, dependent: :destroy

@@ -129,6 +129,7 @@ Rails.application.routes.draw do
       resources :surrenders, concerns: :itemable, shallow: true
       resources :companies
       resources :notifications, only: %i[index show]
+      resources :mobilizations, concerns: :itemable, shallow: true
     end
   end
 end
