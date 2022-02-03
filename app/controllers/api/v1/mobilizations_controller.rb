@@ -77,6 +77,24 @@ module Api
           mobilization_params[:category], region_id, district_id, extension_id, company_id
         ).pluck(:id)
       end
+
+      # rubocop:disable Metrics/MethodLength
+      def extract_ids(role_name)
+        case role_name
+        when 'ea'
+          [mobilization_params[:region_id], mobilization_params[:district_id], mobilization_params[:extension_id]]
+        when 'dao'
+          [mobilization_params[:region_id], mobilization_params[:district_id]]
+        when 'adrc'
+          [mobilization_params[:region_id]]
+        when 'mvh'
+          [nil, nil, nil, mobilization_params[:company_id]]
+        else
+          []
+        end
+      end
+
+      # rubocop:enable Metrics/MethodLength
     end
   end
 end
