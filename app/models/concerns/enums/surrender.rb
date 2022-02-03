@@ -6,7 +6,7 @@ module Enums
 
     included do
       enum state: { surrendered: 0, received: 10 }
-      enum surrender_type: { adrc: 0, nppc: 10 }
+      enum surrender_type: { adrc: 0, nppc: 10, none: 20 }
     end
   end
 end
