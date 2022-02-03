@@ -12,8 +12,14 @@ RSpec.describe 'Users', type: :request do
              photo_attributes: { image: image }
            })
   end
-  let!(:user1) { create(:user) }
-  let!(:user2) { create(:user) }
+  let(:region) { create(:region, user: user) }
+  let(:district) { create(:district, region: region, user: user) }
+  let(:extension) { create(:extension, district: district, user: user) }
+  let(:company) { create(:company, user: user) }
+
+  let!(:user1) { create(:user, profile_attributes: { region: region }) }
+  let!(:user2) { create(:user, profile_attributes: { region: region, district: district }) }
+  let!(:user3) { create(:user, profile_attributes: { region: region, district: district, extension: extension }) }
   let!(:admin) { create(:admin) }
 
   context 'As a admin' do
@@ -30,7 +36,7 @@ RSpec.describe 'Users', type: :request do
     it 'should see the list of users' do
       get api_v1_users_path
       expect(status).to eq(200)
-      expect(json[:data].size).to eq(7)
+      expect(json[:data].size).to eq(8)
     end
 
     it 'check others user' do
@@ -46,7 +52,7 @@ RSpec.describe 'Users', type: :request do
     end
 
     it 'admin should be able to delete the user' do
-      delete api_v1_user_path(user)
+      delete api_v1_user_path(user3)
       expect(status).to eq(200)
     end
 
@@ -64,6 +70,24 @@ RSpec.describe 'Users', type: :request do
       put api_v1_user_path(user), params: { user: { active: false } }
       expect(status).to eq(200)
       expect(json.dig(:data, :attributes, :active)).to eq(false)
+    end
+
+    it 'filter user by region' do
+      get api_v1_users_path, params: { region_id: region.id }
+      expect(status).to eq(200)
+      expect(json[:data].size).to eq(3)
+    end
+
+    it 'filter user by district' do
+      get api_v1_users_path, params: { district_id: district.id }
+      expect(status).to eq(200)
+      expect(json[:data].size).to eq(2)
+    end
+
+    it 'filter user by extension' do
+      get api_v1_users_path, params: { extension_id: extension.id }
+      expect(status).to eq(200)
+      expect(json[:data].size).to eq(1)
     end
   end
 

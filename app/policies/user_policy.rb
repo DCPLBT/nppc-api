@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 class UserPolicy < ApplicationPolicy
-  def index?
-    invite?
-  end
-
   def invite?
     user.admin?
   end

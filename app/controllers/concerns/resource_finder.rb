@@ -52,7 +52,7 @@ module ResourceFinder
       [current_user.region_id, current_user.district_id]
     when 'adrc'
       [current_user.region_id]
-    when 'mvh'
+    when 'mhv'
       [nil, nil, nil, current_user.company_id]
     else
       []

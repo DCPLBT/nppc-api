@@ -29,10 +29,8 @@ class UserPopulator < BasePopulator
 
   def users
     @users ||= User.includes(
-      :roles,
-      :profile,
-      :photo,
-      :roles_users
+      :roles, :profile, :photo, :roles_users,
+      profile: %i[region district extension company employee_type designation agency photo]
     )
   end
 

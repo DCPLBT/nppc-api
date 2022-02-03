@@ -27,7 +27,9 @@ RSpec.describe '/mobilizations', type: :request do
   let(:company) { create(:company, user: user) }
 
   let(:user1) do
-    create(:user, role_ids: [8], profile_attributes: { region: region, district: district, extension: extension })
+    create(:user, role_ids: [8], profile_attributes: {
+             region: region, district: district, extension: extension, company: company
+           })
   end
   let(:ea) do
     create(:user, role_ids: [4], profile_attributes: { region: region, district: district, extension: extension })
@@ -39,6 +41,9 @@ RSpec.describe '/mobilizations', type: :request do
     create(:user, role_ids: [6], profile_attributes: {
              region: region1, district: district1, extension: extension1, company: company
            })
+  end
+  let!(:adrc) do
+    create(:user, role_ids: [5], profile_attributes: { region: region1 })
   end
 
   let!(:product_type) { create(:product_type, user: user) }
@@ -105,51 +110,84 @@ RSpec.describe '/mobilizations', type: :request do
                        ]
       )
     end
+    let!(:mobilization5) do
+      create(
+        :mobilization, user_id: user.id, mobilizer_ids: [user.id], mobilized_to_ids: [adrc.id],
+                       region: region1, category: 'adrc',
+                       line_items_attributes: [
+                         { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
+                       ]
+      )
+    end
+    let!(:mobilization6) do
+      create(
+        :mobilization, user_id: user.id, mobilizer_ids: [user.id], mobilized_to_ids: [ea1.id],
+                       region: user1.region, district: user1.district, extension: user1.extension,
+                       category: 'mhv',
+                       line_items_attributes: [
+                         { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
+                       ]
+      )
+    end
 
     it 'renders a successful response' do
       get api_v1_mobilizations_url(category: :mobilization), as: :json
       expect(response).to be_successful
     end
 
-    it 'filter by distributor' do
-      get api_v1_mobilizations_url(category: :mobilization, distributed: true), as: :json
+    it 'filter by mobilized' do
+      get api_v1_mobilizations_url(category: :mobilization, mobilized: true), as: :json
       expect(response).to be_successful
-      expect(json[:data].size).to eq(4)
+      expect(json[:data].size).to eq(6)
     end
 
     it 'filter by product type' do
       get api_v1_mobilizations_url(category: :mobilization, product_type_id: product_type.id), as: :json
       expect(response).to be_successful
-      expect(json[:data].size).to eq(4)
+      expect(json[:data].size).to eq(6)
     end
 
     it 'filter by product' do
       get api_v1_mobilizations_url(category: :mobilization, product_id: product.id), as: :json
       expect(response).to be_successful
-      expect(json[:data].size).to eq(4)
+      expect(json[:data].size).to eq(6)
     end
 
     it 'filter by region' do
       get api_v1_mobilizations_url(category: :mobilization, region_id: user1.profile.region_id), as: :json
       expect(response).to be_successful
-      expect(json[:data].size).to eq(1)
+      expect(json[:data].size).to eq(2)
     end
 
     it 'filter by district' do
       get api_v1_mobilizations_url(category: :mobilization, district_id: user1.profile.district_id), as: :json
       expect(response).to be_successful
-      expect(json[:data].size).to eq(1)
+      expect(json[:data].size).to eq(2)
     end
 
     it 'filter by extension' do
       get api_v1_mobilizations_url(category: :mobilization, extension_id: user1.profile.extension_id), as: :json
       expect(response).to be_successful
-      expect(json[:data].size).to eq(1)
+      expect(json[:data].size).to eq(2)
     end
 
     it 'filter by year' do
       mobilization4.update_columns(created_at: Date.new(2000))
       get api_v1_mobilizations_url(category: :mobilization, year: '2000'), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(1)
+    end
+
+    it 'filter by approved' do
+      mobilization4.update_columns(state: :approved)
+      get api_v1_mobilizations_url(category: :mobilization, approved: true), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(1)
+    end
+
+    it 'filter by rejected' do
+      mobilization4.update_columns(state: :rejected)
+      get api_v1_mobilizations_url(category: :mobilization, rejected: true), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(1)
     end
@@ -160,6 +198,14 @@ RSpec.describe '/mobilizations', type: :request do
       get api_v1_mobilizations_url(category: :mobilization, received: true), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(3)
+    end
+
+    it 'filter by adrc(Region)' do
+      sign_out
+      sign_in(adrc)
+      get api_v1_mobilizations_url(category: :mobilization, received: true), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(1)
     end
   end
 
@@ -206,6 +252,26 @@ RSpec.describe '/mobilizations', type: :request do
             params: { mobilization: { state: :received } }, as: :json
         expect(status).to eq(200)
         expect(company_user.stocks.size).to eq(1)
+      end
+
+      it 'distribute to sales agent' do
+        valid_attributes[:region_id] = region1.id
+        valid_attributes[:category] = 'adrc'
+        post api_v1_mobilizations_url(category: :mobilization),
+             params: { mobilization: valid_attributes }, as: :json
+        expect(response).to have_http_status(:ok)
+        expect(response.content_type).to match(a_string_including('application/json'))
+
+        sign_out
+        sign_in(adrc)
+        get api_v1_mobilizations_url(category: :mobilization, received: true), as: :json
+        expect(status).to eq(200)
+        expect(json[:data].size).to eq(1)
+
+        put api_v1_mobilization_url(Mobilization.first, category: :mobilization),
+            params: { mobilization: { state: :received } }, as: :json
+        expect(status).to eq(200)
+        expect(adrc.stocks.size).to eq(1)
       end
 
       it 'validate stock' do

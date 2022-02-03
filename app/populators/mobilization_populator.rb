@@ -2,9 +2,9 @@
 
 class MobilizationPopulator < BasePopulator
   attr_accessor :mobilized, :received, :product_type_id, :product_id, :region_id, :district_id,
-                :extension_id, :year
+                :extension_id, :year, :approved, :rejected
 
-  def run # rubocop:disable Metrics/AbcSize
+  def run # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     mobilizations
       .public_send(:search, q)
       .yield_self { |mobilizations| filter_by_mobilized(mobilizations) }
@@ -15,6 +15,8 @@ class MobilizationPopulator < BasePopulator
       .yield_self { |mobilizations| filter_by_district(mobilizations) }
       .yield_self { |mobilizations| filter_by_extension(mobilizations) }
       .yield_self { |mobilizations| filter_by_year(mobilizations) }
+      .yield_self { |mobilizations| filter_by_approved(mobilizations) }
+      .yield_self { |mobilizations| filter_by_rejected(mobilizations) }
   end
 
   private
@@ -72,5 +74,17 @@ class MobilizationPopulator < BasePopulator
     return mobilizations unless year.present?
 
     mobilizations.where(created_at: Date.new(year.to_i).all_year)
+  end
+
+  def filter_by_approved(mobilizations)
+    return mobilizations unless approved.present? || determine_boolean(approved)
+
+    mobilizations.where(state: :approved)
+  end
+
+  def filter_by_rejected(mobilizations)
+    return mobilizations unless rejected.present? || determine_boolean(rejected)
+
+    mobilizations.where(state: :rejected)
   end
 end

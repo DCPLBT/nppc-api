@@ -65,7 +65,7 @@ module Api
       def query_params
         params.permit(
           :q, :mobilized, :received, :product_type_id, :product_id, :region_id, :district_id,
-          :extension_id, :year
+          :extension_id, :year, :approved, :rejected
         )
       end
 
@@ -78,23 +78,18 @@ module Api
         ).pluck(:id)
       end
 
-      # rubocop:disable Metrics/MethodLength
       def extract_ids(role_name)
         case role_name
         when 'ea'
           [mobilization_params[:region_id], mobilization_params[:district_id], mobilization_params[:extension_id]]
-        when 'dao'
-          [mobilization_params[:region_id], mobilization_params[:district_id]]
         when 'adrc'
           [mobilization_params[:region_id]]
-        when 'mvh'
+        when 'mhv'
           [nil, nil, nil, mobilization_params[:company_id]]
         else
           []
         end
       end
-
-      # rubocop:enable Metrics/MethodLength
     end
   end
 end
