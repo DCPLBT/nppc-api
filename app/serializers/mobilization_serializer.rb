@@ -63,7 +63,8 @@ class MobilizationSerializer < ApplicationSerializer
     :approved_by_name,
     :total_quantity,
     :total_price,
-    :total_product
+    :total_product,
+    :created_at
   )
 
   has_one :attachment
