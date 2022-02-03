@@ -56,9 +56,12 @@
 #             update_rails_disk_service PUT    /rails/active_storage/disk/:encoded_token(.:format)                                      active_storage/disk#update
 #                  rails_direct_uploads POST   /rails/active_storage/direct_uploads(.:format)                                           active_storage/direct_uploads#create
 # rubocop:enable Layout/LineLength
+require 'sidekiq/web'
 
 Rails.application.routes.draw do
   root to: 'welcome#index'
+
+  mount Sidekiq::Web => '/sidekiq'
 
   scope 'api/v1' do
     devise_for(

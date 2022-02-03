@@ -61,4 +61,5 @@ gem 'overcommit', '~> 0.57.0'
 gem 'pagy', '~> 5.6'
 gem 'pry', '~> 0.14.1'
 gem 'pundit', '~> 2.1'
+gem 'sidekiq', '~> 5.2'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
