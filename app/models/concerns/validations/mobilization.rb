@@ -9,7 +9,7 @@ module Validations
       validates_presence_of :line_items, message: :line_item_required
       validates_presence_of :approved_by, if: :approved?
 
-      validate :validate_stock
+      validate :validate_stock, if: :valid_state?
       validate :validate_approved_by, if: :approved?
     end
 

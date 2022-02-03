@@ -276,7 +276,7 @@ RSpec.describe '/mobilizations', type: :request do
 
       it 'validate stock' do
         valid_attributes[:category] = 'ea'
-        cart.line_items.first.update(quantity: 1001)
+        cart.line_items.first.update(quantity: 1010)
         post api_v1_mobilizations_url(category: :mobilization),
              params: { mobilization: valid_attributes }, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
@@ -339,6 +339,25 @@ RSpec.describe '/mobilizations', type: :request do
               params: { mobilization: new_attributes }, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
+      end
+
+      it 'approve mobilization' do
+        mobilization = Mobilization.create! valid_attributes
+        new_attributes[:state] = :approved
+        patch api_v1_mobilization_url(mobilization, category: :mobilization),
+              params: { mobilization: new_attributes }, as: :json
+        expect(response).to have_http_status(:ok)
+        expect(response.content_type).to match(a_string_including('application/json'))
+      end
+
+      it 'approval can be only carried out by NPPC user' do
+        sign_out
+        sign_in(create(:user, role_ids: [8]))
+        mobilization = Mobilization.create! valid_attributes
+        new_attributes[:state] = :approved
+        patch api_v1_mobilization_url(mobilization, category: :mobilization),
+              params: { mobilization: new_attributes }, as: :json
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
 

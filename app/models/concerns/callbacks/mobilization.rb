@@ -5,7 +5,7 @@ module Callbacks
     extend ActiveSupport::Concern
 
     included do
-      before_create :assign_defaults
+      before_validation :assign_defaults, on: :create
     end
 
     private

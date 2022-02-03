@@ -38,6 +38,7 @@ class Mobilization < ApplicationRecord
   include Enums::Mobilization
   include Scopes::Mobilization
   include Helpers::Mobilization
+  include Booleans::Mobilization
   include Delegates::Mobilization
   include Relations::Mobilization
   include Validations::Mobilization

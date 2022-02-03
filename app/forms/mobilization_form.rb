@@ -8,12 +8,13 @@ class MobilizationForm < BaseForm
   def create
     mobilization.save.tap do |result|
       result && create_mobilizer_mobilized_to
-      result && decrease_stock
     end
   end
 
   def update
+    mobilization.approved_by = current_user if params[:state].eql?('approved')
     mobilization.update(params).tap do |result|
+      result && mobilization.approved? && decrease_stock
       result && mobilization.received? && adjust_stock
     end
   end
