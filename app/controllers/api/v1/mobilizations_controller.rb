@@ -72,13 +72,13 @@ module Api
       def destination_ids
         return unless params[:mobilization].present?
 
-        region_id, district_id, extension_id, company_id = extract_ids(mobilization_params[:category])
+        region_id, district_id, extension_id, company_id = des_extract_ids(mobilization_params[:category])
         @destination_ids ||= User.includes(:roles).similar_users(
           mobilization_params[:category], region_id, district_id, extension_id, company_id
         ).pluck(:id)
       end
 
-      def extract_ids(role_name)
+      def des_extract_ids(role_name)
         case role_name
         when 'ea'
           [mobilization_params[:region_id], mobilization_params[:district_id], mobilization_params[:extension_id]]
