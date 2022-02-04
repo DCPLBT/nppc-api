@@ -5,9 +5,14 @@
 # Table name: profiles
 #
 #  id               :bigint           not null, primary key
+#  dob              :date
+#  father_name      :string
 #  firstname        :string
 #  gender           :integer
 #  lastname         :string
+#  mother_name      :string
+#  occupation       :string
+#  village          :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  agency_id        :bigint

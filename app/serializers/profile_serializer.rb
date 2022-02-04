@@ -5,9 +5,14 @@
 # Table name: profiles
 #
 #  id               :bigint           not null, primary key
+#  dob              :date
+#  father_name      :string
 #  firstname        :string
 #  gender           :integer
 #  lastname         :string
+#  mother_name      :string
+#  occupation       :string
+#  village          :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  agency_id        :bigint
@@ -62,7 +67,12 @@ class ProfileSerializer < ApplicationSerializer
     :designation_id,
     :designation_name,
     :agency_id,
-    :agency_name
+    :agency_name,
+    :village,
+    :occupation,
+    :dob,
+    :mother_name,
+    :father_name
   )
 
   has_one :photo
