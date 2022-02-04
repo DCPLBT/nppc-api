@@ -10,7 +10,7 @@ class CitizenForm < BaseForm
   private
 
   def citizen
-    @citizen ||= User.find_by(cid: cid) || fetch_citizen_detail
+    @citizen ||= fetch_citizen_detail
   end
 
   def fetch_citizen_detail # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
