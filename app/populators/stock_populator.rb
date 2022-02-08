@@ -9,6 +9,7 @@ class StockPopulator < BasePopulator
       .yield_self { |stocks| filter_by_product_type(stocks) }
       .yield_self { |stocks| filter_by_product(stocks) }
       .yield_self { |stocks| filter_by_obsolete(stocks) }
+      .yield_self { |stocks| filter_by_date_range(stocks) }
   end
 
   private
@@ -33,5 +34,11 @@ class StockPopulator < BasePopulator
     return stocks unless obsolete.present? || determine_boolean(obsolete)
 
     stocks.filter_by_obsolete
+  end
+
+  def filter_by_date_range(stocks)
+    return stocks unless valid_dates?
+
+    stocks.where(created_at: date(from_date).beginning_of_day..date(to_date).end_of_day)
   end
 end
