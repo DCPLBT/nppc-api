@@ -145,6 +145,20 @@ RSpec.describe '/indents', type: :request do
       expect(json[:data].size).to eq(1)
     end
 
+    it 'filter by date range' do
+      indent4.update_columns(created_at: '2022-02-01')
+      get api_v1_indents_url(from_date: '2022-02-01', to_date: '2022-02-01'), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(1)
+    end
+
+    it 'validate date range' do
+      indent4.update_columns(created_at: '2022-02-01')
+      get api_v1_indents_url(from_date: '2022-02-02', to_date: '2022-02-01'), as: :json
+      expect(status).to eq(400)
+      expect(json.dig(:errors, 0)).to eq('"From date" should be before or same as "to date"')
+    end
+
     it 'filter by received' do
       sign_out
       sign_in(ea)

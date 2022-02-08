@@ -70,7 +70,7 @@ module Api
       def query_params
         params.permit(
           :q, :draft, :requested, :received, :product_type_id, :product_id, :region_id, :district_id,
-          :extension_id, :year
+          :extension_id, :year, :from_date, :to_date
         )
       end
     end

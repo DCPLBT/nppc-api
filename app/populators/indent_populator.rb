@@ -16,6 +16,7 @@ class IndentPopulator < BasePopulator
       .yield_self { |indents| filter_by_district(indents) }
       .yield_self { |indents| filter_by_extension(indents) }
       .yield_self { |indents| filter_by_year(indents) }
+      .yield_self { |indents| filter_by_date_range(indents) }
   end
 
   private
@@ -79,5 +80,11 @@ class IndentPopulator < BasePopulator
     return indents unless year.present?
 
     indents.where(created_at: Date.new(year.to_i).all_year)
+  end
+
+  def filter_by_date_range(indents)
+    return indents unless valid_dates?
+
+    indents.where(created_at: date(from_date).beginning_of_day..date(to_date).end_of_day)
   end
 end
