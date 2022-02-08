@@ -81,10 +81,4 @@ class IndentPopulator < BasePopulator
 
     indents.where(created_at: Date.new(year.to_i).all_year)
   end
-
-  def filter_by_date_range(indents)
-    return indents unless valid_dates?
-
-    indents.where(created_at: date(from_date).beginning_of_day..date(to_date).end_of_day)
-  end
 end

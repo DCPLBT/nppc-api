@@ -24,4 +24,10 @@ class BasePopulator
   def date(val)
     val&.to_date || Time.current
   end
+
+  def filter_by_date_range(lists)
+    return lists unless valid_dates?
+
+    lists.where(created_at: date(from_date).beginning_of_day..date(to_date).end_of_day)
+  end
 end

@@ -88,10 +88,4 @@ class MobilizationPopulator < BasePopulator
 
     mobilizations.where(state: :rejected)
   end
-
-  def filter_by_date_range(mobilizations)
-    return mobilizations unless valid_dates?
-
-    mobilizations.where(created_at: date(from_date).beginning_of_day..date(to_date).end_of_day)
-  end
 end

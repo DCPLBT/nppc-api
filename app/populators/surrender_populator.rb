@@ -76,10 +76,4 @@ class SurrenderPopulator < BasePopulator
 
     surrenders.where(created_at: Date.new(year.to_i).all_year)
   end
-
-  def filter_by_date_range(surrenders)
-    return surrenders unless valid_dates?
-
-    surrenders.where(created_at: date(from_date).beginning_of_day..date(to_date).end_of_day)
-  end
 end

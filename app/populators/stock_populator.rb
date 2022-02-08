@@ -35,10 +35,4 @@ class StockPopulator < BasePopulator
 
     stocks.filter_by_obsolete
   end
-
-  def filter_by_date_range(stocks)
-    return stocks unless valid_dates?
-
-    stocks.where(created_at: date(from_date).beginning_of_day..date(to_date).end_of_day)
-  end
 end

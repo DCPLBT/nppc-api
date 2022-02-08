@@ -161,6 +161,20 @@ RSpec.describe '/distributions', type: :request do
       expect(response).to be_successful
       expect(json[:data].size).to eq(3)
     end
+
+    it 'filter by date range' do
+      distribution4.update_columns(created_at: '2022-02-01')
+      get api_v1_distributions_url(category: :distribution, from_date: '2022-02-01', to_date: '2022-02-01'), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(1)
+    end
+
+    it 'filter by distribution type' do
+      distribution4.update_columns(distributed_type: 'individual')
+      get api_v1_distributions_url(category: :distribution, distributed_type: 'individual'), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(1)
+    end
   end
 
   describe 'GET /show' do
