@@ -17,6 +17,7 @@ class MobilizationPopulator < BasePopulator
       .yield_self { |mobilizations| filter_by_year(mobilizations) }
       .yield_self { |mobilizations| filter_by_approved(mobilizations) }
       .yield_self { |mobilizations| filter_by_rejected(mobilizations) }
+      .yield_self { |mobilizations| filter_by_date_range(mobilizations) }
   end
 
   private
@@ -86,5 +87,11 @@ class MobilizationPopulator < BasePopulator
     return mobilizations unless rejected.present? || determine_boolean(rejected)
 
     mobilizations.where(state: :rejected)
+  end
+
+  def filter_by_date_range(mobilizations)
+    return mobilizations unless valid_dates?
+
+    mobilizations.where(created_at: date(from_date).beginning_of_day..date(to_date).end_of_day)
   end
 end

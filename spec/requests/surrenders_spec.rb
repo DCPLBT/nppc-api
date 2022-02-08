@@ -159,6 +159,13 @@ RSpec.describe '/surrenders', type: :request do
       expect(json[:data].size).to eq(1)
     end
 
+    it 'filter by date range' do
+      surrender4.update_columns(created_at: '2022-02-01')
+      get api_v1_surrenders_url(category: :surrender, from_date: '2022-02-01', to_date: '2022-02-01'), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(1)
+    end
+
     it 'filter by received' do
       sign_out
       sign_in(nppc)

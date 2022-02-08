@@ -207,6 +207,13 @@ RSpec.describe '/mobilizations', type: :request do
       expect(response).to be_successful
       expect(json[:data].size).to eq(1)
     end
+
+    it 'filter by rejected' do
+      mobilization4.update_columns(created_at: '2022-02-01')
+      get api_v1_mobilizations_url(category: :mobilization, from_date: '2022-02-01', to_date: '2022-02-01'), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(1)
+    end
   end
 
   describe 'GET /show' do
