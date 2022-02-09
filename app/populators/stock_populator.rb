@@ -10,6 +10,7 @@ class StockPopulator < BasePopulator
       .yield_self { |stocks| filter_by_product(stocks) }
       .yield_self { |stocks| filter_by_obsolete(stocks) }
       .yield_self { |stocks| filter_by_date_range(stocks) }
+      .distinct
   end
 
   private

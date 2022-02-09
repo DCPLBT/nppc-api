@@ -18,6 +18,7 @@ class MobilizationPopulator < BasePopulator
       .yield_self { |mobilizations| filter_by_approved(mobilizations) }
       .yield_self { |mobilizations| filter_by_rejected(mobilizations) }
       .yield_self { |mobilizations| filter_by_date_range(mobilizations) }
+      .distinct
   end
 
   private

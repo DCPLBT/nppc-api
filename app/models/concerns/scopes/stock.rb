@@ -12,13 +12,13 @@ module Scopes
         )
       }
       scope :filter_by_product_type, lambda { |id|
-        where(product_type_id: id).distinct
+        where(product_type_id: id)
       }
       scope :filter_by_product, lambda { |id|
-        where(product_id: id).distinct
+        where(product_id: id)
       }
       scope :filter_by_obsolete, lambda {
-        where.not(quantity: [0, nil, '']).where('obsolete_date < ?', Date.current).distinct
+        where.not(quantity: [0, nil, '']).where('obsolete_date < ?', Date.current)
       }
     end
   end

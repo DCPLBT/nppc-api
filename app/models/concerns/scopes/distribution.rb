@@ -14,19 +14,19 @@ module Scopes
         )
       }
       scope :filter_by_product_type, lambda { |id|
-        joins(:line_items).where(line_items: { product_type_id: id }).distinct
+        joins(:line_items).where(line_items: { product_type_id: id })
       }
       scope :filter_by_product, lambda { |id|
-        joins(:line_items).where(line_items: { product_id: id }).distinct
+        joins(:line_items).where(line_items: { product_id: id })
       }
       scope :filter_by_region, lambda { |id|
-        where(region_id: id).distinct
+        where(region_id: id)
       }
       scope :filter_by_district, lambda { |id|
-        where(district_id: id).distinct
+        where(district_id: id)
       }
       scope :filter_by_extension, lambda { |id|
-        where(extension_id: id).distinct
+        where(extension_id: id)
       }
     end
   end

@@ -17,6 +17,7 @@ class IndentPopulator < BasePopulator
       .yield_self { |indents| filter_by_extension(indents) }
       .yield_self { |indents| filter_by_year(indents) }
       .yield_self { |indents| filter_by_date_range(indents) }
+      .distinct
   end
 
   private

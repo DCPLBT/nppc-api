@@ -17,6 +17,7 @@ class DistributionPopulator < BasePopulator
       .yield_self { |distributions| filter_by_year(distributions) }
       .yield_self { |distributions| filter_by_date_range(distributions) }
       .yield_self { |distributions| filter_by_distributed_type(distributions) }
+      .distinct
   end
 
   private
