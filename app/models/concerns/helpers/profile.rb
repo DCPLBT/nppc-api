@@ -5,7 +5,7 @@ module Helpers
     extend ActiveSupport::Concern
 
     def name
-      firstname || lastname ? "#{firstname} #{lastname}" : user.email
+      firstname || middlename || lastname ? "#{firstname} #{middlename} #{lastname}".squish : user.email
     end
   end
 end

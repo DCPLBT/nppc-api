@@ -13,6 +13,7 @@ module ParamsSanitizer
       { role_ids: [] },
       { profile_attributes: [
         :firstname,
+        :middlename,
         :lastname,
         :gender,
         :region_id,

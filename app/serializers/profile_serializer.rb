@@ -50,6 +50,7 @@
 class ProfileSerializer < ApplicationSerializer
   attributes(
     :firstname,
+    :middlename,
     :lastname,
     :gender,
     :region_id,
