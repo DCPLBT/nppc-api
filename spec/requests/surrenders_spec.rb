@@ -240,7 +240,7 @@ RSpec.describe '/surrenders', type: :request do
 
       it 'validate stock' do
         valid_attributes[:surrender_type] = 'nppc'
-        cart.line_items.first.update(quantity: 1001)
+        cart.line_items.first.update_columns(quantity: 1001)
         post api_v1_surrenders_url(category: :surrender),
              params: { surrender: valid_attributes }, as: :json
         expect(response).to have_http_status(:unprocessable_entity)

@@ -7,6 +7,14 @@ module Validations
     included do
       validates_presence_of :quantity
       validates_numericality_of :quantity, greater_than: 0
+
+      validate :validate_stock, unless: :indent_item?, on: %i[create update]
+    end
+
+    def validate_stock
+      return if (stock&.quantity || 0) >= (quantity || 0)
+
+      errors.add(:base, :insufficient_stock, product: stock&.product_name, stock: stock&.quantity)
     end
   end
 end

@@ -283,7 +283,7 @@ RSpec.describe '/mobilizations', type: :request do
 
       it 'validate stock' do
         valid_attributes[:category] = 'ea'
-        cart.line_items.first.update(quantity: 1010)
+        cart.line_items.first.update_columns(quantity: 1010)
         post api_v1_mobilizations_url(category: :mobilization),
              params: { mobilization: valid_attributes }, as: :json
         expect(response).to have_http_status(:unprocessable_entity)

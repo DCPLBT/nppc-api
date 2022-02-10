@@ -34,6 +34,7 @@
 class LineItem < ApplicationRecord
   include Scopes::LineItem
   include Helpers::LineItem
+  include Booleans::LineItem
   include Delegates::LineItem
   include Relations::LineItem
   include Validations::LineItem

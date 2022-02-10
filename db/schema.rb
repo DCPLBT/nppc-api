@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_220_204_112_121) do
+ActiveRecord::Schema.define(version: 20_220_209_143_700) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -282,6 +282,7 @@ ActiveRecord::Schema.define(version: 20_220_204_112_121) do
     t.date 'dob'
     t.string 'mother_name'
     t.string 'father_name'
+    t.string 'middlename'
     t.index ['agency_id'], name: 'index_profiles_on_agency_id'
     t.index ['company_id'], name: 'index_profiles_on_company_id'
     t.index ['designation_id'], name: 'index_profiles_on_designation_id'

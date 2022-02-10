@@ -10,6 +10,7 @@
 #  firstname        :string
 #  gender           :integer
 #  lastname         :string
+#  middlename       :string
 #  mother_name      :string
 #  occupation       :string
 #  village          :string
