@@ -18,7 +18,7 @@ class BasePopulator
     return if to_date.nil? || to_date&.empty?
     return true if date(from_date) <= (date(to_date))
 
-    raise ArgumentError, '"From date" should be before or same as "to date"'
+    raise ActiveRecord::RecordNotSaved, '"From date" should be before or same as "to date"'
   end
 
   def date(val)

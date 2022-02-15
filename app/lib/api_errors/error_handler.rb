@@ -2,11 +2,12 @@
 
 module ApiErrors
   module ErrorHandler
-    def self.included(base)
+    def self.included(base) # rubocop:disable Metrics/MethodLength
       base.class_eval do
         rescue_from StandardError, with: :bad_request
         rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
         rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+        rescue_from ActiveRecord::RecordNotSaved, with: :record_not_saved
         rescue_from Pundit::NotAuthorizedError, with: :not_authorized_error
         rescue_from ActionController::ParameterMissing, with: :bad_request
         rescue_from NoMethodError, with: :bad_request
@@ -17,6 +18,10 @@ module ApiErrors
 
     def record_not_found(error)
       render_error(:not_found, [error.message])
+    end
+
+    def record_not_saved(error)
+      render_error(:unprocessable_entity, [error.message])
     end
 
     def record_invalid(error)
