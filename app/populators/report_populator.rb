@@ -13,9 +13,9 @@ class ReportPopulator < BasePopulator
 
   def distributions
     @distributions ||= Distribution
-                       .yield_self { |distributions| filter_by_date_range(distributions) }
-                       .yield_self { |distributions| filter_by_product_type(distributions) }
-                       .yield_self { |distributions| filter_by_product(distributions) }
+                         .yield_self { |distributions| filter_by_date_range(distributions) }
+                         .yield_self { |distributions| filter_by_product_type(distributions) }
+                         .yield_self { |distributions| filter_by_product(distributions) }
   end
 
   def filter_by_product_type(distributions)
@@ -33,12 +33,12 @@ class ReportPopulator < BasePopulator
   def generate_reports # rubocop:disable Metrics/AbcSize
     [Report.new(
       id: rand,
-      ea: distributions.ea.size,
-      individual: distributions.individual.size,
-      self: distributions.self.size,
-      mhv: distributions.mhv.size,
-      assr: distributions.assr.size,
-      adrc: distributions.adrc.size
+      ea: distributions.ea.flat_map(&:line_items).size,
+      individual: distributions.individual.flat_map(&:line_items).size,
+      self: distributions.self.flat_map(&:line_items).size,
+      mhv: distributions.mhv.flat_map(&:line_items).size,
+      assr: distributions.assr.flat_map(&:line_items).size,
+      adrc: distributions.adrc.flat_map(&:line_items).size
     )]
   end
 end
