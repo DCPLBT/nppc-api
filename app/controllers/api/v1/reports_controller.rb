@@ -5,13 +5,40 @@ module Api
     class ReportsController < ApplicationController
       def index
         populate = ReportPopulator.new(current_user: current_user, params: query_params)
-        render_paginated_collection(populate.run, serializer: DistributionReportSerializer)
+        render_paginated_collection(populate.overall, serializer: DistributionReportSerializer)
+      end
+
+      def indent
+        populate = ReportPopulator.new(current_user: current_user, params: query_params.merge!(type: 'Indent'))
+        render_paginated_collection(populate.run, serializer: ReportSerializer)
+      end
+
+      def distribution
+        populate = ReportPopulator.new(current_user: current_user, params: query_params.merge!(type: 'Distribution'))
+        render_paginated_collection(populate.run, serializer: ReportSerializer)
+      end
+
+      def surrender
+        populate = ReportPopulator.new(current_user: current_user, params: query_params.merge!(type: 'Surrender'))
+        render_paginated_collection(populate.run, serializer: ReportSerializer)
+      end
+
+      def stock
+        populate = ReportPopulator.new(current_user: current_user, params: query_params.merge!(type: 'Stock'))
+        render_paginated_collection(populate.run, serializer: ReportSerializer)
+      end
+
+      def mobilization
+        populate = ReportPopulator.new(current_user: current_user, params: query_params.merge!(type: 'Mobilization'))
+        render_paginated_collection(populate.run, serializer: ReportSerializer)
       end
 
       private
 
       def query_params
-        params.permit(:report_type, :product_type_id, :product_id, :from_date, :to_date)
+        params.permit(
+          :product_type_id, :product_id, :from_date, :to_date, :received, :submitted
+        )
       end
     end
   end

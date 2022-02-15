@@ -42,7 +42,8 @@ class LineItemSerializer < ApplicationSerializer
     :quantity,
     :unit_price,
     :unit_id,
-    :unit_name
+    :unit_name,
+    :total_price
   )
 
   belongs_to :itemable, polymorphic: true
