@@ -37,7 +37,8 @@ module Api
 
       def query_params
         params.permit(
-          :product_type_id, :product_id, :from_date, :to_date, :received, :submitted
+          :product_type_id, :product_id, :from_date, :to_date, :received, :submitted, :region_id, :district_id,
+          :extension_id, :company_id, :distributed_type, :village
         )
       end
     end

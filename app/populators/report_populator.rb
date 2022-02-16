@@ -1,17 +1,25 @@
 # frozen_string_literal: true
 
-class ReportPopulator < BasePopulator
+class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
   REPORT = Struct.new(:id, :ea, :individual, :self, :mhv, :assr, :adrc, keyword_init: true)
+  DISTRIBUTED_TYPE = %w[self individual].freeze
 
-  attr_accessor :product_type_id, :product_id, :received, :submitted, :type
+  attr_accessor :product_type_id, :product_id, :received, :submitted, :type, :region_id, :district_id,
+                :extension_id, :company_id, :distributed_type, :village
 
-  def run
+  def run # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     line_items
       .yield_self { |line_items| filter_by_date_range(line_items) }
       .yield_self { |line_items| filter_by_product_type(line_items) }
       .yield_self { |line_items| filter_by_product(line_items) }
       .yield_self { |line_items| filter_by_received(line_items) }
       .yield_self { |line_items| filter_by_submitted(line_items) }
+      .yield_self { |line_items| filter_by_region(line_items) }
+      .yield_self { |line_items| filter_by_district(line_items) }
+      .yield_self { |line_items| filter_by_extension(line_items) }
+      .yield_self { |line_items| filter_by_company(line_items) }
+      .yield_self { |line_items| filter_by_distributed_type(line_items) }
+      .yield_self { |line_items| filter_by_village(line_items) }
       .distinct
       .yield_self { |line_items| group_by_product(line_items) }
   end
@@ -59,22 +67,23 @@ class ReportPopulator < BasePopulator
     lists.filter_by_product(product_id)
   end
 
-  def filter_by_received(lists) # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/AbcSize
+  def filter_by_received(lists)
     return lists unless received.present? || determine_boolean(received)
 
     lists.joins(
       "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
       "line_items.itemable_type='#{type}'"
-    ).where("#{type.underscore.pluralize}": { id: received_ids }).distinct
+    ).where("#{type.underscore.pluralize}": { id: received_ids })
   end
 
-  def filter_by_submitted(lists) # rubocop:disable Metrics/AbcSize
+  def filter_by_submitted(lists)
     return lists unless submitted.present? || determine_boolean(submitted)
 
     lists.joins(
       "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
       "line_items.itemable_type='#{type}'"
-    ).where("#{type.underscore.pluralize}": { id: submitted_ids }).distinct
+    ).where("#{type.underscore.pluralize}": { id: submitted_ids })
   end
 
   def group_by_product(lists)
@@ -82,6 +91,62 @@ class ReportPopulator < BasePopulator
       :product_id, :product_type_id, 'product_id as id, SUM(quantity) as quantity, SUM(unit_price) as unit_price'
     )
   end
+
+  def filter_by_region(line_items)
+    return line_items unless region_id.present?
+
+    line_items.joins(
+      "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
+      "line_items.itemable_type='#{type}'"
+    ).where("#{type.underscore.pluralize}": { region_id: region_id })
+  end
+
+  def filter_by_district(line_items)
+    return line_items unless district_id.present?
+
+    line_items.joins(
+      "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
+      "line_items.itemable_type='#{type}'"
+    ).where("#{type.underscore.pluralize}": { district_id: district_id })
+  end
+
+  def filter_by_extension(line_items)
+    return line_items unless extension_id.present?
+
+    line_items.joins(
+      "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
+      "line_items.itemable_type='#{type}'"
+    ).where("#{type.underscore.pluralize}": { extension_id: extension_id })
+  end
+
+  def filter_by_village(line_items)
+    return line_items unless village.present? && type.eql?('Distribution')
+
+    line_items.joins(
+      "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
+      "line_items.itemable_type='#{type}'"
+    ).where("#{type.underscore.pluralize}": { consumer_village: village })
+  end
+
+  def filter_by_company(line_items)
+    return line_items unless company_id.present? && type.eql?('Distribution')
+
+    line_items.joins(
+      "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
+      "line_items.itemable_type='#{type}'"
+    ).where("#{type.underscore.pluralize}": { company_id: company_id })
+  end
+
+  def filter_by_distributed_type(line_items)
+    return line_items unless distributed_type.present? && type.eql?('Distribution')
+
+    line_items.joins(
+      "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
+      "line_items.itemable_type='#{type}'"
+    ).where("#{type.underscore.pluralize}": { distributed_type: determine_dt })
+  end
+
+  # rubocop:enable Metrics/AbcSize
 
   def received_ids # rubocop:disable Metrics/MethodLength
     case type
@@ -115,5 +180,9 @@ class ReportPopulator < BasePopulator
     else
       []
     end
+  end
+
+  def determine_dt
+    distributed_type.presence_in(DISTRIBUTED_TYPE) || 'self'
   end
 end
