@@ -140,8 +140,6 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
     ).where("#{type.underscore.pluralize}": { id: distributed_by_ids })
   end
 
-  # rubocop:enable Metrics/AbcSize
-
   def received_ids # rubocop:disable Metrics/MethodLength
     case type
     when 'Indent'
@@ -179,14 +177,16 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
   def distributed_by_ids
     @user = case determine_db
             when 'ea'
-              User.similar_users(determine_db, region_id, district_id, extension_id, nil).first
+              User.includes(:roles).similar_users(determine_db, region_id, district_id, extension_id, nil).first
             when 'mhv'
-              User.similar_users(determine_db, nil, nil, nil, company_id).first
+              User.includes(:roles).similar_users(determine_db, nil, nil, nil, company_id).first
             when 'assr'
               User.find_by(sale_agent_id)
             end
     @user&.distributors_distributions&.ids
   end
+
+  # rubocop:enable Metrics/AbcSize
 
   def determine_dt
     distributed_type.presence_in(DISTRIBUTED_TYPE) || 'self'
