@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
-  REPORT = Struct.new(
-    :id, :product_type_id, :product_type_name, :product_id, :product_name, :quantity, :unit_price, :total_price,
-    :region_name, :district_name, :extension_name, :consumer_name, :consumer_cid, :consumer_village, keyword_init: true
-  )
   DISTRIBUTED_TYPE = %w[self individual].freeze
   DISTRIBUTED_BY = %w[ea mhv assr].freeze
 
