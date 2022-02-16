@@ -2,7 +2,7 @@
 
 class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
   REPORT = Struct.new(:id, :ea, :individual, :self, :mhv, :assr, :adrc, keyword_init: true)
-  DISTRIBUTED_TYPE = %w[self individual].freeze
+  DISTRIBUTED_TYPE = %w[self individual ea mhv assr adrc].freeze
 
   attr_accessor :product_type_id, :product_id, :received, :submitted, :type, :region_id, :district_id,
                 :extension_id, :company_id, :distributed_type, :village
