@@ -1,11 +1,15 @@
 # frozen_string_literal: true
 
 class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
-  REPORT = Struct.new(:id, :ea, :individual, :self, :mhv, :assr, :adrc, keyword_init: true)
-  DISTRIBUTED_TYPE = %w[self individual ea mhv assr adrc].freeze
+  REPORT = Struct.new(
+    :id, :product_type_id, :product_type_name, :product_id, :product_name, :quantity, :unit_price, :total_price,
+    :region_name, :district_name, :extension_name, :consumer_name, :consumer_cid, :consumer_village, keyword_init: true
+  )
+  DISTRIBUTED_TYPE = %w[self individual].freeze
+  DISTRIBUTED_BY = %w[ea mhv assr].freeze
 
   attr_accessor :product_type_id, :product_id, :received, :submitted, :type, :region_id, :district_id,
-                :extension_id, :company_id, :distributed_type, :village
+                :extension_id, :company_id, :distributed_type, :distributed_by, :village, :sale_agent_id
 
   def run # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     line_items
@@ -25,7 +29,12 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
   end
 
   def overall
-    generate_reports
+    line_items
+      .yield_self { |line_items| filter_by_date_range(line_items) }
+      .yield_self { |line_items| filter_by_product_type(line_items) }
+      .yield_self { |line_items| filter_by_product(line_items) }
+      .yield_self { |line_items| filter_by_distributed_by(line_items) }
+      .distinct
   end
 
   private
@@ -34,62 +43,36 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
     @line_items ||= LineItem.where(itemable_type: type)
   end
 
-  # Overall report for distribution section.
-  def distributions
-    @distributions ||= Distribution
-                       .yield_self { |distributions| filter_by_date_range(distributions) }
-                       .yield_self { |distributions| filter_by_product_type(distributions) }
-                       .yield_self { |distributions| filter_by_product(distributions) }
-  end
-
-  def generate_reports # rubocop:disable Metrics/AbcSize
-    [REPORT.new(
-      id: rand,
-      ea: distributions.ea.flat_map(&:line_items).size,
-      individual: distributions.individual.flat_map(&:line_items).size,
-      self: distributions.self.flat_map(&:line_items).size,
-      mhv: distributions.mhv.flat_map(&:line_items).size,
-      assr: distributions.assr.flat_map(&:line_items).size,
-      adrc: distributions.adrc.flat_map(&:line_items).size
-    )]
-  end
-
   # Filters list
-  def filter_by_product_type(lists)
-    return lists unless product_type_id.present?
+  def filter_by_product_type(line_items)
+    return line_items unless product_type_id.present?
 
-    lists.filter_by_product_type(product_type_id)
+    line_items.filter_by_product_type(product_type_id)
   end
 
-  def filter_by_product(lists)
-    return lists unless product_id.present?
+  def filter_by_product(line_items)
+    return line_items unless product_id.present?
 
-    lists.filter_by_product(product_id)
+    line_items.filter_by_product(product_id)
   end
 
   # rubocop:disable Metrics/AbcSize
-  def filter_by_received(lists)
-    return lists unless received.present? || determine_boolean(received)
+  def filter_by_received(line_items)
+    return line_items unless received.present? || determine_boolean(received)
 
-    lists.joins(
+    line_items.joins(
       "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
       "line_items.itemable_type='#{type}'"
     ).where("#{type.underscore.pluralize}": { id: received_ids })
   end
 
-  def filter_by_submitted(lists)
-    return lists unless submitted.present? || determine_boolean(submitted)
+  def filter_by_submitted(line_items)
+    return line_items unless submitted.present? || determine_boolean(submitted)
 
-    lists.joins(
+    line_items.joins(
       "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
       "line_items.itemable_type='#{type}'"
     ).where("#{type.underscore.pluralize}": { id: submitted_ids })
-  end
-
-  def group_by_product(lists)
-    lists.group(:product_id, :product_type_id, :itemable_type).select(
-      :product_id, :product_type_id, 'product_id as id, SUM(quantity) as quantity, SUM(unit_price) as unit_price'
-    )
   end
 
   def filter_by_region(line_items)
@@ -146,6 +129,21 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
     ).where("#{type.underscore.pluralize}": { distributed_type: determine_dt })
   end
 
+  def group_by_product(line_items)
+    line_items.group(:product_id, :product_type_id, :itemable_type).select(
+      :product_id, :product_type_id, 'product_id as id, SUM(quantity) as quantity, SUM(unit_price) as unit_price'
+    )
+  end
+
+  def filter_by_distributed_by(line_items)
+    return line_items unless distributed_by.present? && type.eql?('Distribution')
+
+    line_items.joins(
+      "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
+      "line_items.itemable_type='#{type}'"
+    ).where("#{type.underscore.pluralize}": { id: distributed_by_ids })
+  end
+
   # rubocop:enable Metrics/AbcSize
 
   def received_ids # rubocop:disable Metrics/MethodLength
@@ -182,7 +180,23 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
     end
   end
 
+  def distributed_by_ids
+    @user = case determine_db
+            when 'ea'
+              User.similar_users(determine_db, region_id, district_id, extension_id, nil).first
+            when 'mhv'
+              User.similar_users(determine_db, nil, nil, nil, company_id).first
+            when 'assr'
+              User.find_by(sale_agent_id)
+            end
+    @user&.distributors_distributions&.ids
+  end
+
   def determine_dt
     distributed_type.presence_in(DISTRIBUTED_TYPE) || 'self'
+  end
+
+  def determine_db
+    distributed_type.presence_in(DISTRIBUTED_BY) || 'ea'
   end
 end

@@ -4,7 +4,7 @@ module Api
   module V1
     class ReportsController < ApplicationController
       def index
-        populate = ReportPopulator.new(current_user: current_user, params: query_params)
+        populate = ReportPopulator.new(current_user: current_user, params: query_params.merge!(type: 'Distribution'))
         render_paginated_collection(populate.overall, serializer: DistributionReportSerializer)
       end
 
@@ -38,7 +38,7 @@ module Api
       def query_params
         params.permit(
           :product_type_id, :product_id, :from_date, :to_date, :received, :submitted, :region_id, :district_id,
-          :extension_id, :company_id, :distributed_type, :village
+          :extension_id, :company_id, :distributed_type, :distributed_by, :village, :sale_agent_id
         )
       end
     end
