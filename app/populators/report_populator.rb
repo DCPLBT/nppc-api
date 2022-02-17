@@ -258,7 +258,7 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
     distributed_type.presence_in(DISTRIBUTED_BY) || 'ea'
   end
 
-  def extract_ids(user)
+  def extract_ids(user) # rubocop:disable Metrics/MethodLength
     case current_role
     when 'adrc'
       { region_id: user.region_id }
@@ -268,6 +268,8 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
       { region_id: user.region_id, district_id: user.district_id, extension_id: user.extension_id }
     when 'mhv'
       { company_id: user.company_id }
+    else
+      {}
     end
   end
 end
