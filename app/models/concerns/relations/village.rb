@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
 module Relations
-  module Extension
+  module Village
     extend ActiveSupport::Concern
 
     included do
       belongs_to :user
-      belongs_to :district, inverse_of: :extensions
-
-      has_many :villages, inverse_of: :extension
+      belongs_to :extension, inverse_of: :villages
     end
   end
 end

@@ -108,7 +108,9 @@ Rails.application.routes.draw do
       resources :settings, only: :index
       resources :regions, shallow: true do
         resources :districts do
-          resources :extensions
+          resources :extensions do
+            resources :villages
+          end
         end
       end
       resources :districts, only: :index
