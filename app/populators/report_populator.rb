@@ -259,7 +259,7 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
   end
 
   def extract_ids(user) # rubocop:disable Metrics/MethodLength
-    case current_role
+    case current_role_name
     when 'adrc'
       { region_id: user.region_id }
     when 'dao'
