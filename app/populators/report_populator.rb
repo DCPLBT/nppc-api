@@ -134,12 +134,12 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
     ).where("#{type.underscore.pluralize}": { id: distributed_by_ids })
   end
 
-  def received_line_items(line_items) # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity
+  def received_line_items(line_items) # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     case type
     when 'Indent'
       return line_items if current_user.nppc?
 
-      user = current_user.forwarded_indents.first
+      user = current_user.forwarded_indents.first&.user
       line_items.joins(
         "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
         "line_items.itemable_type='#{type}'"
@@ -149,7 +149,7 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
     when 'Distribution'
       return line_items if current_user.nppc?
 
-      user = current_user.distributed_tos_distributions.first
+      user = current_user.distributed_tos_distributions.first&.user
       line_items.joins(
         "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
         "line_items.itemable_type='#{type}'"
@@ -162,7 +162,7 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
     when 'Surrender'
       return line_items if current_user.nppc?
 
-      user = current_user.surrendered_to_products.first
+      user = current_user.surrendered_to_products.first&.user
       line_items.joins(
         "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
         "line_items.itemable_type='#{type}'"
@@ -172,7 +172,7 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
     when 'Mobilization'
       return line_items if current_user.nppc?
 
-      user = current_user.mobilized_tos_mobilizations.ids
+      user = current_user.mobilized_tos_mobilizations.first&.user
       line_items.joins(
         "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
         "line_items.itemable_type='#{type}'"
@@ -184,13 +184,13 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
     end
   end
 
-  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength
+  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
   def submitted_line_items(line_items)
     case type
     when 'Indent'
       return line_items if current_user.nppc?
 
-      user = current_user.requested_indents.first
+      user = current_user.requested_indents.first&.user
       line_items.joins(
         "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
         "line_items.itemable_type='#{type}'"
@@ -200,7 +200,7 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
     when 'Distribution'
       return line_items if current_user.nppc?
 
-      user = current_user.distributors_distributions.first
+      user = current_user.distributors_distributions.first&.user
       line_items.joins(
         "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
         "line_items.itemable_type='#{type}'"
@@ -213,7 +213,7 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
     when 'Surrender'
       return line_items if current_user.nppc?
 
-      user = current_user.surrenderer_products.first
+      user = current_user.surrenderer_products.first&.user
       line_items.joins(
         "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
         "line_items.itemable_type='#{type}'"
@@ -223,7 +223,7 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
     when 'Mobilization'
       return line_items if current_user.nppc?
 
-      user = current_user.mobilizers_mobilizations.first
+      user = current_user.mobilizers_mobilizations.first&.user
       line_items.joins(
         "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
         "line_items.itemable_type='#{type}'"
@@ -234,7 +234,7 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
       []
     end
   end
-  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/MethodLength
+  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 
   def distributed_by_ids
     @user = case determine_db
