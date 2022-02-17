@@ -56,19 +56,13 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
   def filter_by_received(line_items)
     return line_items unless received.present? || determine_boolean(received)
 
-    line_items.joins(
-      "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
-      "line_items.itemable_type='#{type}'"
-    ).where("#{type.underscore.pluralize}": { id: received_ids })
+    received_line_items(line_items)
   end
 
   def filter_by_submitted(line_items)
     return line_items unless submitted.present? || determine_boolean(submitted)
 
-    line_items.joins(
-      "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
-      "line_items.itemable_type='#{type}'"
-    ).where("#{type.underscore.pluralize}": { id: submitted_ids })
+    submitted_line_items(line_items)
   end
 
   def filter_by_region(line_items)
@@ -140,39 +134,107 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
     ).where("#{type.underscore.pluralize}": { id: distributed_by_ids })
   end
 
-  def received_ids # rubocop:disable Metrics/MethodLength
+  def received_line_items(line_items) # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity
     case type
     when 'Indent'
-      current_user.forwarded_indents.ids
+      return line_items if current_user.nppc?
+
+      user = current_user.forwarded_indents.first
+      line_items.joins(
+        "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
+        "line_items.itemable_type='#{type}'"
+      ).where(
+        "#{type.underscore.pluralize}": extract_ids(user)
+      )
     when 'Distribution'
-      current_user.distributed_tos_distributions.ids
+      return line_items if current_user.nppc?
+
+      user = current_user.distributed_tos_distributions.first
+      line_items.joins(
+        "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
+        "line_items.itemable_type='#{type}'"
+      ).where(
+        "#{type.underscore.pluralize}": extract_ids(user)
+      )
     when 'Stock'
-      current_user.user_stocks.ids
+      current_user.user_stocks.first
+      line_items
     when 'Surrender'
-      current_user.surrendered_to_products.ids
+      return line_items if current_user.nppc?
+
+      user = current_user.surrendered_to_products.first
+      line_items.joins(
+        "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
+        "line_items.itemable_type='#{type}'"
+      ).where(
+        "#{type.underscore.pluralize}": extract_ids(user)
+      )
     when 'Mobilization'
-      current_user.mobilized_tos_mobilizations.ids
+      return line_items if current_user.nppc?
+
+      user = current_user.mobilized_tos_mobilizations.ids
+      line_items.joins(
+        "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
+        "line_items.itemable_type='#{type}'"
+      ).where(
+        "#{type.underscore.pluralize}": extract_ids(user)
+      )
     else
       []
     end
   end
 
-  def submitted_ids # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength
+  def submitted_line_items(line_items)
     case type
     when 'Indent'
-      current_user.requested_indents.ids
+      return line_items if current_user.nppc?
+
+      user = current_user.requested_indents.first
+      line_items.joins(
+        "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
+        "line_items.itemable_type='#{type}'"
+      ).where(
+        "#{type.underscore.pluralize}": extract_ids(user)
+      )
     when 'Distribution'
-      current_user.distributors_distributions.ids
+      return line_items if current_user.nppc?
+
+      user = current_user.distributors_distributions.first
+      line_items.joins(
+        "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
+        "line_items.itemable_type='#{type}'"
+      ).where(
+        "#{type.underscore.pluralize}": extract_ids(user)
+      )
     when 'Stock'
       current_user.user_stocks.ids
+      line_items
     when 'Surrender'
-      current_user.surrenderer_products.ids
+      return line_items if current_user.nppc?
+
+      user = current_user.surrenderer_products.first
+      line_items.joins(
+        "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
+        "line_items.itemable_type='#{type}'"
+      ).where(
+        "#{type.underscore.pluralize}": extract_ids(user)
+      )
     when 'Mobilization'
-      current_user.mobilizers_mobilizations.ids
+      return line_items if current_user.nppc?
+
+      user = current_user.mobilizers_mobilizations.first
+      line_items.joins(
+        "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
+        "line_items.itemable_type='#{type}'"
+      ).where(
+        "#{type.underscore.pluralize}": extract_ids(user)
+      )
     else
       []
     end
   end
+  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/MethodLength
 
   def distributed_by_ids
     @user = case determine_db
@@ -194,5 +256,18 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
 
   def determine_db
     distributed_type.presence_in(DISTRIBUTED_BY) || 'ea'
+  end
+
+  def extract_ids(user)
+    case current_role
+    when 'adrc'
+      { region_id: user.region_id }
+    when 'dao'
+      { region_id: user.region_id, district_id: user.district_id }
+    when 'ea'
+      { region_id: user.region_id, district_id: user.district_id, extension_id: user.extension_id }
+    when 'mhv'
+      { company_id: user.company_id }
+    end
   end
 end
