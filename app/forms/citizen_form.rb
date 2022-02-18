@@ -24,8 +24,7 @@ class CitizenForm < BaseForm
       cid: cid,
       phone: detail[:mobileNumber],
       profile_attributes: {
-        firstname: detail[:firstName],
-        lastname: detail[:lastName],
+        name: "#{detail[:firstName]} #{detail[:lastName]}",
         gender: detail[:gender].eql?('M') ? :male : :female,
         mother_name: detail[:motherName],
         father_name: detail[:fatherName],
