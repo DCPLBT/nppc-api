@@ -5,6 +5,7 @@ module Scopes
     extend ActiveSupport::Concern
 
     included do
+      default_scope -> { includes(:profile) }
       scope :search, lambda { |query|
         left_joins(:profile).where(
           "CONCAT_WS(' ', email, username, phone, profiles.employee_id) iLIKE ?", "%#{query&.squish}%"

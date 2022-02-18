@@ -61,6 +61,9 @@ FactoryBot.define do
       role_ids { [1] }
     end
 
-    after(:build) { |u| u.confirm } # rubocop:disable Style/SymbolProc
+    after(:build) do |u|
+      u.profile ? (u.profile.name = Faker::Name.name) : u.build_profile(name: Faker::Name.name)
+      u.confirm
+    end
   end
 end

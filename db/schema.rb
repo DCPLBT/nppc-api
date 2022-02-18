@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_220_217_114_006) do
+ActiveRecord::Schema.define(version: 20_220_218_100_803) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -167,6 +167,24 @@ ActiveRecord::Schema.define(version: 20_220_217_114_006) do
     t.index ['forwarded_to_id'], name: 'index_forwardable_forwarded_tos_on_forwarded_to_id'
   end
 
+  create_table 'groups', force: :cascade do |t|
+    t.string 'name'
+    t.bigint 'role_id', null: false
+    t.bigint 'region_id'
+    t.bigint 'district_id'
+    t.bigint 'extension_id'
+    t.bigint 'village_id'
+    t.bigint 'company_id'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['company_id'], name: 'index_groups_on_company_id'
+    t.index ['district_id'], name: 'index_groups_on_district_id'
+    t.index ['extension_id'], name: 'index_groups_on_extension_id'
+    t.index ['region_id'], name: 'index_groups_on_region_id'
+    t.index ['role_id'], name: 'index_groups_on_role_id'
+    t.index ['village_id'], name: 'index_groups_on_village_id'
+  end
+
   create_table 'indents', force: :cascade do |t|
     t.bigint 'region_id'
     t.bigint 'district_id'
@@ -263,8 +281,6 @@ ActiveRecord::Schema.define(version: 20_220_217_114_006) do
   end
 
   create_table 'profiles', force: :cascade do |t|
-    t.string 'firstname'
-    t.string 'lastname'
     t.integer 'gender'
     t.string 'employee_id'
     t.bigint 'region_id'
@@ -283,6 +299,8 @@ ActiveRecord::Schema.define(version: 20_220_217_114_006) do
     t.string 'mother_name'
     t.string 'father_name'
     t.string 'middlename'
+    t.string 'name'
+    t.bigint 'village_id'
     t.index ['agency_id'], name: 'index_profiles_on_agency_id'
     t.index ['company_id'], name: 'index_profiles_on_company_id'
     t.index ['designation_id'], name: 'index_profiles_on_designation_id'
@@ -291,6 +309,7 @@ ActiveRecord::Schema.define(version: 20_220_217_114_006) do
     t.index ['extension_id'], name: 'index_profiles_on_extension_id'
     t.index ['region_id'], name: 'index_profiles_on_region_id'
     t.index ['user_id'], name: 'index_profiles_on_user_id'
+    t.index ['village_id'], name: 'index_profiles_on_village_id'
   end
 
   create_table 'recipients', force: :cascade do |t|
@@ -388,6 +407,15 @@ ActiveRecord::Schema.define(version: 20_220_217_114_006) do
     t.index ['user_id'], name: 'index_units_on_user_id'
   end
 
+  create_table 'user_groups', force: :cascade do |t|
+    t.bigint 'user_id', null: false
+    t.bigint 'group_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['group_id'], name: 'index_user_groups_on_group_id'
+    t.index ['user_id'], name: 'index_user_groups_on_user_id'
+  end
+
   create_table 'user_stocks', force: :cascade do |t|
     t.bigint 'user_id', null: false
     t.bigint 'stock_id', null: false
@@ -477,6 +505,12 @@ ActiveRecord::Schema.define(version: 20_220_217_114_006) do
   add_foreign_key 'employee_types', 'users'
   add_foreign_key 'extensions', 'districts'
   add_foreign_key 'extensions', 'users'
+  add_foreign_key 'groups', 'companies'
+  add_foreign_key 'groups', 'districts'
+  add_foreign_key 'groups', 'extensions'
+  add_foreign_key 'groups', 'regions'
+  add_foreign_key 'groups', 'roles'
+  add_foreign_key 'groups', 'villages'
   add_foreign_key 'indents', 'companies'
   add_foreign_key 'indents', 'districts'
   add_foreign_key 'indents', 'extensions'
@@ -516,6 +550,8 @@ ActiveRecord::Schema.define(version: 20_220_217_114_006) do
   add_foreign_key 'surrenders', 'regions'
   add_foreign_key 'surrenders', 'users'
   add_foreign_key 'units', 'users'
+  add_foreign_key 'user_groups', 'groups'
+  add_foreign_key 'user_groups', 'users'
   add_foreign_key 'user_stocks', 'stocks'
   add_foreign_key 'user_stocks', 'users'
   add_foreign_key 'villages', 'extensions'

@@ -7,11 +7,10 @@
 #  id               :bigint           not null, primary key
 #  dob              :date
 #  father_name      :string
-#  firstname        :string
 #  gender           :integer
-#  lastname         :string
 #  middlename       :string
 #  mother_name      :string
+#  name             :string
 #  occupation       :string
 #  village          :string
 #  created_at       :datetime         not null
@@ -25,6 +24,7 @@
 #  extension_id     :bigint
 #  region_id        :bigint
 #  user_id          :bigint           not null
+#  village_id       :bigint
 #
 # Indexes
 #
@@ -36,6 +36,7 @@
 #  index_profiles_on_extension_id      (extension_id)
 #  index_profiles_on_region_id         (region_id)
 #  index_profiles_on_user_id           (user_id)
+#  index_profiles_on_village_id        (village_id)
 #
 # Foreign Keys
 #
@@ -53,4 +54,5 @@ class Profile < ApplicationRecord
   include Helpers::Profile
   include Delegates::Profile
   include Relations::Profile
+  include Validations::Profile
 end

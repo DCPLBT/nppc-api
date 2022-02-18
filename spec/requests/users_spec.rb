@@ -3,24 +3,35 @@
 require 'rails_helper'
 
 RSpec.describe 'Users', type: :request do
-  let!(:agency) { create(:agency, user: create(:admin)) }
-  let!(:designation) { create(:designation, user: create(:admin)) }
-  let!(:employee_type) { create(:employee_type, user: create(:admin)) }
+  let!(:admin) { create(:admin) }
+  let!(:agency) { create(:agency, user: admin) }
+  let!(:designation) { create(:designation, user: admin) }
+  let!(:employee_type) { create(:employee_type, user: admin) }
+  let!(:region) { create(:region, user: admin) }
+  let!(:district) { create(:district, region: region, user: admin) }
+  let!(:extension) { create(:extension, district: district, user: admin) }
+  let!(:village) { create(:village, extension: extension, user: admin) }
+  let!(:company) { create(:company, user: admin) }
+
   let!(:user) do
     create(:user, profile_attributes: {
-             agency: agency, employee_type: employee_type, designation: designation,
+             name: Faker::Name.name, agency: agency, employee_type: employee_type, designation: designation,
+             region: region, district: district, extension: extension, village: village,
              photo_attributes: { image: image }
            })
   end
-  let(:region) { create(:region, user: user) }
-  let(:district) { create(:district, region: region, user: user) }
-  let(:extension) { create(:extension, district: district, user: user) }
-  let(:company) { create(:company, user: user) }
-
-  let!(:user1) { create(:user, profile_attributes: { region: region }) }
-  let!(:user2) { create(:user, profile_attributes: { region: region, district: district }) }
-  let!(:user3) { create(:user, profile_attributes: { region: region, district: district, extension: extension }) }
-  let!(:admin) { create(:admin) }
+  let!(:user1) { create(:user, role_ids: [5], profile_attributes: { name: Faker::Name.name, region: region }) }
+  let!(:user2) do
+    create(:user, role_ids: [3], profile_attributes: { name: Faker::Name.name, region: region, district: district })
+  end
+  let!(:user3) do
+    create(
+      :user, role_ids: [4],
+             profile_attributes: {
+               name: Faker::Name.name, region: region, district: district, extension: extension
+             }
+    )
+  end
 
   context 'As a admin' do
     before(:each) do
@@ -36,7 +47,7 @@ RSpec.describe 'Users', type: :request do
     it 'should see the list of users' do
       get api_v1_users_path
       expect(status).to eq(200)
-      expect(json[:data].size).to eq(8)
+      expect(json[:data].size).to eq(5)
     end
 
     it 'check others user' do
@@ -75,19 +86,19 @@ RSpec.describe 'Users', type: :request do
     it 'filter user by region' do
       get api_v1_users_path, params: { region_id: region.id }
       expect(status).to eq(200)
-      expect(json[:data].size).to eq(3)
+      expect(json[:data].size).to eq(4)
     end
 
     it 'filter user by district' do
       get api_v1_users_path, params: { district_id: district.id }
       expect(status).to eq(200)
-      expect(json[:data].size).to eq(2)
+      expect(json[:data].size).to eq(3)
     end
 
     it 'filter user by extension' do
       get api_v1_users_path, params: { extension_id: extension.id }
       expect(status).to eq(200)
-      expect(json[:data].size).to eq(1)
+      expect(json[:data].size).to eq(2)
     end
   end
 

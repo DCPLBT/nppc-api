@@ -22,11 +22,17 @@ RSpec.describe '/indents', type: :request do
   let!(:district1) { create(:district, region: region1, user: admin) }
   let!(:extension) { create(:extension, district: district, user: admin) }
   let!(:extension1) { create(:extension, district: district1, user: admin) }
+  let!(:village) { create(:village, extension: extension, user: admin) }
+  let!(:village1) { create(:village, extension: extension1, user: admin) }
   let!(:user) do
-    create(:user, role_ids: [8], profile_attributes: { region: region, district: district, extension: extension })
+    create(:user, role_ids: [8], profile_attributes: {
+             region: region, district: district, extension: extension, village: village
+           })
   end
   let!(:user1) do
-    create(:user, role_ids: [8], profile_attributes: { region: region1, district: district1, extension: extension1 })
+    create(:user, role_ids: [8], profile_attributes: {
+             region: region1, district: district1, extension: extension1, village: village1
+           })
   end
   let!(:unit) { create(:unit, user: user) }
   let!(:product_type) { create(:product_type, user: user) }

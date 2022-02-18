@@ -59,6 +59,7 @@ class User < ApplicationRecord
   include Delegates::User
   include Relations::User
   include Validations::User
+  include ::Callbacks::User
 
   devise(
     :lockable,

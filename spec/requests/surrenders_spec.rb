@@ -24,21 +24,24 @@ RSpec.describe '/surrenders', type: :request do
   let(:district1) { create(:district, region: region1, user: user) }
   let(:extension) { create(:extension, district: district, user: user) }
   let(:extension1) { create(:extension, district: district1, user: user) }
+  let(:village) { create(:village, extension: extension, user: user) }
 
   let!(:ea) do
     create(:user, role_ids: [4], profile_attributes: { region: region, district: district, extension: extension })
   end
   let(:user1) do
-    create(:user, role_ids: [8], profile_attributes: { region: region, district: district, extension: extension })
+    create(:user, role_ids: [8], profile_attributes: {
+             region: region, district: district, extension: extension, village: village
+           })
   end
   let!(:nppc) do
-    create(:user, role_ids: [2], profile_attributes: { region: region, district: district, extension: extension })
+    create(:user, role_ids: [2])
   end
   let!(:adrc) do
-    create(:user, role_ids: [5], profile_attributes: { region: region, district: district, extension: extension })
+    create(:user, role_ids: [5], profile_attributes: { region: region })
   end
   let!(:nppc1) do
-    create(:user, role_ids: [2], profile_attributes: { region: region1, district: district1, extension: extension1 })
+    create(:user, role_ids: [2])
   end
 
   let!(:product_type) { create(:product_type, user: user) }

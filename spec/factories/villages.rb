@@ -24,8 +24,8 @@
 #
 FactoryBot.define do
   factory :village do
-    name { 'MyString' }
-    description { 'MyText' }
+    name { Faker::Name.name }
+    description { Faker::Restaurant.review }
     user { nil }
     extension { nil }
   end

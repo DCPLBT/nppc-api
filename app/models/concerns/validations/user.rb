@@ -5,7 +5,7 @@ module Validations
     extend ActiveSupport::Concern
 
     included do
-      validates_presence_of :email, :roles
+      validates_presence_of :email, :roles, :profile
       validates_uniqueness_of :email, :username, :phone, allow_blank: true
     end
   end
