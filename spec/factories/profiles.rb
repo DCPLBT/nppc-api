@@ -12,7 +12,6 @@
 #  mother_name      :string
 #  name             :string
 #  occupation       :string
-#  village          :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  agency_id        :bigint

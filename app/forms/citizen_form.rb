@@ -26,12 +26,6 @@ class CitizenForm < BaseForm
       profile_attributes: {
         name: "#{detail[:firstName]} #{detail[:lastName]}",
         gender: detail[:gender].eql?('M') ? :male : :female,
-        mother_name: detail[:motherName],
-        father_name: detail[:fatherName],
-        district_id: district&.id,
-        extension_id: extension&.id,
-        village: detail[:villageName],
-        occupation: detail[:occupation],
         dob: detail[:dob]
       }
     )

@@ -293,7 +293,6 @@ ActiveRecord::Schema.define(version: 20_220_218_100_803) do
     t.bigint 'agency_id'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
-    t.string 'village'
     t.string 'occupation'
     t.date 'dob'
     t.string 'mother_name'
