@@ -5,7 +5,7 @@ module Callbacks
     extend ActiveSupport::Concern
 
     included do
-      before_create :assign_defaults
+      before_save :assign_defaults
     end
 
     def assign_defaults
@@ -19,7 +19,7 @@ module Callbacks
       roles.each do |role|
         user_group = Group.find_by(
           user_group_attributes(role)
-        ) || Group.create(
+        ) || Group.create!(
           user_group_attributes(role)
         )
         user_group_ids << user_group.id
@@ -29,32 +29,31 @@ module Callbacks
 
     # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     def user_group_attributes(role)
-      attr = { role_id: role.id }
+      attr = { role_id: role.id, name: role.name }
       case role.name
       when 'ADRC'
         attr.merge!(
-          { region_id: region_id, name: region_name }
+          { region_id: region_id }
         )
       when 'MHV'
         attr.merge!(
-          { company_id: company_id, name: company_name }
+          { company_id: company_id }
         )
       when 'DAO'
         attr.merge!(
-          { region_id: region_id, district_id: district_id, name: "#{region_name}_#{district_name}" }
+          { region_id: region_id, district_id: district_id }
         )
       when 'EA'
         attr.merge!(
-          { region_id: region_id, district_id: district_id, extension_id: extension_id,
-            name: "#{region_name}_#{district_name}_#{extension_name}" }
+          { region_id: region_id, district_id: district_id, extension_id: extension_id }
         )
       when 'User'
         attr.merge!(
           { region_id: region_id, district_id: district_id, extension_id: extension_id,
-            village_id: village_id, name: "#{region_name}_#{district_name}_#{extension_name}_#{village_name}" }
+            village_id: village_id }
         )
       else
-        attr.merge!(name: role.name)
+        attr
       end
     end
 

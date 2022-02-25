@@ -47,6 +47,7 @@
 #  fk_rails_...  (extension_id => extensions.id)
 #  fk_rails_...  (region_id => regions.id)
 #  fk_rails_...  (user_id => users.id)
+#  fk_rails_...  (village_id => villages.id)
 #
 class ProfileSerializer < ApplicationSerializer
   attributes(
@@ -70,7 +71,8 @@ class ProfileSerializer < ApplicationSerializer
     :designation_name,
     :agency_id,
     :agency_name,
-    :village,
+    :village_id,
+    :village_name,
     :occupation,
     :dob,
     :mother_name,

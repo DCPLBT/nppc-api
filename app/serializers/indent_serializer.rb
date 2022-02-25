@@ -13,7 +13,9 @@
 #  company_id   :bigint
 #  district_id  :bigint
 #  extension_id :bigint
+#  from_id      :bigint
 #  region_id    :bigint
+#  to_id        :bigint
 #  user_id      :bigint           not null
 #
 # Indexes

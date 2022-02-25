@@ -47,6 +47,7 @@
 #  fk_rails_...  (extension_id => extensions.id)
 #  fk_rails_...  (region_id => regions.id)
 #  fk_rails_...  (user_id => users.id)
+#  fk_rails_...  (village_id => villages.id)
 #
 require 'rails_helper'
 

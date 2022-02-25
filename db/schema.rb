@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_220_218_100_803) do
+ActiveRecord::Schema.define(version: 20_220_225_114_513) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -196,6 +196,8 @@ ActiveRecord::Schema.define(version: 20_220_218_100_803) do
     t.string 'reference_no'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.bigint 'from_id'
+    t.bigint 'to_id'
     t.index ['company_id'], name: 'index_indents_on_company_id'
     t.index ['district_id'], name: 'index_indents_on_district_id'
     t.index ['extension_id'], name: 'index_indents_on_extension_id'
@@ -536,6 +538,7 @@ ActiveRecord::Schema.define(version: 20_220_218_100_803) do
   add_foreign_key 'profiles', 'extensions'
   add_foreign_key 'profiles', 'regions'
   add_foreign_key 'profiles', 'users'
+  add_foreign_key 'profiles', 'villages'
   add_foreign_key 'recipients', 'notifications'
   add_foreign_key 'recipients', 'users'
   add_foreign_key 'regions', 'users'
