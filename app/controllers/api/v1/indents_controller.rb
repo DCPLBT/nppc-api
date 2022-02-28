@@ -7,7 +7,7 @@ module Api
 
       # GET /indents
       def index
-        populate = IndentPopulator.new(params: query_params, current_user: current_user)
+        populate = IndentPopulator.new(params: query_params, current_user: current_user, current_group: current_group)
         render_paginated_collection(populate.run)
       end
 
@@ -56,10 +56,8 @@ module Api
         @indent_attributes ||= {
           current_user: current_user,
           id: params[:id],
-          current_role_name: current_role_name,
-          next_role_name: next_role_name,
-          source_ids: source_ids,
-          destination_ids: destination_ids
+          from_id: from_id,
+          to_id: to_id
         }
       end
 

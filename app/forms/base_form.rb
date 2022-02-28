@@ -13,9 +13,11 @@ class BaseForm
     :id,
     :next_role_name,
     :current_role_name,
-    :source_ids,
-    :destination_ids,
-    :cart
+    :source_ids, # TODO: remove this later
+    :destination_ids, # TODO: remove this later
+    :cart,
+    :from_id,
+    :to_id
   )
 
   def initialize(attributes = {})

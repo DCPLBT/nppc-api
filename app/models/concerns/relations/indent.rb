@@ -10,8 +10,8 @@ module Relations
       belongs_to :extension, optional: true
       belongs_to :company, optional: true
       belongs_to :user
-      belongs_to :requester, foreign_key: :from_id, class_name: 'Group'
-      belongs_to :forwarded_to, foreign_key: :to_id, class_name: 'Group'
+      belongs_to :requester, foreign_key: :from_id, class_name: 'Group', optional: true
+      belongs_to :forwarded_to, foreign_key: :to_id, class_name: 'Group', optional: true
 
       has_many :line_items, as: :itemable, dependent: :destroy
 

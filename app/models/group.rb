@@ -34,6 +34,7 @@
 #  fk_rails_...  (village_id => villages.id)
 #
 class Group < ApplicationRecord
+  include Scopes::Group
   include Delegates::Group
   include Relations::Group
   include Validations::Group

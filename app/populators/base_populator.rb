@@ -3,7 +3,7 @@
 class BasePopulator
   include Assigner
 
-  attr_accessor :current_user, :parent, :q, :from_date, :to_date
+  attr_accessor :current_user, :parent, :q, :from_date, :to_date, :current_group
 
   def initialize(attrs = {})
     assign_attributes(attrs)

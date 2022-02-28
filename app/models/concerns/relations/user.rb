@@ -12,8 +12,6 @@ module Relations
       has_many :settings, inverse_of: :user, dependent: :destroy
       has_many :forwardable_forwarded_tos, foreign_key: :forwarded_to_id
       has_many :requestable_requesters, foreign_key: :requester_id
-      has_many :forwarded_indents, through: :forwardable_forwarded_tos, source: :forwardable, source_type: 'Indent'
-      has_many :requested_indents, through: :requestable_requesters, source: :requestable, source_type: 'Indent'
       has_many :distributed_tos_distributions, through: :forwardable_forwarded_tos, source: :forwardable,
                                                source_type: 'Distribution'
       has_many :distributors_distributions, through: :requestable_requesters, source: :requestable,

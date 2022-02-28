@@ -66,7 +66,8 @@ class UserSerializer < ApplicationSerializer
     :employee_type,
     :employee_id,
     :designation,
-    :agency
+    :agency,
+    :group_ids
   )
 
   has_one :profile
