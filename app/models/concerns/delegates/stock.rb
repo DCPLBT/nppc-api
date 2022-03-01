@@ -8,6 +8,7 @@ module Delegates
       delegate(:name, to: :product_type, prefix: true)
       delegate(:name, to: :product, prefix: true)
       delegate(:name, to: :unit, prefix: true)
+      delegate(:name, to: :user, prefix: true)
     end
   end
 end
