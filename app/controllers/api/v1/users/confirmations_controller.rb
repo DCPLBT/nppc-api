@@ -6,6 +6,7 @@ module Api
       class ConfirmationsController < Devise::ConfirmationsController
         def show
           super do
+            resource.update(password: params[:password])
             sign_in(resource) unless resource.errors?
           end
         end

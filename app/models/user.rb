@@ -65,7 +65,7 @@ class User < ApplicationRecord
     :lockable,
     :trackable,
     :invitable,
-    # :confirmable,
+    :confirmable,
     :timeoutable,
     :recoverable,
     :validatable,
