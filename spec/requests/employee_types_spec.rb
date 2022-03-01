@@ -23,7 +23,7 @@ RSpec.describe '/employee_types', type: :request do
   # employee_type. As you add validations to employee_type, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    { name: Faker::Name.name, description: Faker::Restaurant.review, user_id: user.id }
+    { name: Faker::Name.name, description: Faker::Restaurant.review, user_id: user.id, role_id: Role.first.id }
   end
 
   let(:invalid_attributes) do

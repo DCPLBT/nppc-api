@@ -16,6 +16,8 @@ require 'rails_helper'
 
 RSpec.describe '/designations', type: :request do
   let(:user) { create(:admin) }
+  let!(:employee_type) { create(:employee_type, user: user, role: Role.first) }
+  let!(:agency) { create(:agency, user: user, employee_type: employee_type) }
   before(:each) do
     sign_in(user)
   end
@@ -23,7 +25,12 @@ RSpec.describe '/designations', type: :request do
   # designation. As you add validations to designation, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    { name: Faker::Name.name, description: Faker::Restaurant.review, user_id: user.id }
+    {
+      name: Faker::Name.name,
+      description: Faker::Restaurant.review,
+      user_id: user.id,
+      agency_id: agency.id
+    }
   end
 
   let(:invalid_attributes) do

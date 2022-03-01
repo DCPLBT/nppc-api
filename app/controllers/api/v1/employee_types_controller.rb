@@ -7,7 +7,7 @@ module Api
 
       # GET /employee_types
       def index
-        populate = EmployeeTypePopulator.new(params: query_params)
+        populate = EmployeeTypePopulator.new(params: query_params, parent: parent)
         render_paginated_collection(populate.run)
       end
 
@@ -35,7 +35,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def employee_type_params
-        params.require(:employee_type).permit(:name, :description, :disabled)
+        params.require(:employee_type).permit(:name, :description, :disabled, :role_id)
       end
 
       def employee_type_form

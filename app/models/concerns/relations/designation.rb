@@ -6,6 +6,7 @@ module Relations
 
     included do
       belongs_to :user
+      belongs_to :agency, inverse_of: :designations
     end
   end
 end

@@ -7,7 +7,7 @@ module Api
 
       # GET /Designations
       def index
-        populate = DesignationPopulator.new(params: query_params)
+        populate = DesignationPopulator.new(params: query_params, parent: parent)
         render_paginated_collection(populate.run)
       end
 
@@ -35,7 +35,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def designation_params
-        params.require(:designation).permit(:name, :description, :disabled)
+        params.require(:designation).permit(:name, :description, :disabled, :agency_id)
       end
 
       def designation_form

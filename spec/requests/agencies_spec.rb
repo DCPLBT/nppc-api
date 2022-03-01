@@ -16,6 +16,7 @@ require 'rails_helper'
 
 RSpec.describe '/agencies', type: :request do
   let(:user) { create(:admin) }
+  let!(:employee_type) { create(:employee_type, user: user, role: Role.first) }
   before(:each) do
     sign_in(user)
   end
@@ -23,7 +24,12 @@ RSpec.describe '/agencies', type: :request do
   # agency. As you add validations to agency, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    { name: Faker::Name.name, description: Faker::Restaurant.review, user_id: user.id }
+    {
+      name: Faker::Name.name,
+      description: Faker::Restaurant.review,
+      user_id: user.id,
+      employee_type_id: employee_type.id
+    }
   end
 
   let(:invalid_attributes) do

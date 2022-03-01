@@ -136,6 +136,13 @@ Rails.application.routes.draw do
       resources :notifications, only: %i[index show]
       resources :mobilizations, concerns: :itemable, shallow: true
       resources :citizens, only: :show
+      resources :roles, only: :index, shallow: true do
+        resources :employee_types, only: :index do
+          resources :agencies, only: :index do
+            resources :designations, only: :index
+          end
+        end
+      end
     end
   end
 end

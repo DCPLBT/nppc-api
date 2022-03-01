@@ -4,9 +4,9 @@ require 'rails_helper'
 
 RSpec.describe 'Users', type: :request do
   let!(:admin) { create(:admin) }
-  let!(:agency) { create(:agency, user: admin) }
-  let!(:designation) { create(:designation, user: admin) }
-  let!(:employee_type) { create(:employee_type, user: admin) }
+  let!(:employee_type) { create(:employee_type, user: admin, role: Role.last) }
+  let!(:agency) { create(:agency, user: admin, employee_type: employee_type) }
+  let!(:designation) { create(:designation, user: admin, agency: agency) }
   let!(:region) { create(:region, user: admin) }
   let!(:district) { create(:district, region: region, user: admin) }
   let!(:extension) { create(:extension, district: district, user: admin) }

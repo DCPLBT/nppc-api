@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_220_301_102_050) do
+ActiveRecord::Schema.define(version: 20_220_301_150_228) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -62,6 +62,8 @@ ActiveRecord::Schema.define(version: 20_220_301_102_050) do
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
     t.boolean 'disabled', default: false
+    t.bigint 'employee_type_id'
+    t.index ['employee_type_id'], name: 'index_agencies_on_employee_type_id'
     t.index ['user_id'], name: 'index_agencies_on_user_id'
   end
 
@@ -103,6 +105,8 @@ ActiveRecord::Schema.define(version: 20_220_301_102_050) do
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
     t.boolean 'disabled', default: false
+    t.bigint 'agency_id'
+    t.index ['agency_id'], name: 'index_designations_on_agency_id'
     t.index ['user_id'], name: 'index_designations_on_user_id'
   end
 
@@ -148,6 +152,8 @@ ActiveRecord::Schema.define(version: 20_220_301_102_050) do
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
     t.boolean 'disabled', default: false
+    t.bigint 'role_id'
+    t.index ['role_id'], name: 'index_employee_types_on_role_id'
     t.index ['user_id'], name: 'index_employee_types_on_user_id'
   end
 
@@ -507,8 +513,10 @@ ActiveRecord::Schema.define(version: 20_220_301_102_050) do
 
   add_foreign_key 'active_storage_attachments', 'active_storage_blobs', column: 'blob_id'
   add_foreign_key 'active_storage_variant_records', 'active_storage_blobs', column: 'blob_id'
+  add_foreign_key 'agencies', 'employee_types'
   add_foreign_key 'agencies', 'users'
   add_foreign_key 'companies', 'users'
+  add_foreign_key 'designations', 'agencies'
   add_foreign_key 'designations', 'users'
   add_foreign_key 'distributions', 'companies'
   add_foreign_key 'distributions', 'districts'
@@ -517,6 +525,7 @@ ActiveRecord::Schema.define(version: 20_220_301_102_050) do
   add_foreign_key 'distributions', 'users'
   add_foreign_key 'districts', 'regions'
   add_foreign_key 'districts', 'users'
+  add_foreign_key 'employee_types', 'roles'
   add_foreign_key 'employee_types', 'users'
   add_foreign_key 'extensions', 'districts'
   add_foreign_key 'extensions', 'users'

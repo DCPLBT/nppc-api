@@ -7,7 +7,7 @@ module Api
 
       # GET /agencys
       def index
-        populate = AgencyPopulator.new(params: query_params)
+        populate = AgencyPopulator.new(params: query_params, parent: parent)
         render_paginated_collection(populate.run)
       end
 
@@ -35,7 +35,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def agency_params
-        params.require(:agency).permit(:name, :description, :disabled)
+        params.require(:agency).permit(:name, :description, :disabled, :employee_type_id)
       end
 
       def agency_form
