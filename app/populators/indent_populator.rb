@@ -24,7 +24,7 @@ class IndentPopulator < BasePopulator
 
   def indents
     @indents ||= Indent.includes(
-      :line_items, :rich_text_remark, :region, :district, :extension, :company,
+      :line_items, :rich_text_remark, :region, :district, :extension, :company, :accepted_by,
       forwarded_to: %i[region district extension village company],
       requester: %i[region district extension village company]
     )

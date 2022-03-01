@@ -12,7 +12,9 @@ class IndentForm < BaseForm
   end
 
   def update
-    indent.update(params)
+    indent.update(params).tap do |result|
+      result && indent.accepted? && update_accepted_indent
+    end
   end
 
   def forward
@@ -44,6 +46,13 @@ class IndentForm < BaseForm
     indent.update(
       from_id: from_id,
       to_id: to_id
+    )
+  end
+
+  def update_accepted_indent
+    indent.update_columns(
+      accepted_by_id: current_user.id,
+      accepted_on: Time.current
     )
   end
 end

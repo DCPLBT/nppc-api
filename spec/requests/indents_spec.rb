@@ -240,6 +240,17 @@ RSpec.describe '/indents', type: :request do
         expect(json.dig(:data, :attributes, :draft)).to eq(new_attributes[:draft])
       end
 
+      it 'accept indent request' do
+        sign_out
+        sign_in(ea)
+        indent = Indent.create! valid_attributes
+        patch api_v1_indent_url(indent),
+              params: { indent: { state: :accepted } }, as: :json
+        indent.reload
+        expect(status).to eq(200)
+        expect(json.dig(:data, :attributes, :accepted_by_id)).to eq(ea.id)
+      end
+
       it 'renders a JSON response with the indent' do
         indent = Indent.create! valid_attributes
         patch api_v1_indent_url(indent),
