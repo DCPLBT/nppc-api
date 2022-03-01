@@ -6,6 +6,7 @@
 #
 #  id           :bigint           not null, primary key
 #  description  :text
+#  disabled     :boolean          default(FALSE)
 #  name         :string
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
@@ -28,6 +29,7 @@ class VillageSerializer < ApplicationSerializer
     :description,
     :user_id,
     :extension_id,
-    :extension_name
+    :extension_name,
+    :disabled
   )
 end

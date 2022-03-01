@@ -36,7 +36,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def village_params
-        params.require(:village).permit(:name, :description)
+        params.require(:village).permit(:name, :description, :disabled)
       end
 
       def village_form
@@ -58,7 +58,7 @@ module Api
       end
 
       def query_params
-        params.permit(:q)
+        params.permit(:q, :disabled)
       end
     end
   end

@@ -36,7 +36,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def extension_params
-        params.require(:extension).permit(:name, :description)
+        params.require(:extension).permit(:name, :description, :disabled)
       end
 
       def extension_form
@@ -58,7 +58,7 @@ module Api
       end
 
       def query_params
-        params.permit(:q)
+        params.permit(:q, :disabled)
       end
     end
   end

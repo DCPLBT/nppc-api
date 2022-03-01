@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_220_301_073_851) do
+ActiveRecord::Schema.define(version: 20_220_301_102_050) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(version: 20_220_301_073_851) do
     t.bigint 'user_id', null: false
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.boolean 'disabled', default: false
     t.index ['user_id'], name: 'index_agencies_on_user_id'
   end
 
@@ -91,6 +92,7 @@ ActiveRecord::Schema.define(version: 20_220_301_073_851) do
     t.bigint 'user_id', null: false
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.boolean 'disabled', default: false
     t.index ['user_id'], name: 'index_companies_on_user_id'
   end
 
@@ -100,6 +102,7 @@ ActiveRecord::Schema.define(version: 20_220_301_073_851) do
     t.bigint 'user_id', null: false
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.boolean 'disabled', default: false
     t.index ['user_id'], name: 'index_designations_on_user_id'
   end
 
@@ -133,6 +136,7 @@ ActiveRecord::Schema.define(version: 20_220_301_073_851) do
     t.bigint 'region_id'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.boolean 'disabled', default: false
     t.index ['region_id'], name: 'index_districts_on_region_id'
     t.index ['user_id'], name: 'index_districts_on_user_id'
   end
@@ -143,6 +147,7 @@ ActiveRecord::Schema.define(version: 20_220_301_073_851) do
     t.bigint 'user_id', null: false
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.boolean 'disabled', default: false
     t.index ['user_id'], name: 'index_employee_types_on_user_id'
   end
 
@@ -153,6 +158,7 @@ ActiveRecord::Schema.define(version: 20_220_301_073_851) do
     t.bigint 'district_id', null: false
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.boolean 'disabled', default: false
     t.index ['district_id'], name: 'index_extensions_on_district_id'
     t.index ['user_id'], name: 'index_extensions_on_user_id'
   end
@@ -269,6 +275,7 @@ ActiveRecord::Schema.define(version: 20_220_301_073_851) do
     t.bigint 'user_id', null: false
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.boolean 'disabled', default: false
     t.index ['user_id'], name: 'index_product_types_on_user_id'
   end
 
@@ -280,6 +287,7 @@ ActiveRecord::Schema.define(version: 20_220_301_073_851) do
     t.bigint 'product_type_id', null: false
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.boolean 'disabled', default: false
     t.index ['product_type_id'], name: 'index_products_on_product_type_id'
     t.index ['unit_id'], name: 'index_products_on_unit_id'
     t.index ['user_id'], name: 'index_products_on_user_id'
@@ -333,6 +341,7 @@ ActiveRecord::Schema.define(version: 20_220_301_073_851) do
     t.bigint 'user_id', null: false
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.boolean 'disabled', default: false
     t.index ['user_id'], name: 'index_regions_on_user_id'
   end
 
@@ -408,6 +417,7 @@ ActiveRecord::Schema.define(version: 20_220_301_073_851) do
     t.bigint 'user_id', null: false
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.boolean 'disabled', default: false
     t.index ['user_id'], name: 'index_units_on_user_id'
   end
 
@@ -490,6 +500,7 @@ ActiveRecord::Schema.define(version: 20_220_301_073_851) do
     t.bigint 'extension_id', null: false
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.boolean 'disabled', default: false
     t.index ['extension_id'], name: 'index_villages_on_extension_id'
     t.index ['user_id'], name: 'index_villages_on_user_id'
   end

@@ -4,6 +4,7 @@ class AgencyPopulator < BasePopulator
   def run
     agencies
       .public_send(:search, q)
+      .yield_self { |agencies| filter_by_disabled(agencies) }
   end
 
   private

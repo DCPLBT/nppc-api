@@ -4,6 +4,7 @@ class VillagePopulator < BasePopulator
   def run
     villages
       .public_send(:search, q)
+      .yield_self { |villages| filter_by_disabled(villages) }
   end
 
   private

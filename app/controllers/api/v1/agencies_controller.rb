@@ -35,7 +35,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def agency_params
-        params.require(:agency).permit(:name, :description)
+        params.require(:agency).permit(:name, :description, :disabled)
       end
 
       def agency_form
@@ -56,7 +56,7 @@ module Api
       end
 
       def query_params
-        params.permit(:q)
+        params.permit(:q, :disabled)
       end
     end
   end

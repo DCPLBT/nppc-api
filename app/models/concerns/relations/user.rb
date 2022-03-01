@@ -30,7 +30,7 @@ module Relations
       has_many :stocks, through: :user_stocks
       has_many :recipients, inverse_of: :user
       has_many :notifications, through: :recipients
-      has_many :user_groups, inverse_of: :user
+      has_many :user_groups, inverse_of: :user, dependent: :destroy
       has_many :groups, through: :user_groups
 
       has_and_belongs_to_many :roles, inverse_of: :users

@@ -39,6 +39,15 @@ RSpec.describe '/products', type: :request do
       get api_v1_products_url, as: :json
       expect(response).to be_successful
     end
+
+    it 'renders a successful response' do
+      Product.create! valid_attributes.merge!(name: Faker::Name.name)
+      Product.create! valid_attributes.merge!(name: Faker::Name.name)
+      Product.create! valid_attributes.merge!(name: Faker::Name.name, disabled: true)
+      get api_v1_products_url(disabled: true), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(1)
+    end
   end
 
   describe 'GET /show' do

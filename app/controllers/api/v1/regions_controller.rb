@@ -36,7 +36,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def region_params
-        params.require(:region).permit(:name, :description)
+        params.require(:region).permit(:name, :description, :disabled)
       end
 
       def region_form
@@ -57,7 +57,7 @@ module Api
       end
 
       def query_params
-        params.permit(:q)
+        params.permit(:q, :disabled)
       end
     end
   end

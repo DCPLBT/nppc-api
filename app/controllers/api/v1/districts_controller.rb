@@ -36,7 +36,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def district_params
-        params.require(:district).permit(:name, :description)
+        params.require(:district).permit(:name, :description, :disabled)
       end
 
       def district_form
@@ -58,7 +58,7 @@ module Api
       end
 
       def query_params
-        params.permit(:q)
+        params.permit(:q, :disabled)
       end
     end
   end

@@ -6,6 +6,7 @@
 #
 #  id              :bigint           not null, primary key
 #  description     :text
+#  disabled        :boolean          default(FALSE)
 #  name            :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -26,5 +27,14 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class ProductSerializer < ApplicationSerializer
-  attributes :name, :description, :unit_id, :unit_name, :user_id, :product_type_id, :product_type_name
+  attributes(
+    :name,
+    :description,
+    :unit_id,
+    :unit_name,
+    :user_id,
+    :product_type_id,
+    :product_type_name,
+    :disabled
+  )
 end

@@ -35,7 +35,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def designation_params
-        params.require(:designation).permit(:name, :description)
+        params.require(:designation).permit(:name, :description, :disabled)
       end
 
       def designation_form
@@ -56,7 +56,7 @@ module Api
       end
 
       def query_params
-        params.permit(:q)
+        params.permit(:q, :disabled)
       end
     end
   end

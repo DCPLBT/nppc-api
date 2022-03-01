@@ -35,7 +35,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def employee_type_params
-        params.require(:employee_type).permit(:name, :description)
+        params.require(:employee_type).permit(:name, :description, :disabled)
       end
 
       def employee_type_form
@@ -56,7 +56,7 @@ module Api
       end
 
       def query_params
-        params.permit(:q)
+        params.permit(:q, :disabled)
       end
     end
   end

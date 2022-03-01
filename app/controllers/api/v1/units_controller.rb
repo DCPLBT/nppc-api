@@ -35,7 +35,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def unit_params
-        params.require(:unit).permit(:name, :description)
+        params.require(:unit).permit(:name, :description, :disabled)
       end
 
       def unit_form
@@ -56,7 +56,7 @@ module Api
       end
 
       def query_params
-        params.permit(:q)
+        params.permit(:q, :disabled)
       end
     end
   end

@@ -6,6 +6,7 @@
 #
 #  id          :bigint           not null, primary key
 #  description :text
+#  disabled    :boolean          default(FALSE)
 #  name        :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
@@ -23,5 +24,5 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class DistrictSerializer < ApplicationSerializer
-  attributes :name, :description, :user_id, :region_id, :region_name
+  attributes :name, :description, :user_id, :region_id, :region_name, :disabled
 end

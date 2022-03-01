@@ -3,7 +3,7 @@
 class BasePopulator
   include Assigner
 
-  attr_accessor :current_user, :parent, :q, :from_date, :to_date, :current_group
+  attr_accessor :current_user, :parent, :q, :from_date, :to_date, :current_group, :disabled
 
   def initialize(attrs = {})
     assign_attributes(attrs)
@@ -29,5 +29,11 @@ class BasePopulator
     return lists unless valid_dates?
 
     lists.where(created_at: date(from_date).beginning_of_day..date(to_date).end_of_day)
+  end
+
+  def filter_by_disabled(lists)
+    return lists unless disabled.present?
+
+    lists.where(disabled: determine_boolean(disabled))
   end
 end

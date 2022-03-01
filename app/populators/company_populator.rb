@@ -4,6 +4,7 @@ class CompanyPopulator < BasePopulator
   def run
     companies
       .public_send(:search, q)
+      .yield_self { |companies| filter_by_disabled(companies) }
   end
 
   private
