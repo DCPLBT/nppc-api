@@ -237,7 +237,7 @@ ActiveRecord::Schema.define(version: 20_220_307_144_945) do
     t.bigint 'received_by_id'
     t.boolean 'received', default: false
     t.datetime 'received_on'
-    t.datetime 'received_quantity'
+    t.decimal 'received_quantity'
     t.index %w[itemable_type itemable_id], name: 'index_line_items_on_itemable'
     t.index ['product_id'], name: 'index_line_items_on_product_id'
     t.index ['product_type_id'], name: 'index_line_items_on_product_type_id'

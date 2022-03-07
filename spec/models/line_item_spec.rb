@@ -9,7 +9,7 @@
 #  quantity          :decimal(, )
 #  received          :boolean          default(FALSE)
 #  received_on       :datetime
-#  received_quantity :datetime
+#  received_quantity :decimal(, )
 #  unit_price        :decimal(, )
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
