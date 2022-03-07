@@ -12,7 +12,7 @@ class CartForm < BaseForm
 
   def update_cart
     cart.update(
-      quantity: line_items&.sum(&:quantity),
+      quantity: line_items&.size,
       amount: line_items&.sum(&:total_price)
     )
   end
