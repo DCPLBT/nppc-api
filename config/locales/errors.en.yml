@@ -45,13 +45,13 @@ en:
         role:
           name_is_reserved: '%{name} is reserved keyword, cannot be deleted or updated!'
         distribution:
-          line_item_required: 'is required for distribution to happen.'
+          line_item_required: 'is required to initiate the distribution.'
           insufficient_stock: '%{product} has insufficient stock. Available stock is %{stock}.'
         surrender:
           line_item_required: 'is required to surrender.'
           insufficient_stock: '%{product} has insufficient stock. Available stock is %{stock}.'
         mobilization:
-          line_item_required: 'is required to surrender.'
+          line_item_required: 'is required for mobilization.'
           insufficient_stock: '%{product} has insufficient stock. Available stock is %{stock}.'
           only_nppc_can_approve: 'Only NPPC can approve the mobilization.'
         line_item:
