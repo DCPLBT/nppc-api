@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_220_307_123_823) do
+ActiveRecord::Schema.define(version: 20_220_307_135_522) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -234,9 +234,14 @@ ActiveRecord::Schema.define(version: 20_220_307_123_823) do
     t.decimal 'unit_price'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.bigint 'received_by_id'
+    t.boolean 'received', default: false
+    t.datetime 'received_on'
+    t.datetime 'received_quantity'
     t.index %w[itemable_type itemable_id], name: 'index_line_items_on_itemable'
     t.index ['product_id'], name: 'index_line_items_on_product_id'
     t.index ['product_type_id'], name: 'index_line_items_on_product_type_id'
+    t.index ['received_by_id'], name: 'index_line_items_on_received_by_id'
     t.index ['stock_id'], name: 'index_line_items_on_stock_id'
     t.index ['unit_id'], name: 'index_line_items_on_unit_id'
   end

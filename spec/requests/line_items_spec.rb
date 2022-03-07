@@ -106,6 +106,15 @@ RSpec.describe '/line_items', type: :request do
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
       end
+
+      it 'receive the product' do
+        line_item = LineItem.create! valid_attributes
+        patch api_v1_line_item_url(line_item),
+              params: { line_item: new_attributes.merge!(received: true, received_quantity: 12) }, as: :json
+        expect(response).to have_http_status(:ok)
+        expect(json.dig(:data, :attributes, :received)).to eq(true)
+        expect(json.dig(:data, :attributes, :received_by_name)).to eq(user.name)
+      end
     end
 
     context 'with invalid parameters' do

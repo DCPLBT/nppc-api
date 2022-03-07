@@ -10,6 +10,7 @@ module Relations
       belongs_to :unit
       belongs_to :itemable, polymorphic: true
       belongs_to :stock, optional: true
+      belongs_to :received_by, optional: true, class_name: 'User'
     end
   end
 end

@@ -12,7 +12,9 @@ class LineItemForm < BaseForm
   end
 
   def update
-    line_item.update(params)
+    line_item.update(params).tap do |result|
+      result && line_item.received? && update_received_info
+    end
   end
 
   def destroy
@@ -23,5 +25,12 @@ class LineItemForm < BaseForm
 
   def line_item
     @line_item ||= line_item_id ? LineItem.find(line_item_id) : parent.line_items.build(params)
+  end
+
+  def update_received_info
+    line_item.update_columns(
+      received_by_id: current_user.id,
+      received_on: Time.current
+    )
   end
 end
