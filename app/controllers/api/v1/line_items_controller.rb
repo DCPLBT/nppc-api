@@ -30,7 +30,8 @@ module Api
 
       def line_item_params
         params.require(:line_item).permit(
-          :product_type_id, :product_id, :stock_id, :quantity, :unit_id, :received, :received_quantity
+          :product_type_id, :product_id, :stock_id, :quantity, :unit_id, :received, :received_quantity,
+          :received_remark
         )
       end
 
