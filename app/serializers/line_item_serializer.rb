@@ -56,4 +56,8 @@ class LineItemSerializer < ApplicationSerializer
   )
 
   belongs_to :itemable, polymorphic: true
+
+  attribute :received_remark do |object|
+    object.received_remark&.to_plain_text
+  end
 end

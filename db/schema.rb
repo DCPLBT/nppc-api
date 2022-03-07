@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_220_307_144_203) do
+ActiveRecord::Schema.define(version: 20_220_307_144_945) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -258,10 +258,14 @@ ActiveRecord::Schema.define(version: 20_220_307_144_203) do
     t.string 'reference_no'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.bigint 'received_by_id'
+    t.datetime 'received_on'
+    t.datetime 'approved_on'
     t.index ['approved_by_id'], name: 'index_mobilizations_on_approved_by_id'
     t.index ['company_id'], name: 'index_mobilizations_on_company_id'
     t.index ['district_id'], name: 'index_mobilizations_on_district_id'
     t.index ['extension_id'], name: 'index_mobilizations_on_extension_id'
+    t.index ['received_by_id'], name: 'index_mobilizations_on_received_by_id'
     t.index ['region_id'], name: 'index_mobilizations_on_region_id'
     t.index ['user_id'], name: 'index_mobilizations_on_user_id'
   end

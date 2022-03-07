@@ -5,7 +5,9 @@
 # Table name: mobilizations
 #
 #  id             :bigint           not null, primary key
+#  approved_on    :datetime
 #  category       :integer
+#  received_on    :datetime
 #  reference_no   :string
 #  state          :integer
 #  created_at     :datetime         not null
@@ -14,6 +16,7 @@
 #  company_id     :bigint
 #  district_id    :bigint
 #  extension_id   :bigint
+#  received_by_id :bigint
 #  region_id      :bigint
 #  user_id        :bigint           not null
 #
@@ -23,6 +26,7 @@
 #  index_mobilizations_on_company_id      (company_id)
 #  index_mobilizations_on_district_id     (district_id)
 #  index_mobilizations_on_extension_id    (extension_id)
+#  index_mobilizations_on_received_by_id  (received_by_id)
 #  index_mobilizations_on_region_id       (region_id)
 #  index_mobilizations_on_user_id         (user_id)
 #
@@ -61,10 +65,16 @@ class MobilizationSerializer < ApplicationSerializer
     :mobilized_to_company_name,
     :approved_by_id,
     :approved_by_name,
+    :approved_on,
+    :received_by_id,
+    :received_by_name,
+    :received_on,
     :total_quantity,
     :total_price,
     :total_product,
-    :created_at
+    :created_at,
+    :user_id,
+    :user_name
   )
 
   has_one :attachment

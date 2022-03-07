@@ -11,6 +11,8 @@ module Relations
       belongs_to :itemable, polymorphic: true
       belongs_to :stock, optional: true
       belongs_to :received_by, optional: true, class_name: 'User'
+
+      has_rich_text :received_remark
     end
   end
 end

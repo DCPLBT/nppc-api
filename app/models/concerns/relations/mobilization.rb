@@ -9,8 +9,9 @@ module Relations
       belongs_to :district, optional: true
       belongs_to :extension, optional: true
       belongs_to :company, optional: true
+      belongs_to :received_by, optional: true, class_name: 'User'
+      belongs_to :approved_by, optional: true, class_name: 'User'
       belongs_to :user
-      belongs_to :approved_by, optional: true, class_name: 'User', foreign_key: :approved_by_id
 
       has_one :attachment, as: :attachable, dependent: :destroy
 

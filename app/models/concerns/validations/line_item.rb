@@ -8,7 +8,7 @@ module Validations
       validates_presence_of :quantity
       validates_numericality_of :quantity, greater_than: 0
 
-      validate :validate_stock, unless: :indent_item?, on: %i[create update]
+      validate :validate_stock, unless: %i[indent_item? received?], on: %i[create update]
     end
 
     def validate_stock

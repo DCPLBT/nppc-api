@@ -11,11 +11,13 @@ class MobilizationForm < BaseForm
     end
   end
 
-  def update
+  def update # rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/AbcSize
     mobilization.approved_by = current_user if params[:state].eql?('approved')
     mobilization.update(params).tap do |result|
       result && mobilization.approved? && decrease_stock
+      result && mobilization.approved? && update_approved_info
       result && mobilization.received? && adjust_stock
+      result && mobilization.received? && update_received_info
     end
   end
 
@@ -64,5 +66,19 @@ class MobilizationForm < BaseForm
         user_ids: mobilization.mobilized_to_ids
       )
     end
+  end
+
+  def update_approved_info
+    mobilization.update_columns(
+      approved_by_id: current_user.id,
+      approved_on: Time.current
+    )
+  end
+
+  def update_received_info
+    mobilization.update_columns(
+      received_by_id: current_user.id,
+      received_on: Time.current
+    )
   end
 end
