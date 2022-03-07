@@ -52,13 +52,6 @@ module ResourceFinder # rubocop:disable Metrics/ModuleLength
     @from_id ||= Group.find_by(group_attributes(current_role, attr))&.id
   end
 
-  def to_id
-    attr = { region_id: current_user.region_id, district_id: current_user.district_id,
-             extension_id: current_user.extension_id, village_id: current_user.village_id,
-             company_id: current_user.company_id }
-    @to_id ||= Group.find_by(group_attributes(next_role, attr))&.id
-  end
-
   # TODO: remove this after implementing from and to to all the modules
   def destination_ids
     region_id, district_id, extension_id, company_id = extract_ids(next_role_name)
@@ -74,7 +67,8 @@ module ResourceFinder # rubocop:disable Metrics/ModuleLength
     ).pluck(:id)
   end
 
-  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize:
+  # TODO: remove this
+  # rubocop:disable Metrics/MethodLength
   def extract_ids(role_name)
     case role_name
     when 'ea', 'user'
@@ -90,9 +84,11 @@ module ResourceFinder # rubocop:disable Metrics/ModuleLength
     end
   end
 
-  def group_attributes(role, attrs = {
-    region_id: nil, district_id: nil, extension_id: nil, village_id: nil, company_id: nil
-  })
+  def group_attributes(
+    role, attrs = {
+      region_id: nil, district_id: nil, extension_id: nil, village_id: nil, company_id: nil
+    }
+  )
     attr = { role_id: role.id }
     case role.name
     when 'ADRC'
@@ -113,15 +109,14 @@ module ResourceFinder # rubocop:disable Metrics/ModuleLength
       )
     when 'User'
       attr.merge!(
-        { region_id: attrs[:region_id], district_id: attrs[:district_id], extension_id: attrs[:extension_id],
-          village_id: attrs[:village_id] }
+        { individual_id: current_user.id }
       )
     else
       attr
     end
   end
 
-  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize:
+  # rubocop:enable Metrics/MethodLength:
 
   private
 

@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_220_301_150_228) do
+ActiveRecord::Schema.define(version: 20_220_307_123_823) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -189,9 +189,11 @@ ActiveRecord::Schema.define(version: 20_220_301_150_228) do
     t.bigint 'company_id'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.bigint 'individual_id'
     t.index ['company_id'], name: 'index_groups_on_company_id'
     t.index ['district_id'], name: 'index_groups_on_district_id'
     t.index ['extension_id'], name: 'index_groups_on_extension_id'
+    t.index ['individual_id'], name: 'index_groups_on_individual_id'
     t.index ['region_id'], name: 'index_groups_on_region_id'
     t.index ['role_id'], name: 'index_groups_on_role_id'
     t.index ['village_id'], name: 'index_groups_on_village_id'
@@ -212,6 +214,7 @@ ActiveRecord::Schema.define(version: 20_220_301_150_228) do
     t.bigint 'to_id'
     t.bigint 'accepted_by_id'
     t.datetime 'accepted_on'
+    t.integer 'indent_type'
     t.index ['accepted_by_id'], name: 'index_indents_on_accepted_by_id'
     t.index ['company_id'], name: 'index_indents_on_company_id'
     t.index ['district_id'], name: 'index_indents_on_district_id'

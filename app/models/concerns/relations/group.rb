@@ -11,6 +11,7 @@ module Relations
       belongs_to :extension, optional: true
       belongs_to :village, optional: true
       belongs_to :company, optional: true
+      belongs_to :individual, class_name: 'User', optional: true
 
       has_many :user_groups, inverse_of: :group
       has_many :users, through: :user_groups

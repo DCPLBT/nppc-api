@@ -7,6 +7,7 @@
 #  id             :bigint           not null, primary key
 #  accepted_on    :datetime
 #  draft          :boolean
+#  indent_type    :integer
 #  reference_no   :string
 #  state          :integer
 #  created_at     :datetime         not null
@@ -50,6 +51,8 @@ class IndentSerializer < ApplicationSerializer
     :forwarded_to_region_name,
     :forwarded_to_district_name,
     :forwarded_to_company_name,
+    :user_id,
+    :user_name,
     :draft,
     :state,
     :reference_no,
@@ -60,7 +63,8 @@ class IndentSerializer < ApplicationSerializer
     :company_name,
     :accepted_by_id,
     :accepted_by_name,
-    :accepted_on
+    :accepted_on,
+    :indent_type
   )
 
   attribute :remark do |object|

@@ -6,6 +6,7 @@ class IndentForm < BaseForm
   end
 
   def create
+    indent.indent_type = next_role_name
     indent.save.tap do |result|
       result && create_requester_forwarded_to
     end
@@ -33,10 +34,6 @@ class IndentForm < BaseForm
 
   def build_indent
     params.merge!(
-      region: current_user.region,
-      district: current_user.district,
-      extension: current_user.extension,
-      company: current_user.company,
       user: current_user
     )
     Indent.new(params)

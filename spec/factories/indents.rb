@@ -7,6 +7,7 @@
 #  id             :bigint           not null, primary key
 #  accepted_on    :datetime
 #  draft          :boolean
+#  indent_type    :integer
 #  reference_no   :string
 #  state          :integer
 #  created_at     :datetime         not null

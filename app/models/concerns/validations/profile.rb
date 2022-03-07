@@ -10,7 +10,7 @@ module Validations
       validates_presence_of :region_id, :district_id, if: ->(x) { x.user.dao? }
       validates_presence_of :region_id, :district_id, :extension_id, if: ->(x) { x.user.ea? }
       validates_presence_of :company_id, if: ->(x) { x.user.mhv? }
-      validates_presence_of :region_id, :district_id, :extension_id, :village_id, if: ->(x) { x.user.user? }
+      # validates_presence_of :region_id, :district_id, :extension_id, :village_id, if: ->(x) { x.user.user? }
     end
   end
 end

@@ -24,7 +24,7 @@ class IndentPopulator < BasePopulator
 
   def indents
     @indents ||= Indent.includes(
-      :line_items, :rich_text_remark, :region, :district, :extension, :company, :accepted_by,
+      :line_items, :rich_text_remark, :region, :district, :extension, :company, :accepted_by, :user,
       forwarded_to: %i[region district extension village company],
       requester: %i[region district extension village company]
     )
@@ -37,13 +37,13 @@ class IndentPopulator < BasePopulator
   end
 
   def filter_by_requested(indents)
-    return indents unless requested.present? || determine_boolean(requested)
+    return indents unless requested.present? && determine_boolean(requested)
 
     indents.where(id: current_group.requested_indents.ids)
   end
 
   def filter_by_received(indents)
-    return indents unless received.present? || determine_boolean(received)
+    return indents unless received.present? && determine_boolean(received)
 
     indents.where(id: current_group.forwarded_indents.ids)
   end

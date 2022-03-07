@@ -18,6 +18,7 @@ module Delegates
       delegate(:name, to: :extension, prefix: true, allow_nil: true)
       delegate(:name, to: :company, prefix: true, allow_nil: true)
       delegate(:name, to: :accepted_by, prefix: true, allow_nil: true)
+      delegate(:name, to: :user, prefix: true, allow_nil: true)
     end
   end
 end

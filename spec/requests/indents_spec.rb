@@ -193,17 +193,30 @@ RSpec.describe '/indents', type: :request do
   describe 'POST /create' do
     context 'with valid parameters' do
       it 'creates a new Indent' do
+        post api_v1_indents_url,
+             params: { indent: valid_attributes }, as: :json
+        expect(status).to eq(422)
+        expect(
+          json[:errors]
+        ).to match_array(["Region can't be blank", "District can't be blank", "Extension can't be blank"])
+      end
+
+      it 'creates a new Indent' do
         expect do
           post api_v1_indents_url,
-               params: { indent: valid_attributes }, as: :json
+               params: { indent: valid_attributes.merge!(
+                 region_id: region.id, district_id: district.id, extension_id: extension.id
+               ) }, as: :json
         end.to change(Indent, :count).by(1)
-        expect(json.dig(:data, :attributes, :requester_id)).to eq(user.id)
-        expect(json.dig(:data, :attributes, :forwarded_to_id)).to eq(ea.id)
+        expect(json.dig(:data, :attributes, :requester_id)).to eq(user.groups.first.id)
+        expect(json.dig(:data, :attributes, :forwarded_to_id)).to eq(ea.groups.first.id)
       end
 
       it 'renders a JSON response with the new indent' do
         post api_v1_indents_url,
-             params: { indent: valid_attributes }, as: :json
+             params: { indent: valid_attributes.merge!(
+               region_id: region.id, district_id: district.id, extension_id: extension.id
+             ) }, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
       end

@@ -41,7 +41,7 @@ module Api
       # Only allow a list of trusted parameters through.
       def indent_params
         params.require(:indent).permit(
-          :draft, :state, :remark,
+          :draft, :state, :remark, :region_id, :district_id, :extension_id, :company_id,
           line_items_attributes: %i[id product_type_id product_id quantity unit_id _destroy]
         )
       end
@@ -57,7 +57,8 @@ module Api
           current_user: current_user,
           id: params[:id],
           from_id: from_id,
-          to_id: to_id
+          to_id: to_id,
+          next_role_name: next_role_name
         }
       end
 
@@ -70,6 +71,15 @@ module Api
           :q, :draft, :requested, :received, :product_type_id, :product_id, :region_id, :district_id,
           :extension_id, :year, :from_date, :to_date
         )
+      end
+
+      def to_id
+        return unless %w[create update].include?(action_name)
+
+        attr = { region_id: indent_params[:region_id], district_id: indent_params[:district_id],
+                 extension_id: indent_params[:extension_id], village_id: indent_params[:village_id],
+                 company_id: indent_params[:company_id] }
+        @to_id ||= Group.find_by(group_attributes(next_role, attr))&.id
       end
     end
   end

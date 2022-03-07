@@ -4,25 +4,27 @@
 #
 # Table name: groups
 #
-#  id           :bigint           not null, primary key
-#  name         :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  company_id   :bigint
-#  district_id  :bigint
-#  extension_id :bigint
-#  region_id    :bigint
-#  role_id      :bigint           not null
-#  village_id   :bigint
+#  id            :bigint           not null, primary key
+#  name          :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  company_id    :bigint
+#  district_id   :bigint
+#  extension_id  :bigint
+#  individual_id :bigint
+#  region_id     :bigint
+#  role_id       :bigint           not null
+#  village_id    :bigint
 #
 # Indexes
 #
-#  index_groups_on_company_id    (company_id)
-#  index_groups_on_district_id   (district_id)
-#  index_groups_on_extension_id  (extension_id)
-#  index_groups_on_region_id     (region_id)
-#  index_groups_on_role_id       (role_id)
-#  index_groups_on_village_id    (village_id)
+#  index_groups_on_company_id     (company_id)
+#  index_groups_on_district_id    (district_id)
+#  index_groups_on_extension_id   (extension_id)
+#  index_groups_on_individual_id  (individual_id)
+#  index_groups_on_region_id      (region_id)
+#  index_groups_on_role_id        (role_id)
+#  index_groups_on_village_id     (village_id)
 #
 # Foreign Keys
 #
