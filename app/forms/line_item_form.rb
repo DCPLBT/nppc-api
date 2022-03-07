@@ -14,6 +14,7 @@ class LineItemForm < BaseForm
   def update
     line_item.update(params).tap do |result|
       result && line_item.received? && update_received_info
+      result && line_item.received? && update_parent_state
     end
   end
 
@@ -31,6 +32,16 @@ class LineItemForm < BaseForm
     line_item.update_columns(
       received_by_id: current_user.id,
       received_on: Time.current
+    )
+  end
+
+  def update_parent_state
+    return unless line_item.itemable.line_items.all?(&:received?)
+    return unless line_item.itemable.respond_to?(:state)
+    return unless line_item.itemable.class.states.keys.include?('received')
+
+    line_item.itemable.update(
+      state: :received
     )
   end
 end
