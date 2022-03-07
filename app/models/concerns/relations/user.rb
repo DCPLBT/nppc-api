@@ -8,6 +8,7 @@ module Relations
       has_one :profile, inverse_of: :user, dependent: :destroy
       has_one :photo, through: :profile
 
+      has_many :carts, as: :cartable, dependent: :destroy
       has_many :regions, inverse_of: :user, dependent: :destroy
       has_many :settings, inverse_of: :user, dependent: :destroy
       has_many :forwardable_forwarded_tos, foreign_key: :forwarded_to_id
@@ -24,8 +25,6 @@ module Relations
                                              source_type: 'Mobilization'
       has_many :mobilizers_mobilizations, through: :requestable_requesters, source: :requestable,
                                           source_type: 'Mobilization'
-      has_many :carts, through: :requestable_requesters, source: :requestable,
-                       source_type: 'Cart'
       has_many :user_stocks, dependent: :destroy
       has_many :stocks, through: :user_stocks
       has_many :recipients, inverse_of: :user

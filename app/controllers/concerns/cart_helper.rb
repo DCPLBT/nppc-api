@@ -26,7 +26,6 @@ module CartHelper
   def create_user_cart
     user_cart = Cart.new(
       session_id: current_role&.id,
-      cart_user_ids: source_ids,
       cartable: current_user,
       category: params[:category]
     )

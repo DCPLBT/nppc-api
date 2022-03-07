@@ -20,7 +20,7 @@ RSpec.describe '/carts', type: :request do
   let!(:product_type) { create(:product_type, user: user) }
   let!(:product) { create(:product, product_type: product_type, user: user, unit: unit) }
   let!(:stock) { create(:stock, product_type: product_type, product: product, user: user, unit: unit) }
-  let!(:cart) { create(:cart, cartable: user, session_id: 2, category: :distribution, cart_user_ids: [user.id]) }
+  let!(:cart) { create(:cart, cartable: user, session_id: 2, category: :distribution) }
   let!(:line_items) do
     create(:line_item, product_type: product_type, product: product, unit: unit, stock: stock, itemable: cart)
   end

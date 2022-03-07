@@ -53,7 +53,7 @@ RSpec.describe '/surrenders', type: :request do
     )
   end
 
-  let!(:cart) { create(:cart, cartable: ea, session_id: 2, cart_user_ids: [ea.id], category: :surrender) }
+  let!(:cart) { create(:cart, cartable: ea, session_id: 2, category: :surrender) }
   let!(:line_item) do
     create(:line_item, product_type: product_type, product: product, unit: unit, stock: stock, itemable: cart)
   end
