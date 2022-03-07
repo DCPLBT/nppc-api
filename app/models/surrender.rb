@@ -5,6 +5,7 @@
 # Table name: surrenders
 #
 #  id             :bigint           not null, primary key
+#  received_on    :datetime
 #  reference_no   :string
 #  state          :integer
 #  surrender_type :integer
@@ -12,15 +13,17 @@
 #  updated_at     :datetime         not null
 #  district_id    :bigint
 #  extension_id   :bigint
+#  received_by_id :bigint
 #  region_id      :bigint
 #  user_id        :bigint           not null
 #
 # Indexes
 #
-#  index_surrenders_on_district_id   (district_id)
-#  index_surrenders_on_extension_id  (extension_id)
-#  index_surrenders_on_region_id     (region_id)
-#  index_surrenders_on_user_id       (user_id)
+#  index_surrenders_on_district_id     (district_id)
+#  index_surrenders_on_extension_id    (extension_id)
+#  index_surrenders_on_received_by_id  (received_by_id)
+#  index_surrenders_on_region_id       (region_id)
+#  index_surrenders_on_user_id         (user_id)
 #
 # Foreign Keys
 #

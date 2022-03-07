@@ -15,6 +15,7 @@ class SurrenderForm < BaseForm
   def update
     surrender.update(params).tap do |result|
       result && surrender.received? && adjust_stock
+      result && surrender.received? && update_received_info
     end
   end
 
@@ -73,5 +74,12 @@ class SurrenderForm < BaseForm
         user_ids: surrender.surrendered_to_ids
       )
     end
+  end
+
+  def update_received_info
+    surrender.update_columns(
+      received_by_id: current_user.id,
+      received_on: Time.current
+    )
   end
 end

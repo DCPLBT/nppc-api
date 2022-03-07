@@ -23,7 +23,7 @@ class SurrenderPopulator < BasePopulator
 
   def surrenders
     @surrenders ||= Surrender.includes(
-      :line_items, :rich_text_received_remark, :region, :district, :extension,
+      :line_items, :rich_text_received_remark, :region, :district, :extension, :user, :received_by,
       :requestable_requesters, :forwardable_forwarded_tos, :attachment, :rich_text_comments,
       surrendered_tos: :profile, surrenderers: :profile
     )
