@@ -69,7 +69,9 @@ class DistributionSerializer < ApplicationSerializer
     :total_quantity,
     :total_price,
     :total_product,
-    :created_at
+    :created_at,
+    :user_id,
+    :user_name
   )
 
   has_one :attachment
