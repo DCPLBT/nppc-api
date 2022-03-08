@@ -35,7 +35,7 @@ class LineItemForm < BaseForm
       product_type_id: params[:product_type_id], product_id: params[:product_id], stock_id: params[:stock_id]
     )
     if li
-      li.assign_attributes(quantity: li.quantity + params[:quantity])
+      li.assign_attributes(quantity: li.quantity + (params[:quantity]&.to_d || 0))
       li
     else
       parent.line_items.build(params)
