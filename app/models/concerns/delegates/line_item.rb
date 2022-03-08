@@ -9,6 +9,7 @@ module Delegates
       delegate(:name, to: :product, prefix: true)
       delegate(:name, to: :unit, prefix: true)
       delegate(:name, to: :received_by, prefix: true, allow_nil: true)
+      delegate(:quantity, to: :stock, prefix: true, allow_nil: true)
     end
   end
 end

@@ -25,7 +25,27 @@ class LineItemForm < BaseForm
   private
 
   def line_item
-    @line_item ||= line_item_id ? LineItem.find(line_item_id) : parent.line_items.build(params)
+    @line_item ||= line_item_id ? LineItem.find(line_item_id) : merge_similar_products
+  end
+
+  def merge_similar_products # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    return parent.line_items.build(params) unless parent.is_a?(Cart)
+
+    li = parent.line_items.find_by(
+      product_type_id: params[:product_type_id], product_id: params[:product_id], stock_id: params[:stock_id]
+    )
+    item = if li
+             li.assign_attributes(quantity: li.quantity + params[:quantity])
+             li
+           else
+             parent.line_items.build(params)
+           end
+    if item.quantity > item.stock_quantity
+      item.errors.add(
+        :base, :insufficient_stock, product: item.product_name, stock: item.stock_quantity
+      )
+    end
+    item
   end
 
   def update_received_info

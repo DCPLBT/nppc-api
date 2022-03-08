@@ -22,7 +22,10 @@ RSpec.describe '/carts', type: :request do
   let!(:stock) { create(:stock, product_type: product_type, product: product, user: user, unit: unit) }
   let!(:cart) { create(:cart, cartable: user, session_id: 2, category: :distribution) }
   let!(:line_items) do
-    create(:line_item, product_type: product_type, product: product, unit: unit, stock: stock, itemable: cart)
+    create(
+      :line_item,
+      product_type: product_type, product: product, unit: unit, stock: stock, itemable: cart, quantity: 10
+    )
   end
   before(:each) do
     sign_in(user)
@@ -32,6 +35,26 @@ RSpec.describe '/carts', type: :request do
     it 'renders a successful response' do
       get api_v1_carts_url(category: :distribution), as: :json
       expect(response).to be_successful
+    end
+
+    it 'merge similar product' do
+      data = {
+        line_item: {
+          product_type_id: product_type.id, product_id: product.id, stock_id: stock.id, unit_id: unit.id, quantity: 10
+        }
+      }
+      post api_v1_cart_line_items_url(cart), params: data, as: :json
+      expect(status).to eq(200)
+      expect(json.dig(:data, :attributes, :quantity)).to eq(20)
+      post api_v1_cart_line_items_url(cart), params: data, as: :json
+      expect(status).to eq(200)
+      expect(json.dig(:data, :attributes, :quantity)).to eq(30)
+      data[:line_item][:quantity] = stock.quantity + 10
+      post api_v1_cart_line_items_url(cart), params: data, as: :json
+      expect(status).to eq(422)
+      expect(
+        json[:errors]
+      ).to match_array(["#{product.name} has insufficient stock. Available stock is #{stock.quantity}."])
     end
   end
 end
