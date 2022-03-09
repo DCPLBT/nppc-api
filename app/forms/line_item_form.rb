@@ -14,6 +14,7 @@ class LineItemForm < BaseForm
   def update
     line_item.update(params).tap do |result|
       result && line_item.received? && update_received_info
+      result && line_item.received? && adjust_stock
       result && line_item.received? && update_parent_state
     end
   end
@@ -56,6 +57,22 @@ class LineItemForm < BaseForm
 
     line_item.itemable.update(
       state: :received
+    )
+  end
+
+  def adjust_stock # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
+    return unless line_item.itemable.respond_to?(:to_id) && line_item.stock
+
+    existing_stock = current_group.stocks.find_by(procured_on: line_item.stock&.procured_on)
+    stock = existing_stock || (
+      x = line_item.stock.dup
+      x.quantity = 0
+      x.user = current_user
+      x
+    )
+    stock.update(
+      quantity: stock.quantity + line_item.quantity,
+      group_id: line_item.itemable.to_id
     )
   end
 end

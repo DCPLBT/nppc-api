@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ResourceFinder # rubocop:disable Metrics/ModuleLength
+module ResourceFinder
   def parent
     return unless nested_route?
 

@@ -11,12 +11,11 @@ class MobilizationForm < BaseForm
     end
   end
 
-  def update # rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/AbcSize
+  def update # rubocop:disable Metrics/CyclomaticComplexity,Metrics/AbcSize
     mobilization.approved_by = current_user if params[:state].eql?('approved')
     mobilization.update(params).tap do |result|
       result && mobilization.approved? && decrease_stock
       result && mobilization.approved? && update_approved_info
-      result && mobilization.received? && adjust_stock
       result && mobilization.received? && update_received_info
     end
   end
@@ -49,22 +48,6 @@ class MobilizationForm < BaseForm
   def decrease_stock
     mobilization.line_items.each do |li|
       li.stock.decrement!(:quantity, li.quantity)
-    end
-  end
-
-  def adjust_stock # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-    mobilization.line_items.each do |li|
-      existing_stock = current_group.stocks.find_by(procured_on: li.stock.procured_on)
-      stock = existing_stock || (
-        x = li.stock.dup
-        x.quantity = 0
-        x.user = current_user
-        x
-      )
-      stock.update(
-        quantity: stock.quantity + li.quantity,
-        group_id: mobilization.mobilized_to.id
-      )
     end
   end
 

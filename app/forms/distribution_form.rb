@@ -13,9 +13,7 @@ class DistributionForm < BaseForm
   end
 
   def update
-    distribution.update(params).tap do |result|
-      result && distribution.received? && adjust_stock
-    end
+    distribution.update(params)
   end
 
   def destroy
@@ -46,22 +44,6 @@ class DistributionForm < BaseForm
   def decrease_stock
     distribution.line_items.each do |li|
       li.stock.decrement!(:quantity, li.quantity)
-    end
-  end
-
-  def adjust_stock # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-    distribution.line_items.each do |li|
-      existing_stock = current_group.stocks.find_by(procured_on: li.stock.procured_on)
-      stock = existing_stock || (
-        x = li.stock.dup
-        x.quantity = 0
-        x.user = current_user
-        x
-      )
-      stock.update(
-        quantity: stock.quantity + li.quantity,
-        group_id: distribution.distributed_to.id
-      )
     end
   end
 end

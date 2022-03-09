@@ -44,6 +44,7 @@ module Api
       def line_item_attributes
         @line_item_attributes ||= {
           current_user: current_user,
+          current_group: current_group,
           parent: parent,
           line_item_id: params[:id],
           include: [:itemable]

@@ -230,17 +230,6 @@ RSpec.describe '/surrenders', type: :request do
              params: { surrender: valid_attributes }, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
-
-        sign_out
-        sign_in(adrc)
-        get api_v1_surrenders_url(category: :surrender, received: true), as: :json
-        expect(status).to eq(200)
-        expect(json[:data].size).to eq(1)
-
-        put api_v1_surrender_url(Surrender.first, category: :surrender), params: { surrender: { state: :received } },
-                                                                         as: :json
-        expect(status).to eq(200)
-        expect(adrc.groups.first.stocks.size).to eq(1)
       end
 
       it 'validate stock' do

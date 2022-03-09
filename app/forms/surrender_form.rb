@@ -14,7 +14,6 @@ class SurrenderForm < BaseForm
 
   def update
     surrender.update(params).tap do |result|
-      result && surrender.received? && adjust_stock
       result && surrender.received? && update_received_info
     end
   end
@@ -55,22 +54,6 @@ class SurrenderForm < BaseForm
   def decrease_stock
     surrender.line_items.each do |li|
       li.stock.decrement!(:quantity, li.quantity)
-    end
-  end
-
-  def adjust_stock # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-    surrender.line_items.each do |li|
-      existing_stock = current_group.stocks.find_by(procured_on: li.stock.procured_on)
-      stock = existing_stock || (
-        x = li.stock.dup
-        x.quantity = 0
-        x.user = current_user
-        x
-      )
-      stock.update(
-        quantity: stock.quantity + li.quantity,
-        group_id: surrender.surrendered_to.id
-      )
     end
   end
 

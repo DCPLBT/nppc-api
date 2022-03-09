@@ -257,17 +257,6 @@ RSpec.describe '/mobilizations', type: :request do
              params: { mobilization: valid_attributes }, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
-
-        sign_out
-        sign_in(company_user)
-        get api_v1_mobilizations_url(category: :mobilization, received: true), as: :json
-        expect(status).to eq(200)
-        expect(json[:data].size).to eq(1)
-
-        put api_v1_mobilization_url(Mobilization.first, category: :mobilization),
-            params: { mobilization: { state: :received } }, as: :json
-        expect(status).to eq(200)
-        expect(company_user.groups.first.stocks.size).to eq(1)
       end
 
       it 'distribute to sales agent' do
@@ -277,17 +266,6 @@ RSpec.describe '/mobilizations', type: :request do
              params: { mobilization: valid_attributes }, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
-
-        sign_out
-        sign_in(adrc)
-        get api_v1_mobilizations_url(category: :mobilization, received: true), as: :json
-        expect(status).to eq(200)
-        expect(json[:data].size).to eq(1)
-
-        put api_v1_mobilization_url(Mobilization.first, category: :mobilization),
-            params: { mobilization: { state: :received } }, as: :json
-        expect(status).to eq(200)
-        expect(adrc.groups.first.stocks.size).to eq(1)
       end
 
       it 'validate stock' do
