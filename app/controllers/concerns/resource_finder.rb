@@ -64,32 +64,7 @@ module ResourceFinder # rubocop:disable Metrics/ModuleLength
     @from_id ||= Group.find_by(group_attributes(current_role, attr))&.id
   end
 
-  # TODO: remove this after implementing from and to to all the modules
-  def source_ids
-    region_id, district_id, extension_id, company_id = extract_ids(current_role_name)
-    @source_ids ||= User.includes(:roles).similar_users(
-      current_role_name, region_id, district_id, extension_id, company_id
-    ).pluck(:id)
-  end
-
-  # TODO: remove this
-  # rubocop:disable Metrics/MethodLength
-  def extract_ids(role_name)
-    case role_name
-    when 'ea', 'user'
-      [current_user.region_id, current_user.district_id, current_user.extension_id]
-    when 'dao'
-      [current_user.region_id, current_user.district_id]
-    when 'adrc'
-      [current_user.region_id]
-    when 'mhv'
-      [nil, nil, nil, current_user.company_id]
-    else
-      []
-    end
-  end
-
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
   def group_attributes(
     role, attrs = {
       region_id: nil, district_id: nil, extension_id: nil, village_id: nil, company_id: nil

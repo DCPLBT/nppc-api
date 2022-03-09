@@ -13,8 +13,6 @@ class BaseForm
     :params,
     :id,
     :next_role_name,
-    :source_ids, # TODO: remove this later
-    :destination_ids, # TODO: remove this later
     :cart,
     :from_id,
     :to_id
