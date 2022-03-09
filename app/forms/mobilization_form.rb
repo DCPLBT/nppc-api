@@ -54,7 +54,7 @@ class MobilizationForm < BaseForm
 
   def adjust_stock # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     mobilization.line_items.each do |li|
-      existing_stock = current_user.stocks.find_by(procured_on: li.stock.procured_on)
+      existing_stock = current_group.stocks.find_by(procured_on: li.stock.procured_on)
       stock = existing_stock || (
         x = li.stock.dup
         x.quantity = 0
@@ -63,7 +63,7 @@ class MobilizationForm < BaseForm
       )
       stock.update(
         quantity: stock.quantity + li.quantity,
-        user_ids: mobilization.mobilized_to_ids
+        group_id: mobilization.mobilized_to.groups.first.id
       )
     end
   end

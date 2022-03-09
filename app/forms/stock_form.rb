@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class StockForm < BaseForm
+  attr_accessor :group_id
+
   def show
     stock
   end
@@ -24,7 +26,7 @@ class StockForm < BaseForm
   end
 
   def build_stock
-    params.merge!(user_id: current_user.id, user_ids: source_ids)
+    params.merge!(user_id: current_user.id, group_id: group_id)
     Stock.new(params)
   end
 end

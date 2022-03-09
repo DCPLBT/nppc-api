@@ -49,7 +49,9 @@ RSpec.describe '/mobilizations', type: :request do
 
   let!(:product_type) { create(:product_type, user: user) }
   let!(:product) { create(:product, product_type: product_type, user: user, unit: unit) }
-  let!(:stock) { create(:stock, product_type: product_type, product: product, user: user, unit: unit) }
+  let!(:stock) do
+    create(:stock, product_type: product_type, product: product, user: user, unit: unit, group: user.groups.first)
+  end
 
   let!(:cart) { create(:cart, cartable: user, session_id: 2, category: :mobilization) }
   let!(:line_item) do
@@ -65,7 +67,7 @@ RSpec.describe '/mobilizations', type: :request do
   # adjust the attributes here as well.
   let(:valid_attributes) do
     { region_id: region.id, district_id: district.id, extension_id: extension.id, user_id: user.id,
-      category: 'ea', line_items: [line_item] }
+      category: 'ea', mobilized_to_ids: [user.id], line_items: [line_item] }
   end
 
   let(:invalid_attributes) do
@@ -73,7 +75,9 @@ RSpec.describe '/mobilizations', type: :request do
   end
 
   describe 'GET /index' do
-    let!(:stock1) { create(:stock, product: product, product_type: product_type, unit: unit, user: user) }
+    let!(:stock1) do
+      create(:stock, product: product, product_type: product_type, unit: unit, user: user, group: user.groups.first)
+    end
     let!(:mobilization1) do
       create(
         :mobilization, user_id: user.id, mobilizer_ids: [user.id], mobilized_to_ids: [ea.id],
@@ -259,7 +263,7 @@ RSpec.describe '/mobilizations', type: :request do
         put api_v1_mobilization_url(Mobilization.first, category: :mobilization),
             params: { mobilization: { state: :received } }, as: :json
         expect(status).to eq(200)
-        expect(company_user.stocks.size).to eq(1)
+        expect(company_user.groups.first.stocks.size).to eq(1)
       end
 
       it 'distribute to sales agent' do
@@ -279,7 +283,7 @@ RSpec.describe '/mobilizations', type: :request do
         put api_v1_mobilization_url(Mobilization.first, category: :mobilization),
             params: { mobilization: { state: :received } }, as: :json
         expect(status).to eq(200)
-        expect(adrc.stocks.size).to eq(1)
+        expect(adrc.groups.first.stocks.size).to eq(1)
       end
 
       it 'validate stock' do

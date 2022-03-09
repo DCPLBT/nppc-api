@@ -4,7 +4,7 @@ module Relations
   module User
     extend ActiveSupport::Concern
 
-    included do # rubocop:disable Metrics/BlockLength
+    included do
       has_one :profile, inverse_of: :user, dependent: :destroy
       has_one :photo, through: :profile
 
@@ -13,10 +13,6 @@ module Relations
       has_many :settings, inverse_of: :user, dependent: :destroy
       has_many :forwardable_forwarded_tos, foreign_key: :forwarded_to_id
       has_many :requestable_requesters, foreign_key: :requester_id
-      has_many :distributed_tos_distributions, through: :forwardable_forwarded_tos, source: :forwardable,
-                                               source_type: 'Distribution'
-      has_many :distributors_distributions, through: :requestable_requesters, source: :requestable,
-                                            source_type: 'Distribution'
       has_many :surrendered_to_products, through: :forwardable_forwarded_tos, source: :forwardable,
                                          source_type: 'Surrender'
       has_many :surrenderer_products, through: :requestable_requesters, source: :requestable,
@@ -25,8 +21,6 @@ module Relations
                                              source_type: 'Mobilization'
       has_many :mobilizers_mobilizations, through: :requestable_requesters, source: :requestable,
                                           source_type: 'Mobilization'
-      has_many :user_stocks, dependent: :destroy
-      has_many :stocks, through: :user_stocks
       has_many :recipients, inverse_of: :user
       has_many :notifications, through: :recipients
       has_many :user_groups, inverse_of: :user, dependent: :destroy

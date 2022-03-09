@@ -25,11 +25,17 @@ RSpec.describe '/distributions', type: :request do
   let(:extension) { create(:extension, district: district, user: user) }
   let(:extension1) { create(:extension, district: district1, user: user) }
   let(:village) { create(:village, extension: extension, user: user) }
+  let(:village1) { create(:village, extension: extension1, user: user) }
   let(:company) { create(:company, user: user) }
 
   let(:user1) do
     create(:user, role_ids: [8], profile_attributes: {
              region: region, district: district, extension: extension, village: village
+           })
+  end
+  let(:user2) do
+    create(:user, role_ids: [8], profile_attributes: {
+             region: region1, district: district1, extension: extension1, village: village1
            })
   end
   let(:ea) do
@@ -46,7 +52,9 @@ RSpec.describe '/distributions', type: :request do
 
   let!(:product_type) { create(:product_type, user: user) }
   let!(:product) { create(:product, product_type: product_type, user: user, unit: unit) }
-  let!(:stock) { create(:stock, product_type: product_type, product: product, user: user, unit: unit) }
+  let!(:stock) do
+    create(:stock, product_type: product_type, product: product, user: user, unit: unit, group: user.groups.first)
+  end
 
   let!(:cart) { create(:cart, cartable: user, session_id: 2, category: :distribution) }
   let!(:line_item) do
@@ -62,7 +70,7 @@ RSpec.describe '/distributions', type: :request do
   # adjust the attributes here as well.
   let(:valid_attributes) do
     { region_id: region.id, district_id: district.id, extension_id: extension.id, user_id: user.id,
-      distributed_type: 'ea', line_items: [line_item] }
+      distributed_type: 'ea', from_id: user.groups.first.id, to_id: ea.groups.first.id, line_items: [line_item] }
   end
 
   let(:invalid_attributes) do
@@ -70,42 +78,48 @@ RSpec.describe '/distributions', type: :request do
   end
 
   describe 'GET /index' do
-    let!(:stock1) { create(:stock, product: product, product_type: product_type, unit: unit, user: user) }
+    let!(:stock1) do
+      create(:stock, product: product, product_type: product_type, unit: unit, user: user, group: user.groups.first)
+    end
     let!(:distribution1) do
       create(
-        :distribution, user_id: user.id, distributor_ids: [user.id], distributed_to_ids: [ea.id],
-                       region: user.region, district: user.district, extension: user.extension, distributed_type: 'ea',
-                       line_items_attributes: [
-                         { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
-                       ]
+        :distribution,
+        user_id: user.id, from_id: user.groups.first.id, to_id: ea.groups.first.id,
+        region: user1.region, district: user1.district, extension: user1.extension, distributed_type: 'ea',
+        line_items_attributes: [
+          { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
+        ]
       )
     end
     let!(:distribution2) do
       create(
-        :distribution, draft: false, user_id: user.id, distributor_ids: [user.id], distributed_to_ids: [ea.id],
-                       region: user.region, district: user.district, extension: user.extension, distributed_type: 'ea',
-                       line_items_attributes: [
-                         { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
-                       ]
+        :distribution,
+        draft: false, user_id: user.id, from_id: user.groups.first.id, to_id: ea.groups.first.id,
+        region: user1.region, district: user1.district, extension: user1.extension, distributed_type: 'ea',
+        line_items_attributes: [
+          { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
+        ]
       )
     end
     let!(:distribution3) do
       create(
-        :distribution, draft: false, user_id: user.id, distributor_ids: [user.id], distributed_to_ids: [ea.id],
-                       region: user.region, district: user.district, extension: user.extension, distributed_type: 'ea',
-                       line_items_attributes: [
-                         { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
-                       ]
+        :distribution,
+        draft: false, user_id: user.id, from_id: user.groups.first.id, to_id: ea.groups.first.id,
+        region: user1.region, district: user1.district, extension: user1.extension, distributed_type: 'ea',
+        line_items_attributes: [
+          { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
+        ]
       )
     end
     let!(:distribution4) do
       create(
-        :distribution, draft: false, user_id: user.id, distributor_ids: [user.id], distributed_to_ids: [ea1.id],
-                       region: user1.region, district: user1.district, extension: user1.extension,
-                       distributed_type: 'ea',
-                       line_items_attributes: [
-                         { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
-                       ]
+        :distribution,
+        draft: false, user_id: user.id, from_id: user.groups.first.id, to_id: ea1.groups.first.id,
+        region: user2.region, district: user2.district, extension: user2.extension,
+        distributed_type: 'ea',
+        line_items_attributes: [
+          { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
+        ]
       )
     end
 
@@ -135,19 +149,19 @@ RSpec.describe '/distributions', type: :request do
     it 'filter by region' do
       get api_v1_distributions_url(category: :distribution, region_id: user1.profile.region_id), as: :json
       expect(response).to be_successful
-      expect(json[:data].size).to eq(1)
+      expect(json[:data].size).to eq(3)
     end
 
     it 'filter by district' do
       get api_v1_distributions_url(category: :distribution, district_id: user1.profile.district_id), as: :json
       expect(response).to be_successful
-      expect(json[:data].size).to eq(1)
+      expect(json[:data].size).to eq(3)
     end
 
     it 'filter by extension' do
       get api_v1_distributions_url(category: :distribution, extension_id: user1.profile.extension_id), as: :json
       expect(response).to be_successful
-      expect(json[:data].size).to eq(1)
+      expect(json[:data].size).to eq(3)
     end
 
     it 'filter by year' do
@@ -222,7 +236,7 @@ RSpec.describe '/distributions', type: :request do
         put api_v1_distribution_url(Distribution.first, category: :distribution),
             params: { distribution: { state: :received } }, as: :json
         expect(status).to eq(200)
-        expect(company_user.stocks.size).to eq(1)
+        expect(company_user.groups.first.stocks.size).to eq(1)
       end
 
       it 'validate stock' do

@@ -62,7 +62,7 @@ class SurrenderForm < BaseForm
 
   def adjust_stock # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     surrender.line_items.each do |li|
-      existing_stock = current_user.stocks.find_by(procured_on: li.stock.procured_on)
+      existing_stock = current_group.stocks.find_by(procured_on: li.stock.procured_on)
       stock = existing_stock || (
         x = li.stock.dup
         x.quantity = 0
@@ -71,7 +71,7 @@ class SurrenderForm < BaseForm
       )
       stock.update(
         quantity: stock.quantity + li.quantity,
-        user_ids: surrender.surrendered_to_ids
+        group_id: surrender.surrendered_to.groups.first.id
       )
     end
   end

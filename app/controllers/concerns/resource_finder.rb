@@ -34,6 +34,18 @@ module ResourceFinder # rubocop:disable Metrics/ModuleLength
     Role.find_by(name: role_name)
   end
 
+  def to_role(role)
+    role_name = case role
+                when 'self', 'individual'
+                  'User'
+                when 'admin'
+                  'Admin'
+                else
+                  role&.upcase
+                end
+    Role.find_by(name: role_name)
+  end
+
   def next_role_name
     case current_role_name
     when 'user'
@@ -53,13 +65,6 @@ module ResourceFinder # rubocop:disable Metrics/ModuleLength
   end
 
   # TODO: remove this after implementing from and to to all the modules
-  def destination_ids
-    region_id, district_id, extension_id, company_id = extract_ids(next_role_name)
-    @destination_ids ||= User.includes(:roles).similar_users(
-      next_role_name, region_id, district_id, extension_id, company_id
-    ).pluck(:id)
-  end
-
   def source_ids
     region_id, district_id, extension_id, company_id = extract_ids(current_role_name)
     @source_ids ||= User.includes(:roles).similar_users(
@@ -84,13 +89,14 @@ module ResourceFinder # rubocop:disable Metrics/ModuleLength
     end
   end
 
+  # rubocop:disable Metrics/AbcSize
   def group_attributes(
     role, attrs = {
       region_id: nil, district_id: nil, extension_id: nil, village_id: nil, company_id: nil
     }
   )
-    attr = { role_id: role.id }
-    case role.name
+    attr = { role_id: role&.id }
+    case role&.name
     when 'ADRC'
       attr.merge!(
         { region_id: attrs[:region_id] }
@@ -116,7 +122,7 @@ module ResourceFinder # rubocop:disable Metrics/ModuleLength
     end
   end
 
-  # rubocop:enable Metrics/MethodLength:
+  # rubocop:enable Metrics/AbcSize,Metrics/MethodLength
 
   private
 

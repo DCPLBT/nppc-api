@@ -4,14 +4,6 @@ module Helpers
   module Distribution
     extend ActiveSupport::Concern
 
-    def distributor
-      @distributor ||= distributors.last
-    end
-
-    def distributed_to
-      @distributed_to ||= distributed_tos.last
-    end
-
     def total_price
       @total_price ||= line_items.sum(&:total_price)
     end

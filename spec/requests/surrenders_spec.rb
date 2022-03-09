@@ -49,7 +49,7 @@ RSpec.describe '/surrenders', type: :request do
   let!(:stock) do
     create(
       :stock, product_type: product_type, product: product, user: user, unit: unit,
-              expiry_date: Time.current - 30.days
+              expiry_date: Time.current - 30.days, group: user.groups.first
     )
   end
 
@@ -67,7 +67,7 @@ RSpec.describe '/surrenders', type: :request do
   # adjust the attributes here as well.
   let(:valid_attributes) do
     { region_id: region.id, district_id: district.id, extension_id: extension.id, user_id: ea.id,
-      surrender_type: 'nppc', line_items: [line_item] }
+      surrender_type: 'nppc', surrendered_to_ids: [user.id], line_items: [line_item] }
   end
 
   let(:invalid_attributes) do
@@ -75,7 +75,9 @@ RSpec.describe '/surrenders', type: :request do
   end
 
   describe 'GET /index' do
-    let!(:stock1) { create(:stock, product: product, product_type: product_type, unit: unit, user: nppc) }
+    let!(:stock1) do
+      create(:stock, product: product, product_type: product_type, unit: unit, user: nppc, group: user.groups.first)
+    end
     let!(:surrender1) do
       create(
         :surrender, user_id: ea.id, surrenderer_ids: [ea.id], surrendered_to_ids: [nppc.id],
@@ -219,7 +221,7 @@ RSpec.describe '/surrenders', type: :request do
         put api_v1_surrender_url(Surrender.first, category: :surrender), params: { surrender: { state: :received } },
                                                                          as: :json
         expect(status).to eq(200)
-        expect(nppc.stocks.size).to eq(1)
+        expect(nppc.groups.first.stocks.size).to eq(1)
       end
 
       it 'surrender to region' do
@@ -238,7 +240,7 @@ RSpec.describe '/surrenders', type: :request do
         put api_v1_surrender_url(Surrender.first, category: :surrender), params: { surrender: { state: :received } },
                                                                          as: :json
         expect(status).to eq(200)
-        expect(adrc.stocks.size).to eq(1)
+        expect(adrc.groups.first.stocks.size).to eq(1)
       end
 
       it 'validate stock' do

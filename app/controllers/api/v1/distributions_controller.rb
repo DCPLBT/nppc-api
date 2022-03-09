@@ -7,7 +7,8 @@ module Api
 
       # GET /distributions
       def index
-        populate = DistributionPopulator.new(params: query_params, parent: parent, current_user: current_user)
+        populate = DistributionPopulator.new(params: query_params, current_group: current_group,
+                                             current_user: current_user)
         render_paginated_collection(populate.run)
       end
 
@@ -36,8 +37,9 @@ module Api
       # Only allow a list of trusted parameters through.
       def distribution_params
         params.require(:distribution).permit(
-          :region_id, :district_id, :extension_id, :company_id, :state, :received_remark, :consumer_cid,
-          :consumer_name, :consumer_village, :distributed_type, consumer_ids: [], attachment_attributes: [:file]
+          :region_id, :district_id, :extension_id, :village_id, :company_id, :state, :received_remark,
+          :consumer_cid, :consumer_name, :consumer_village, :distributed_type, consumer_ids: [],
+                                                                               attachment_attributes: [:file]
         )
       end
 
@@ -50,9 +52,10 @@ module Api
       def distribution_attributes
         @distribution_attributes ||= {
           current_user: current_user,
+          current_group: current_group,
           id: params[:id],
-          source_ids: source_ids,
-          destination_ids: destination_ids,
+          from_id: from_id,
+          to_id: to_id,
           cart: cart,
           include: [:attachment]
         }
@@ -69,22 +72,13 @@ module Api
         )
       end
 
-      def destination_ids
-        return unless params[:distribution].present?
+      def to_id # rubocop:disable Metrics/AbcSize
+        return unless %w[create update].include?(action_name)
 
-        region_id, district_id, extension_id, company_id = extract_ids(distribute_to_role)
-        @destination_ids ||= User.includes(:roles).similar_users(
-          distribute_to_role, region_id, district_id, extension_id, company_id
-        ).pluck(:id)
-      end
-
-      def distribute_to_role
-        case distribution_params[:distributed_type]
-        when 'self', 'individual'
-          'user'
-        else
-          distribution_params[:distributed_type]
-        end
+        attr = { region_id: distribution_params[:region_id], district_id: distribution_params[:district_id],
+                 extension_id: distribution_params[:extension_id], village_id: distribution_params[:village_id],
+                 company_id: distribution_params[:company_id] }
+        @to_id ||= Group.find_by(group_attributes(to_role(distribution_params[:distributed_type]), attr))&.id
       end
     end
   end

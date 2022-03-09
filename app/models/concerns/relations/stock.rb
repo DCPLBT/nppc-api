@@ -9,9 +9,7 @@ module Relations
       belongs_to :product
       belongs_to :user
       belongs_to :unit
-
-      has_many :user_stocks, dependent: :destroy
-      has_many :users, through: :user_stocks
+      belongs_to :group, inverse_of: :stocks
     end
   end
 end

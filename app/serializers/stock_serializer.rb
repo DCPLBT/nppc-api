@@ -13,6 +13,7 @@
 #  unit_price      :decimal(, )
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  group_id        :bigint
 #  product_id      :bigint           not null
 #  product_type_id :bigint           not null
 #  unit_id         :bigint           not null
@@ -20,6 +21,7 @@
 #
 # Indexes
 #
+#  index_stocks_on_group_id         (group_id)
 #  index_stocks_on_product_id       (product_id)
 #  index_stocks_on_product_type_id  (product_type_id)
 #  index_stocks_on_unit_id          (unit_id)
@@ -27,6 +29,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (group_id => groups.id)
 #  fk_rails_...  (product_id => products.id)
 #  fk_rails_...  (product_type_id => product_types.id)
 #  fk_rails_...  (unit_id => units.id)
@@ -49,6 +52,7 @@ class StockSerializer < ApplicationSerializer
     :procured_on,
     :obsolete_date,
     :remark,
-    :created_at
+    :created_at,
+    :group_id
   )
 end

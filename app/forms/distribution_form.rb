@@ -38,8 +38,8 @@ class DistributionForm < BaseForm
 
   def create_distributor_distributed_to
     distribution.update(
-      distributed_to_ids: destination_ids,
-      distributor_ids: source_ids
+      from_id: from_id,
+      to_id: to_id
     )
   end
 
@@ -51,14 +51,16 @@ class DistributionForm < BaseForm
 
   def adjust_stock # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     distribution.line_items.each do |li|
-      existing_stock = current_user.stocks.find_by(procured_on: li.stock.procured_on)
-      stock = existing_stock || (x = li.stock.dup
-                                 x.quantity = 0
-                                 x.user = current_user
-                                 x)
+      existing_stock = current_group.stocks.find_by(procured_on: li.stock.procured_on)
+      stock = existing_stock || (
+        x = li.stock.dup
+        x.quantity = 0
+        x.user = current_user
+        x
+      )
       stock.update(
         quantity: stock.quantity + li.quantity,
-        user_ids: distribution.distributed_to_ids
+        group_id: distribution.distributed_to.id
       )
     end
   end

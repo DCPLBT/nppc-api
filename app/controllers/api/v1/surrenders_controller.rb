@@ -50,6 +50,7 @@ module Api
       def surrender_attributes
         @surrender_attributes ||= {
           current_user: current_user,
+          current_group: current_group,
           id: params[:id],
           source_ids: source_ids,
           destination_ids: destination_ids,

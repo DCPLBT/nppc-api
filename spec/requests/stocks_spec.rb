@@ -39,7 +39,8 @@ RSpec.describe '/stocks', type: :request do
       procured_on: Time.now,
       remark: Faker::Restaurant.review,
       user: user,
-      unit_id: unit.id
+      unit_id: unit.id,
+      group_id: user.groups.first.id
     }
   end
 
@@ -50,16 +51,24 @@ RSpec.describe '/stocks', type: :request do
   describe 'GET /index' do
     let!(:setting) { create(:setting, category: :obsolete, user: user, meta: { period: 3 }) }
     let!(:stock) do
-      create(:stock, product_type: product_type1, product: product2, unit: unit, user: user, user_ids: [user.id])
+      create(
+        :stock, product_type: product_type1, product: product2, unit: unit, user: user, group: user.groups.first
+      )
     end
     let!(:stock1) do
-      create(:stock, product_type: product_type, product: product1, unit: unit, user: user, user_ids: [user.id])
+      create(
+        :stock, product_type: product_type, product: product1, unit: unit, user: user, group: user.groups.first
+      )
     end
     let!(:stock2) do
-      create(:stock, product_type: product_type, product: product, unit: unit, user: user, user_ids: [user.id])
+      create(
+        :stock, product_type: product_type, product: product, unit: unit, user: user, group: user.groups.first
+      )
     end
     let!(:stock3) do
-      create(:stock, product_type: product_type, product: product, unit: unit, user: user, user_ids: [user.id])
+      create(
+        :stock, product_type: product_type, product: product, unit: unit, user: user, group: user.groups.first
+      )
     end
 
     it 'renders a successful response' do

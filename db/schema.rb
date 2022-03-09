@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_220_307_144_945) do
+ActiveRecord::Schema.define(version: 20_220_309_110_515) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -126,11 +126,17 @@ ActiveRecord::Schema.define(version: 20_220_307_144_945) do
     t.string 'consumer_village'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.bigint 'from_id'
+    t.bigint 'to_id'
+    t.bigint 'village_id'
     t.index ['company_id'], name: 'index_distributions_on_company_id'
     t.index ['district_id'], name: 'index_distributions_on_district_id'
     t.index ['extension_id'], name: 'index_distributions_on_extension_id'
+    t.index ['from_id'], name: 'index_distributions_on_from_id'
     t.index ['region_id'], name: 'index_distributions_on_region_id'
+    t.index ['to_id'], name: 'index_distributions_on_to_id'
     t.index ['user_id'], name: 'index_distributions_on_user_id'
+    t.index ['village_id'], name: 'index_distributions_on_village_id'
   end
 
   create_table 'districts', force: :cascade do |t|
@@ -407,6 +413,8 @@ ActiveRecord::Schema.define(version: 20_220_307_144_945) do
     t.text 'remark'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.bigint 'group_id'
+    t.index ['group_id'], name: 'index_stocks_on_group_id'
     t.index ['product_id'], name: 'index_stocks_on_product_id'
     t.index ['product_type_id'], name: 'index_stocks_on_product_type_id'
     t.index ['unit_id'], name: 'index_stocks_on_unit_id'
@@ -538,6 +546,7 @@ ActiveRecord::Schema.define(version: 20_220_307_144_945) do
   add_foreign_key 'distributions', 'extensions'
   add_foreign_key 'distributions', 'regions'
   add_foreign_key 'distributions', 'users'
+  add_foreign_key 'distributions', 'villages'
   add_foreign_key 'districts', 'regions'
   add_foreign_key 'districts', 'users'
   add_foreign_key 'employee_types', 'roles'
@@ -581,6 +590,7 @@ ActiveRecord::Schema.define(version: 20_220_307_144_945) do
   add_foreign_key 'recipients', 'users'
   add_foreign_key 'regions', 'users'
   add_foreign_key 'settings', 'users'
+  add_foreign_key 'stocks', 'groups'
   add_foreign_key 'stocks', 'product_types'
   add_foreign_key 'stocks', 'products'
   add_foreign_key 'stocks', 'units'
