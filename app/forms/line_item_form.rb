@@ -71,7 +71,7 @@ class LineItemForm < BaseForm
       x
     )
     stock.update(
-      quantity: stock.quantity + line_item.quantity,
+      quantity: stock.quantity + line_item.received_quantity,
       group_id: line_item.itemable.to_id
     )
   end
