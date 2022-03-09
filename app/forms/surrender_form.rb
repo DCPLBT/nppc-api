@@ -28,8 +28,7 @@ class SurrenderForm < BaseForm
   def surrender
     @surrender ||= if id
                      Surrender.includes(
-                       line_items: %i[unit stock product product_type],
-                       surrendered_tos: :profile, surrenderers: :profile
+                       line_items: %i[unit stock product product_type]
                      ).find(id)
                    else
                      build_surrender
@@ -42,15 +41,14 @@ class SurrenderForm < BaseForm
       line_items: cart.line_items
     )
     Surrender.includes(
-      line_items: %i[unit stock product product_type],
-      surrendered_tos: :profile, surrenderers: :profile
+      line_items: %i[unit stock product product_type]
     ).new(params)
   end
 
   def create_surrenderer_surrendered_to
     surrender.update(
-      surrendered_to_ids: destination_ids,
-      surrenderer_ids: source_ids
+      from_id: from_id,
+      to_id: to_id
     )
   end
 
@@ -71,7 +69,7 @@ class SurrenderForm < BaseForm
       )
       stock.update(
         quantity: stock.quantity + li.quantity,
-        group_id: surrender.surrendered_to.groups.first.id
+        group_id: surrender.surrendered_to.id
       )
     end
   end

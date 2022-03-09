@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_220_309_123_106) do
+ActiveRecord::Schema.define(version: 20_220_309_133_507) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -437,10 +437,14 @@ ActiveRecord::Schema.define(version: 20_220_309_123_106) do
     t.datetime 'updated_at', precision: 6, null: false
     t.bigint 'received_by_id'
     t.datetime 'received_on'
+    t.bigint 'from_id'
+    t.bigint 'to_id'
     t.index ['district_id'], name: 'index_surrenders_on_district_id'
     t.index ['extension_id'], name: 'index_surrenders_on_extension_id'
+    t.index ['from_id'], name: 'index_surrenders_on_from_id'
     t.index ['received_by_id'], name: 'index_surrenders_on_received_by_id'
     t.index ['region_id'], name: 'index_surrenders_on_region_id'
+    t.index ['to_id'], name: 'index_surrenders_on_to_id'
     t.index ['user_id'], name: 'index_surrenders_on_user_id'
   end
 

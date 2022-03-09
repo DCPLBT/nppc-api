@@ -7,6 +7,7 @@ module Validations
     included do
       validates_presence_of :surrender_type
       validates_presence_of :line_items, message: :line_item_required
+      validates_presence_of :region_id, if: ->(x) { x.adrc? }
 
       validate :validate_stock, if: :surrendered?
     end

@@ -24,21 +24,21 @@ class SurrenderPopulator < BasePopulator
   def surrenders
     @surrenders ||= Surrender.includes(
       :line_items, :rich_text_received_remark, :region, :district, :extension, :user, :received_by,
-      :requestable_requesters, :forwardable_forwarded_tos, :attachment, :rich_text_comments,
-      surrendered_tos: :profile, surrenderers: :profile
+      :attachment, :rich_text_comments, surrendered_to: %i[region district extension company],
+                                        surrenderer: %i[region district extension company]
     )
   end
 
   def filter_by_surrendered(surrenders)
     return surrenders unless surrendered.present? || determine_boolean(surrendered)
 
-    surrenders.where(id: current_user.surrenderer_products.ids)
+    surrenders.where(id: current_group.surrenderer_products.ids)
   end
 
   def filter_by_received(surrenders)
     return surrenders unless received.present? || determine_boolean(received)
 
-    surrenders.where(id: current_user.surrendered_to_products.ids)
+    surrenders.where(id: current_group.surrendered_to_products.ids)
   end
 
   def filter_by_product_type(surrenders)

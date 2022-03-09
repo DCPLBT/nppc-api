@@ -8,6 +8,9 @@ module Validations
       validates_presence_of :category
       validates_presence_of :line_items, message: :line_item_required
       validates_presence_of :approved_by, if: :approved?
+      validates_presence_of :region_id, if: ->(x) { x.adrc? }
+      validates_presence_of :region_id, :district_id, :extension_id, if: ->(x) { x.ea? }
+      validates_presence_of :company_id, if: ->(x) { x.mhv? }
 
       validate :validate_stock, if: :valid_state?
       validate :validate_approved_by, if: :approved?

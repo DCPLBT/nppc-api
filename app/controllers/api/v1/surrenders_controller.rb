@@ -7,7 +7,7 @@ module Api
 
       # GET /surrenders
       def index
-        populate = SurrenderPopulator.new(params: query_params, parent: parent, current_user: current_user)
+        populate = SurrenderPopulator.new(params: query_params, parent: parent, current_group: current_group)
         render_paginated_collection(populate.run)
       end
 
@@ -52,8 +52,8 @@ module Api
           current_user: current_user,
           current_group: current_group,
           id: params[:id],
-          source_ids: source_ids,
-          destination_ids: destination_ids,
+          from_id: from_id,
+          to_id: to_id,
           cart: cart,
           include: [:attachment]
         }
@@ -70,13 +70,13 @@ module Api
         )
       end
 
-      def destination_ids
-        return unless params[:surrender].present?
+      def to_id # rubocop:disable Metrics/AbcSize
+        return unless %w[create update].include?(action_name)
 
-        region_id, district_id, extension_id, company_id = extract_ids(surrender_params[:surrender_type])
-        @destination_ids ||= User.includes(:roles).similar_users(
-          surrender_params[:surrender_type], region_id, district_id, extension_id, company_id
-        ).pluck(:id)
+        attr = { region_id: surrender_params[:region_id], district_id: surrender_params[:district_id],
+                 extension_id: surrender_params[:extension_id], village_id: surrender_params[:village_id],
+                 company_id: surrender_params[:company_id] }
+        @to_id ||= Group.find_by(group_attributes(to_role(surrender_params[:surrender_type]), attr))&.id
       end
     end
   end

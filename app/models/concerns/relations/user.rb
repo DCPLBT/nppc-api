@@ -11,12 +11,6 @@ module Relations
       has_many :carts, as: :cartable, dependent: :destroy
       has_many :regions, inverse_of: :user, dependent: :destroy
       has_many :settings, inverse_of: :user, dependent: :destroy
-      has_many :forwardable_forwarded_tos, foreign_key: :forwarded_to_id
-      has_many :requestable_requesters, foreign_key: :requester_id
-      has_many :surrendered_to_products, through: :forwardable_forwarded_tos, source: :forwardable,
-                                         source_type: 'Surrender'
-      has_many :surrenderer_products, through: :requestable_requesters, source: :requestable,
-                                      source_type: 'Surrender'
       has_many :recipients, inverse_of: :user
       has_many :notifications, through: :recipients
       has_many :user_groups, inverse_of: :user, dependent: :destroy

@@ -22,6 +22,8 @@ module Relations
       has_many :distributed_tos_distributions, foreign_key: :to_id, class_name: 'Distribution'
       has_many :mobilizers_mobilizations, foreign_key: :from_id, class_name: 'Mobilization'
       has_many :mobilized_tos_mobilizations, foreign_key: :to_id, class_name: 'Mobilization'
+      has_many :surrenderer_products, foreign_key: :from_id, class_name: 'Surrender'
+      has_many :surrendered_to_products, foreign_key: :to_id, class_name: 'Surrender'
     end
   end
 end
