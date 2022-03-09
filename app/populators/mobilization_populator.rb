@@ -25,21 +25,22 @@ class MobilizationPopulator < BasePopulator
 
   def mobilizations
     @mobilizations ||= Mobilization.includes(
-      :line_items, :rich_text_received_remark, :region, :district, :extension, :mobilized_tos, :mobilizers, :user,
-      :requestable_requesters, :forwardable_forwarded_tos, :attachment, :company, :approved_by, :received_by
+      :line_items, :rich_text_received_remark, :region, :district, :extension, :attachment, :company,
+      :approved_by, :received_by, user: :profile, mobilized_to: %i[region district extension company],
+                                  mobilizer: %i[region district extension company]
     )
   end
 
   def filter_by_mobilized(mobilizations)
     return mobilizations unless mobilized.present? || determine_boolean(mobilized)
 
-    mobilizations.where(id: current_user.mobilizers_mobilizations.ids)
+    mobilizations.where(id: current_group.mobilizers_mobilizations.ids)
   end
 
   def filter_by_received(mobilizations)
     return mobilizations unless received.present? || determine_boolean(received)
 
-    mobilizations.where(id: current_user.mobilized_tos_mobilizations.ids)
+    mobilizations.where(id: current_group.mobilized_tos_mobilizations.ids)
   end
 
   def filter_by_product_type(mobilizations)

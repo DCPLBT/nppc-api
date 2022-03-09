@@ -11,15 +11,13 @@ module Relations
       belongs_to :company, optional: true
       belongs_to :received_by, optional: true, class_name: 'User'
       belongs_to :approved_by, optional: true, class_name: 'User'
+      belongs_to :mobilizer, foreign_key: :from_id, class_name: 'Group', optional: true
+      belongs_to :mobilized_to, foreign_key: :to_id, class_name: 'Group', optional: true
       belongs_to :user
 
       has_one :attachment, as: :attachable, dependent: :destroy
 
       has_many :line_items, as: :itemable, dependent: :destroy
-      has_many :forwardable_forwarded_tos, as: :forwardable, dependent: :destroy
-      has_many :requestable_requesters, as: :requestable, dependent: :destroy
-      has_many :mobilized_tos, through: :forwardable_forwarded_tos, source: :forwarded_to
-      has_many :mobilizers, through: :requestable_requesters, source: :requester
 
       has_rich_text :received_remark
       has_rich_text :remark

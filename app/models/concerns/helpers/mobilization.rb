@@ -3,15 +3,6 @@
 module Helpers
   module Mobilization
     extend ActiveSupport::Concern
-
-    def mobilizer
-      @mobilizer ||= mobilizers.last
-    end
-
-    def mobilized_to
-      @mobilized_to ||= mobilized_tos.last
-    end
-
     def total_price
       @total_price ||= line_items.sum(&:total_price)
     end

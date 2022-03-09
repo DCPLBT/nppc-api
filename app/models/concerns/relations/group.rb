@@ -20,6 +20,8 @@ module Relations
       has_many :forwarded_indents, foreign_key: :to_id, class_name: 'Indent'
       has_many :distributors_distributions, foreign_key: :from_id, class_name: 'Distribution'
       has_many :distributed_tos_distributions, foreign_key: :to_id, class_name: 'Distribution'
+      has_many :mobilizers_mobilizations, foreign_key: :from_id, class_name: 'Mobilization'
+      has_many :mobilized_tos_mobilizations, foreign_key: :to_id, class_name: 'Mobilization'
     end
   end
 end

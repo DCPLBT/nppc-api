@@ -32,6 +32,11 @@ RSpec.describe '/mobilizations', type: :request do
              region: region, district: district, extension: extension, company: company, village: village
            })
   end
+  let(:user2) do
+    create(:user, role_ids: [8], profile_attributes: {
+             region: region1, district: district1, extension: extension1, company: company, village: village
+           })
+  end
   let(:ea) do
     create(:user, role_ids: [4], profile_attributes: { region: region, district: district, extension: extension })
   end
@@ -67,7 +72,7 @@ RSpec.describe '/mobilizations', type: :request do
   # adjust the attributes here as well.
   let(:valid_attributes) do
     { region_id: region.id, district_id: district.id, extension_id: extension.id, user_id: user.id,
-      category: 'ea', mobilized_to_ids: [user.id], line_items: [line_item] }
+      category: 'ea', to_id: user.groups.first.id, line_items: [line_item] }
   end
 
   let(:invalid_attributes) do
@@ -80,8 +85,8 @@ RSpec.describe '/mobilizations', type: :request do
     end
     let!(:mobilization1) do
       create(
-        :mobilization, user_id: user.id, mobilizer_ids: [user.id], mobilized_to_ids: [ea.id],
-                       region: user.region, district: user.district, extension: user.extension, category: 'ea',
+        :mobilization, user_id: user2.id, from_id: user2.groups.first.id, to_id: ea.groups.first.id,
+                       region: user2.region, district: user2.district, extension: user2.extension, category: 'ea',
                        line_items_attributes: [
                          { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
                        ]
@@ -89,8 +94,8 @@ RSpec.describe '/mobilizations', type: :request do
     end
     let!(:mobilization2) do
       create(
-        :mobilization, user_id: user.id, mobilizer_ids: [user.id], mobilized_to_ids: [ea.id],
-                       region: user.region, district: user.district, extension: user.extension, category: 'ea',
+        :mobilization, user_id: user2.id, from_id: user2.groups.first.id, to_id: ea.groups.first.id,
+                       region: user2.region, district: user2.district, extension: user2.extension, category: 'ea',
                        line_items_attributes: [
                          { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
                        ]
@@ -98,8 +103,8 @@ RSpec.describe '/mobilizations', type: :request do
     end
     let!(:mobilization3) do
       create(
-        :mobilization, user_id: user.id, mobilizer_ids: [user.id], mobilized_to_ids: [ea.id],
-                       region: user.region, district: user.district, extension: user.extension, category: 'ea',
+        :mobilization, user_id: user2.id, from_id: user2.groups.first.id, to_id: ea.groups.first.id,
+                       region: user2.region, district: user2.district, extension: user2.extension, category: 'ea',
                        line_items_attributes: [
                          { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
                        ]
@@ -107,7 +112,7 @@ RSpec.describe '/mobilizations', type: :request do
     end
     let!(:mobilization4) do
       create(
-        :mobilization, user_id: user.id, mobilizer_ids: [user.id], mobilized_to_ids: [ea1.id],
+        :mobilization, user_id: user.id, from_id: user.groups.first.id, to_id: ea1.groups.first.id,
                        region: user1.region, district: user1.district, extension: user1.extension,
                        category: 'ea',
                        line_items_attributes: [
@@ -117,7 +122,7 @@ RSpec.describe '/mobilizations', type: :request do
     end
     let!(:mobilization5) do
       create(
-        :mobilization, user_id: user.id, mobilizer_ids: [user.id], mobilized_to_ids: [adrc.id],
+        :mobilization, user_id: user.id, from_id: user.groups.first.id, to_id: adrc.groups.first.id,
                        region: region1, category: 'adrc',
                        line_items_attributes: [
                          { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
@@ -126,8 +131,7 @@ RSpec.describe '/mobilizations', type: :request do
     end
     let!(:mobilization6) do
       create(
-        :mobilization, user_id: user.id, mobilizer_ids: [user.id], mobilized_to_ids: [ea1.id],
-                       region: user1.region, district: user1.district, extension: user1.extension,
+        :mobilization, user_id: user.id, from_id: user.groups.first.id, to_id: ea1.groups.first.id, company: company,
                        category: 'mhv',
                        line_items_attributes: [
                          { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
@@ -143,7 +147,7 @@ RSpec.describe '/mobilizations', type: :request do
     it 'filter by mobilized' do
       get api_v1_mobilizations_url(category: :mobilization, mobilized: true), as: :json
       expect(response).to be_successful
-      expect(json[:data].size).to eq(6)
+      expect(json[:data].size).to eq(3)
     end
 
     it 'filter by product type' do
@@ -161,19 +165,19 @@ RSpec.describe '/mobilizations', type: :request do
     it 'filter by region' do
       get api_v1_mobilizations_url(category: :mobilization, region_id: user1.profile.region_id), as: :json
       expect(response).to be_successful
-      expect(json[:data].size).to eq(2)
+      expect(json[:data].size).to eq(1)
     end
 
     it 'filter by district' do
       get api_v1_mobilizations_url(category: :mobilization, district_id: user1.profile.district_id), as: :json
       expect(response).to be_successful
-      expect(json[:data].size).to eq(2)
+      expect(json[:data].size).to eq(1)
     end
 
     it 'filter by extension' do
       get api_v1_mobilizations_url(category: :mobilization, extension_id: user1.profile.extension_id), as: :json
       expect(response).to be_successful
-      expect(json[:data].size).to eq(2)
+      expect(json[:data].size).to eq(1)
     end
 
     it 'filter by year' do

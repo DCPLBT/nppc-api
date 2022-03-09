@@ -7,7 +7,7 @@ module Api
 
       # GET /mobilizations
       def index
-        populate = MobilizationPopulator.new(params: query_params, parent: parent, current_user: current_user)
+        populate = MobilizationPopulator.new(params: query_params, parent: parent, current_group: current_group)
         render_paginated_collection(populate.run)
       end
 
@@ -52,8 +52,8 @@ module Api
           current_user: current_user,
           current_group: current_group,
           id: params[:id],
-          source_ids: source_ids,
-          destination_ids: destination_ids,
+          from_id: from_id,
+          to_id: to_id,
           cart: cart,
           include: [:attachment]
         }
@@ -70,26 +70,13 @@ module Api
         )
       end
 
-      def destination_ids
-        return unless params[:mobilization].present?
+      def to_id # rubocop:disable Metrics/AbcSize
+        return unless %w[create update].include?(action_name)
 
-        region_id, district_id, extension_id, company_id = des_extract_ids(mobilization_params[:category])
-        @destination_ids ||= User.includes(:roles).similar_users(
-          mobilization_params[:category], region_id, district_id, extension_id, company_id
-        ).pluck(:id)
-      end
-
-      def des_extract_ids(role_name)
-        case role_name
-        when 'ea'
-          [mobilization_params[:region_id], mobilization_params[:district_id], mobilization_params[:extension_id]]
-        when 'adrc'
-          [mobilization_params[:region_id]]
-        when 'mhv'
-          [nil, nil, nil, mobilization_params[:company_id]]
-        else
-          []
-        end
+        attr = { region_id: mobilization_params[:region_id], district_id: mobilization_params[:district_id],
+                 extension_id: mobilization_params[:extension_id], village_id: mobilization_params[:village_id],
+                 company_id: mobilization_params[:company_id] }
+        @to_id ||= Group.find_by(group_attributes(to_role(mobilization_params[:category]), attr))&.id
       end
     end
   end

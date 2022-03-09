@@ -41,8 +41,8 @@ class MobilizationForm < BaseForm
 
   def create_mobilizer_mobilized_to
     mobilization.update(
-      mobilized_to_ids: destination_ids,
-      mobilizer_ids: source_ids
+      from_id: from_id,
+      to_id: to_id
     )
   end
 
@@ -63,7 +63,7 @@ class MobilizationForm < BaseForm
       )
       stock.update(
         quantity: stock.quantity + li.quantity,
-        group_id: mobilization.mobilized_to.groups.first.id
+        group_id: mobilization.mobilized_to.id
       )
     end
   end
