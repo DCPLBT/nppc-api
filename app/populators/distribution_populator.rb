@@ -2,7 +2,7 @@
 
 class DistributionPopulator < BasePopulator
   attr_accessor :draft, :distributed, :received, :product_type_id, :product_id, :region_id, :district_id,
-                :extension_id, :year, :distributed_type
+                :extension_id, :year, :distributed_type, :tab
 
   def run # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     distributions
@@ -17,6 +17,7 @@ class DistributionPopulator < BasePopulator
       .yield_self { |distributions| filter_by_year(distributions) }
       .yield_self { |distributions| filter_by_date_range(distributions) }
       .yield_self { |distributions| filter_by_distributed_type(distributions) }
+      .yield_self { |distributions| filter_by_tab(distributions) }
       .distinct
   end
 
@@ -82,6 +83,21 @@ class DistributionPopulator < BasePopulator
     return distributions unless distributed_type.present?
 
     distributions.where(distributed_type: determine_distributed_type)
+  end
+
+  def filter_by_tab(distributions)
+    return distributions unless tab.present?
+    return distributions unless %w[individual others].include?(tab)
+
+    send("filter_by_#{tab}", distributions)
+  end
+
+  def filter_by_individual(distributions)
+    distributions.where(distributed_type: %i[individual self])
+  end
+
+  def filter_by_others(distributions)
+    distributions.where.not(distributed_type: %i[individual self])
   end
 
   def determine_distributed_type

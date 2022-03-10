@@ -128,6 +128,18 @@ RSpec.describe '/distributions', type: :request do
       expect(response).to be_successful
     end
 
+    it 'filter by tab - Individual' do
+      get api_v1_distributions_url(category: :distribution, tab: 'individual'), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(0)
+    end
+
+    it 'filter by tab - Others' do
+      get api_v1_distributions_url(category: :distribution, tab: 'others'), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(4)
+    end
+
     it 'filter by distributor' do
       get api_v1_distributions_url(category: :distribution, distributed: true), as: :json
       expect(response).to be_successful
