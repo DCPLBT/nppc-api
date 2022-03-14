@@ -119,7 +119,12 @@ Rails.application.routes.draw do
         resources :products
       end
       resources :products, only: :index
-      resources :stocks
+      resources :stocks do
+        collection do
+          get :excel_download
+          get :pdf_download
+        end
+      end
       resources :indents, concerns: :itemable, shallow: true do
         member do
           get :forward
@@ -140,10 +145,20 @@ Rails.application.routes.draw do
           get :pdf_download
         end
       end
-      resources :surrenders, concerns: :itemable, shallow: true
+      resources :surrenders, concerns: :itemable, shallow: true do
+        collection do
+          get :excel_download
+          get :pdf_download
+        end
+      end
       resources :companies
       resources :notifications, only: %i[index show]
-      resources :mobilizations, concerns: :itemable, shallow: true
+      resources :mobilizations, concerns: :itemable, shallow: true do
+        collection do
+          get :excel_download
+          get :pdf_download
+        end
+      end
       resources :citizens, only: :show
       resources :roles, only: :index, shallow: true do
         resources :employee_types, only: :index do

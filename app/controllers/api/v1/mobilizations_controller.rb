@@ -31,6 +31,28 @@ module Api
         destroy_mobilization_form(mobilization_form)
       end
 
+      def excel_download
+        mobilizations = MobilizationPopulator.new(
+          params: query_params, parent: parent, current_group: current_group
+        ).run
+        file_download(
+          ::MobilizationExcelSupport.new(mobilizations).run,
+          'Mobilization.xlsx',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+      end
+
+      def pdf_download
+        mobilizations = MobilizationPopulator.new(
+          params: query_params, parent: parent, current_group: current_group
+        ).run
+        file_download(
+          ::Documents::Pdf::Mobilization.new(mobilizations: mobilizations).generate,
+          'Mobilization.pdf',
+          'application/pdf'
+        )
+      end
+
       private
 
       # Only allow a list of trusted parameters through.

@@ -1,0 +1,33 @@
+.row
+  .col-sm-12.text-center.mb-5
+    %h4.blue-color.font-weight-400 Distributions
+%table.table.table-striped
+  %thead>
+    %tr>
+      %th{scope: "col"}Reference No.
+      %th{scope: "col"}Mobilized by
+      %th{scope: "col"}Region
+      %th{scope: "col"}Dzongkhag
+      %th{scope: "col"}Gewog
+      %th{scope: "col"}Company
+      %th{scope: "col"}Total Product
+      %th{scope: "col"}Total Quantity
+      %th{scope: "col"}Total Price
+      %th{scope: "col"}Status
+      %th{scope: "col"}Approved by
+      %th{scope: "col"}Approved Date
+  %tbody
+    - @mobilizations.each do |d|
+      %tr
+        %th{scope: 'row'}=d.reference_no
+        %td=d.user_name
+        %td=d.region_name
+        %td=d.district_name
+        %td=d.extension_name
+        %td=d.company_name
+        %td=d.total_product
+        %td=d.total_quantity
+        %td=d.total_price
+        %td=d.state.capitalize
+        %td=d.approved_by_name
+        %td=d.approved_on&.strftime('%d/%m/%Y %I:%M %p')
