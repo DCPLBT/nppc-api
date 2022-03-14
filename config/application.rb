@@ -33,7 +33,7 @@ module NppcApi
 
     # Only loads a smaller set of middleware suitable for API only apps.
     # Middleware like session, flash, cookies can be added back manually.
-    # Skip views, helpers and assets when generating a new resource.
+    # Skip views, supports and assets when generating a new resource.
     config.api_only = true
     config.time_zone = 'Asia/Dhaka'
 
@@ -61,5 +61,7 @@ module NppcApi
         routing_specs: false
       )
     end
+
+    config.eager_load_paths += %W[#{config.root}/lib]
   end
 end

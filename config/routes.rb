@@ -130,7 +130,12 @@ Rails.application.routes.draw do
       resources :designations
       resources :employee_types
       resources :carts, concerns: :itemable, shallow: true
-      resources :distributions, concerns: :itemable, shallow: true
+      resources :distributions, concerns: :itemable, shallow: true do
+        collection do
+          get :excel_download
+          get :pdf_download
+        end
+      end
       resources :surrenders, concerns: :itemable, shallow: true
       resources :companies
       resources :notifications, only: %i[index show]

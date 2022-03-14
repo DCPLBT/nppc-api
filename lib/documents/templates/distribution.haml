@@ -1,0 +1,33 @@
+.row
+  .col-sm-12.text-center.mb-5
+    %h4.blue-color.font-weight-400 Distributions
+%table.table.table-striped
+  %thead>
+    %tr>
+      %th{scope: "col"}Reference No.
+      %th{scope: "col"}Distributed to
+      %th{scope: "col"}Region
+      %th{scope: "col"}Dzongkhag
+      %th{scope: "col"}Gewog
+      %th{scope: "col"}Company
+      %th{scope: "col"}Total Product
+      %th{scope: "col"}Total Quantity
+      %th{scope: "col"}Total Price
+      %th{scope: "col"}Status
+      %th{scope: "col"}Distributed By
+      %th{scope: "col"}Distributed On
+  %tbody
+    - @distributions.each do |d|
+      %tr
+        %th{scope: 'row'}=d.reference_no
+        %td=d.distributed_to_name
+        %td=d.region_name
+        %td=d.district_name
+        %td=d.extension_name
+        %td=d.company_name
+        %td=d.total_product
+        %td=d.total_quantity
+        %td=d.total_price
+        %td=d.state.capitalize
+        %td=d.user_name
+        %td=d.created_at.strftime('%d/%m/%Y')

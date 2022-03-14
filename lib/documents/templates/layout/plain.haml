@@ -1,0 +1,134 @@
+!!!
+%html
+  %head
+    %meta{content: 'width=device-width', name: 'viewport'}/
+    %meta{charset: 'UTF-8'}/
+    :css
+      .col-sm-9 {
+          width: 75%;
+          float: left;
+      }
+      .col-sm-6 {
+        width: 50%;
+        float: left;
+      }
+      .col-sm-4 {
+        width: 33.33333333%;
+        float: left;
+      }
+      .col-sm-3 {
+        width: 25%;
+        float: left;
+      }
+      .col-sm-2 {
+        width: 16.66666667%;
+        float: left;
+      }
+      .logo {
+        width: 90px;
+        height: 90px;
+      }
+      .blue-color {
+        color: #0d47a1;
+      }
+      .font-weight-400 {
+        font-weight: 400;
+      }
+      .gap-top-m0 {
+        margin-top: 0;
+      }
+      .gap-bottom-m6 {
+        margin-bottom: 6px;
+      }
+      .gap-top-p26 {
+        padding-top: 26px;
+      }
+      .font-size-12 {
+        font-size: 12px;
+      }
+      .font-size-28 {
+        font-size: 28px;
+      }
+      .gap-top-p50 {
+        padding-top: 50px;
+      }
+      .gap-right-p20 {
+        padding-right: 20px;
+      }
+      .gap-top-p40 {
+        padding-top: 40px;
+      }
+      .gap-bottom-mn-30 {
+        margin-bottom: -30px;
+      }
+      .pull-right {
+        float: right;
+      }
+      .clearfix {
+        clear: both;
+      }
+      .gap-left-mn-m8 {
+        margin-left: -8px;
+      }
+      .gap-right-mn-26 {
+        margin-right: -26px;
+      }
+      .gap-right-mn-60 {
+        margin-right: -60px;
+      }
+      .ribbon {
+        width: 150px;
+        height: 90px;
+        overflow: visible;
+        position: absolute;
+        top: 0;
+        right: -17px;
+        margin-top: 39px;
+      }
+      .ribbon span {
+        position: absolute;
+        display: block;
+        width: 190px;
+        padding: 12px 0;
+        background-color: #000000;
+        color: #ffffff;
+        font-size: 13px;
+        box-shadow: none;
+        text-shadow: 0 1px 1px rgba(0,0,0,0.9);
+        text-transform: uppercase;
+        text-align: center;
+        letter-spacing: normal;
+        left: -15px;
+        top: 0;
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        font-weight: bold;
+      }
+      .ribbon span::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 100%;
+        z-index: -1;
+        border-left: 2px solid #5B5B5B;
+        border-right: 2px solid transparent;
+        border-bottom: 2px solid transparent;
+        border-top: 2px solid #5B5B5B;
+      }
+      .ribbon span::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 100%;
+        z-index: -1;
+        border-left: 2px solid transparent;
+        border-right: 2px solid #5B5B5B;
+        border-bottom: 2px solid transparent;
+        border-top: 2px solid #5B5B5B;
+      }
+      body {
+        font-family: Arial, "Arial V15", sans-serif !important;
+        font-size: 12px;
+      }
+  %body
+    = yield

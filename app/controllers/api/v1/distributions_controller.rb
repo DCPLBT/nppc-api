@@ -7,8 +7,9 @@ module Api
 
       # GET /distributions
       def index
-        populate = DistributionPopulator.new(params: query_params, current_group: current_group,
-                                             current_user: current_user)
+        populate = DistributionPopulator.new(
+          params: query_params, current_group: current_group, current_user: current_user
+        )
         render_paginated_collection(populate.run)
       end
 
@@ -30,6 +31,28 @@ module Api
       # DELETE /distributions/1
       def destroy
         destroy_distribution_form(distribution_form)
+      end
+
+      def excel_download
+        distributions = DistributionPopulator.new(
+          params: query_params, current_group: current_group, current_user: current_user
+        ).run
+        file_download(
+          ::DistributionExcelSupport.new(distributions).run,
+          'Distributions.xlsx',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+      end
+
+      def pdf_download
+        distributions = DistributionPopulator.new(
+          params: query_params, current_group: current_group, current_user: current_user
+        ).run
+        file_download(
+          ::Documents::Pdf::Distribution.new(distributions: distributions).generate,
+          'Distributions.xlsx',
+          'application/pdf'
+        )
       end
 
       private
