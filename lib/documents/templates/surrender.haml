@@ -1,0 +1,25 @@
+.row
+  .col-sm-12.text-center.mb-5
+    %h4.blue-color.font-weight-400 Surrenders
+%table.table.table-striped
+  %thead>
+    %tr>
+      %th{scope: "col"}Reference No.
+      %th{scope: "col"}Surrendered To
+      %th{scope: "col"}Total Product
+      %th{scope: "col"}Total Quantity
+      %th{scope: "col"}Total Price
+      %th{scope: "col"}Status
+      %th{scope: "col"}Surrendered by
+      %th{scope: "col"}Surrendered on
+  %tbody
+    - @surrenders.each do |d|
+      %tr
+        %th{scope: 'row'}=d.reference_no
+        %td=d.surrendered_to_name
+        %td=d.total_product
+        %td=d.total_quantity
+        %td=d.total_price
+        %td=d.state.capitalize
+        %td=d.user_name
+        %td=d.created_at&.strftime('%d/%m/%Y %I:%M %p')

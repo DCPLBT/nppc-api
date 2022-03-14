@@ -31,6 +31,28 @@ module Api
         destroy_surrender_form(surrender_form)
       end
 
+      def excel_download
+        surrenders = SurrenderPopulator.new(
+          params: query_params, parent: parent, current_group: current_group
+        ).run
+        file_download(
+          ::SurrenderExcelSupport.new(surrenders).run,
+          'Surrender.xlsx',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+      end
+
+      def pdf_download
+        surrenders = SurrenderPopulator.new(
+          params: query_params, parent: parent, current_group: current_group
+        ).run
+        file_download(
+          ::Documents::Pdf::Surrender.new(surrenders: surrenders).generate,
+          'Surrender.pdf',
+          'application/pdf'
+        )
+      end
+
       private
 
       # Only allow a list of trusted parameters through.][]
