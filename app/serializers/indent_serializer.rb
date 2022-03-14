@@ -64,18 +64,12 @@ class IndentSerializer < ApplicationSerializer
     :accepted_by_id,
     :accepted_by_name,
     :accepted_on,
-    :indent_type
+    :indent_type,
+    :total_product,
+    :total_quantity
   )
 
   attribute :remark do |object|
     object.remark&.to_plain_text
-  end
-
-  attribute :total_product do |object|
-    object.line_items&.size
-  end
-
-  attribute :total_quantity do |object|
-    object.line_items&.sum(&:quantity)
   end
 end

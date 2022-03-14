@@ -50,7 +50,7 @@ module Api
         ).run
         file_download(
           ::Documents::Pdf::Distribution.new(distributions: distributions).generate,
-          'Distributions.xlsx',
+          'Distributions.pdf',
           'application/pdf'
         )
       end

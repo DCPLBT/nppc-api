@@ -1,0 +1,23 @@
+.row
+  .col-sm-12.text-center.mb-5
+    %h4.blue-color.font-weight-400 Distributions
+%table.table.table-striped
+  %thead>
+    %tr>
+      %th{scope: "col"}Reference No.
+      %th{scope: "col"}Created Date
+      %th{scope: "col"}No.of Products
+      %th{scope: "col"}Total Quantity
+      %th{scope: "col"}Status
+      %th{scope: "col"}Received by
+      %th{scope: "col"}Received Date
+  %tbody
+    - @indents.each do |d|
+      %tr
+        %th{scope: 'row'}=d.reference_no
+        %td=d.created_at.strftime('%d/%m/%Y')
+        %td=d.total_product
+        %td=d.total_quantity
+        %td=d.state.capitalize
+        %td=d.accepted_by_name
+        %td=d.accepted_on&.strftime('%d/%m/%Y %I:%M %p')

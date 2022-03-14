@@ -124,6 +124,10 @@ Rails.application.routes.draw do
         member do
           get :forward
         end
+        collection do
+          get :excel_download
+          get :pdf_download
+        end
       end
       resources :units
       resources :agencies

@@ -36,6 +36,28 @@ module Api
         forward_indent_form(indent_form)
       end
 
+      def excel_download
+        indents = IndentPopulator.new(
+          params: query_params, current_user: current_user, current_group: current_group
+        ).run
+        file_download(
+          ::IndentExcelSupport.new(indents).run,
+          'Indent.xlsx',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+      end
+
+      def pdf_download
+        indents = IndentPopulator.new(
+          params: query_params, current_user: current_user, current_group: current_group
+        ).run
+        file_download(
+          ::Documents::Pdf::Indent.new(indents: indents).generate,
+          'Indent.pdf',
+          'application/pdf'
+        )
+      end
+
       private
 
       # Only allow a list of trusted parameters through.
