@@ -31,6 +31,24 @@ module Api
         destroy_stock_form(stock_form)
       end
 
+      def excel_download
+        stocks = StockPopulator.new(params: query_params, current_group: current_group).run
+        file_download(
+          ::StockExcelSupport.new(stocks).run,
+          'Stock.xlsx',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+      end
+
+      def pdf_download
+        stocks = StockPopulator.new(params: query_params, current_group: current_group).run
+        file_download(
+          ::Documents::Pdf::Stock.new(stocks: stocks).generate,
+          'Stock.pdf',
+          'application/pdf'
+        )
+      end
+
       private
 
       # Only allow a list of trusted parameters through.

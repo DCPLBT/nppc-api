@@ -1,0 +1,31 @@
+.row
+  .col-sm-12.text-center.mb-5
+    %h4.blue-color.font-weight-400 Stocks
+%table.table.table-striped
+  %thead>
+    %tr>
+      %th{scope: "col"}Product Type.
+      %th{scope: "col"}Product
+      %th{scope: "col"}Procured Year
+      %th{scope: "col"}Expiry Date
+      %th{scope: "col"}Obsolete Date
+      %th{scope: "col"}Unit
+      %th{scope: "col"}Quantity
+      %th{scope: "col"}Price/uint
+      %th{scope: "col"}Total Price
+      %th{scope: "col"}Added By
+      %th{scope: "col"}Created on
+  %tbody
+    - @stocks.each do |d|
+      %tr
+        %td=d.product_type_name
+        %td=d.product_name
+        %td=d.procured_on&.strftime('%d/%m/%Y %I:%M %p')
+        %td=d.expiry_date&.strftime('%d/%m/%Y %I:%M %p')
+        %td=d.obsolete_date&.strftime('%d/%m/%Y %I:%M %p')
+        %td=d.unit_name
+        %td=d.quantity
+        %td=d.unit_price
+        %td=d.total_price
+        %td=d.user_name
+        %td=d.created_at&.strftime('%d/%m/%Y %I:%M %p')
