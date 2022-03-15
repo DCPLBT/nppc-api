@@ -160,6 +160,15 @@ Rails.application.routes.draw do
         end
       end
       resources :citizens, only: :show
+      resources :reports, only: :index do
+        collection do
+          get :indent
+          get :distribution
+          get :surrender
+          get :stock
+          get :mobilization
+        end
+      end
       resources :roles, only: :index, shallow: true do
         resources :employee_types, only: :index do
           resources :agencies, only: :index do

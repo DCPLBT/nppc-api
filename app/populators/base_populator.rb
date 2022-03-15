@@ -3,7 +3,8 @@
 class BasePopulator
   include Assigner
 
-  attr_accessor :current_user, :parent, :q, :from_date, :to_date, :current_group, :disabled
+  attr_accessor :current_user, :current_role, :current_role_name, :parent, :q, :from_date, :to_date, :current_group,
+                :disabled
 
   def initialize(attrs = {})
     assign_attributes(attrs)
@@ -18,7 +19,7 @@ class BasePopulator
     return if to_date.nil? || to_date&.empty?
     return true if date(from_date) <= (date(to_date))
 
-    raise ArgumentError, '"From date" should be before or same as "to date"'
+    raise ActiveRecord::RecordNotSaved, '"From date" should be before or same as "to date"'
   end
 
   def date(val)
