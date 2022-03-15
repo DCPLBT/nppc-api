@@ -17,6 +17,9 @@ RSpec.describe 'Reports', type: :request do
   let(:user1) do
     create(:user, role_ids: [8], profile_attributes: { region: region, district: district, extension: extension })
   end
+  let(:user2) do
+    create(:user, role_ids: [8], profile_attributes: { region: region, district: district, extension: extension })
+  end
   let(:ea) do
     create(:user, role_ids: [4], profile_attributes: { region: region, district: district, extension: extension })
   end
@@ -31,9 +34,11 @@ RSpec.describe 'Reports', type: :request do
 
   let!(:product_type) { create(:product_type, user: user) }
   let!(:product) { create(:product, product_type: product_type, user: user, unit: unit) }
-  let!(:stock) { create(:stock, product_type: product_type, product: product, user: user, unit: unit) }
+  let!(:stock) do
+    create(:stock, product_type: product_type, product: product, user: user, unit: unit, group: user.groups.first)
+  end
 
-  let!(:cart) { create(:cart, cartable: user, session_id: 2, cart_user_ids: [user.id], category: :distribution) }
+  let!(:cart) { create(:cart, cartable: user, session_id: 2, category: :distribution) }
   let!(:line_item) do
     create(:line_item, product_type: product_type, product: product, unit: unit, stock: stock, itemable: cart)
   end
@@ -43,42 +48,48 @@ RSpec.describe 'Reports', type: :request do
   end
 
   describe 'GET /index' do
-    let!(:stock1) { create(:stock, product: product, product_type: product_type, unit: unit, user: user) }
+    let!(:stock1) do
+      create(:stock, product: product, product_type: product_type, unit: unit, user: user2, group: user2.groups.first)
+    end
     let!(:distribution1) do
       create(
-        :distribution, user_id: user.id, distributor_ids: [user.id], distributed_to_ids: [ea.id],
-                       region: user.region, district: user.district, extension: user.extension, distributed_type: 'ea',
-                       line_items_attributes: [
-                         { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
-                       ]
+        :distribution,
+        user_id: user2.id, from_id: user2.groups.first.id, to_id: ea.groups.first.id,
+        region: user2.region, district: user2.district, extension: user2.extension, distributed_type: 'ea',
+        line_items_attributes: [
+          { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
+        ]
       )
     end
     let!(:distribution2) do
       create(
-        :distribution, draft: false, user_id: user.id, distributor_ids: [user.id], distributed_to_ids: [ea.id],
-                       region: user.region, district: user.district, extension: user.extension, distributed_type: 'ea',
-                       line_items_attributes: [
-                         { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
-                       ]
+        :distribution,
+        draft: false, user_id: user2.id, from_id: user2.groups.first.id, to_id: ea.groups.first.id,
+        region: user2.region, district: user2.district, extension: user2.extension, distributed_type: 'ea',
+        line_items_attributes: [
+          { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
+        ]
       )
     end
     let!(:distribution3) do
       create(
-        :distribution, draft: false, user_id: user.id, distributor_ids: [user.id], distributed_to_ids: [ea.id],
-                       region: user.region, district: user.district, extension: user.extension, distributed_type: 'ea',
-                       line_items_attributes: [
-                         { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
-                       ]
+        :distribution,
+        draft: false, user_id: user2.id, from_id: user2.groups.first.id, to_id: ea.groups.first.id,
+        region: user2.region, district: user2.district, extension: user2.extension, distributed_type: 'ea',
+        line_items_attributes: [
+          { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
+        ]
       )
     end
     let!(:distribution4) do
       create(
-        :distribution, draft: false, user_id: user.id, distributor_ids: [user.id], distributed_to_ids: [ea1.id],
-                       region: user1.region, district: user1.district, extension: user1.extension,
-                       distributed_type: 'ea',
-                       line_items_attributes: [
-                         { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
-                       ]
+        :distribution,
+        draft: false, user_id: user2.id, from_id: user1.groups.first.id, to_id: ea1.groups.first.id,
+        region: user1.region, district: user1.district, extension: user1.extension,
+        distributed_type: 'ea',
+        line_items_attributes: [
+          { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
+        ]
       )
     end
 
