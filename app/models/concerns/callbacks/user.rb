@@ -57,17 +57,18 @@ module Callbacks
 
     # rubocop:enable Metrics/MethodLength
 
-    def assign_individual_to_group
+    def assign_individual_to_group # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
       return unless (roles.ids & [7, 8]).any?
 
+      gid = []
       roles.each do |r|
-        group_ids << (Group.find_by(role_id: r.id, individual_id: id, name: r.name) || Group.create!(
+        gid << (Group.find_by(role_id: r.id, individual_id: id, name: r.name) || Group.create!(
           role_id: r.id, individual_id: id, name: r.name
         )).id
       end
       ::User.skip_callback(:save, :before, :assign_defaults)
       ::User.skip_callback(:save, :after, :assign_individual_to_group)
-      update(group_ids: group_ids.uniq)
+      update(group_ids: gid.uniq)
       ::User.set_callback(:save, :before, :assign_defaults)
       ::User.set_callback(:save, :after, :assign_individual_to_group)
     end
