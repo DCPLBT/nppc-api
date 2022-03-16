@@ -14,6 +14,7 @@ module Delegates
         to: :mobilized_to, prefix: true, allow_nil: true
       )
       delegate(:name, to: :approved_by, prefix: true, allow_nil: true)
+      delegate(:name, to: :rejected_by, prefix: true, allow_nil: true)
       delegate(:name, to: :region, prefix: true, allow_nil: true)
       delegate(:name, to: :district, prefix: true, allow_nil: true)
       delegate(:name, to: :extension, prefix: true, allow_nil: true)

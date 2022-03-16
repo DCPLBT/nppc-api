@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_220_309_133_507) do
+ActiveRecord::Schema.define(version: 20_220_316_105_531) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -269,6 +269,8 @@ ActiveRecord::Schema.define(version: 20_220_309_133_507) do
     t.datetime 'approved_on'
     t.bigint 'from_id'
     t.bigint 'to_id'
+    t.bigint 'rejected_by_id'
+    t.datetime 'rejected_on'
     t.index ['approved_by_id'], name: 'index_mobilizations_on_approved_by_id'
     t.index ['company_id'], name: 'index_mobilizations_on_company_id'
     t.index ['district_id'], name: 'index_mobilizations_on_district_id'
@@ -276,6 +278,7 @@ ActiveRecord::Schema.define(version: 20_220_309_133_507) do
     t.index ['from_id'], name: 'index_mobilizations_on_from_id'
     t.index ['received_by_id'], name: 'index_mobilizations_on_received_by_id'
     t.index ['region_id'], name: 'index_mobilizations_on_region_id'
+    t.index ['rejected_by_id'], name: 'index_mobilizations_on_rejected_by_id'
     t.index ['to_id'], name: 'index_mobilizations_on_to_id'
     t.index ['user_id'], name: 'index_mobilizations_on_user_id'
   end

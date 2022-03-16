@@ -9,6 +9,7 @@
 #  category       :integer
 #  received_on    :datetime
 #  reference_no   :string
+#  rejected_on    :datetime
 #  state          :integer
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
@@ -19,6 +20,7 @@
 #  from_id        :bigint
 #  received_by_id :bigint
 #  region_id      :bigint
+#  rejected_by_id :bigint
 #  to_id          :bigint
 #  user_id        :bigint           not null
 #
@@ -31,6 +33,7 @@
 #  index_mobilizations_on_from_id         (from_id)
 #  index_mobilizations_on_received_by_id  (received_by_id)
 #  index_mobilizations_on_region_id       (region_id)
+#  index_mobilizations_on_rejected_by_id  (rejected_by_id)
 #  index_mobilizations_on_to_id           (to_id)
 #  index_mobilizations_on_user_id         (user_id)
 #

@@ -11,6 +11,7 @@ module Relations
       belongs_to :company, optional: true
       belongs_to :received_by, optional: true, class_name: 'User'
       belongs_to :approved_by, optional: true, class_name: 'User'
+      belongs_to :rejected_by, optional: true, class_name: 'User'
       belongs_to :mobilizer, foreign_key: :from_id, class_name: 'Group', optional: true
       belongs_to :mobilized_to, foreign_key: :to_id, class_name: 'Group', optional: true
       belongs_to :user

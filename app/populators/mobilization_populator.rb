@@ -26,8 +26,10 @@ class MobilizationPopulator < BasePopulator
   def mobilizations
     @mobilizations ||= Mobilization.includes(
       :line_items, :rich_text_received_remark, :region, :district, :extension, :attachment, :company,
-      :approved_by, :received_by, user: :profile, mobilized_to: %i[region district extension company],
-                                  mobilizer: %i[region district extension company]
+      :approved_by, :received_by, :rejected_by,
+      user: :profile,
+      mobilized_to: %i[region district extension company],
+      mobilizer: %i[region district extension company]
     )
   end
 
