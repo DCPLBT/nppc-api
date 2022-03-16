@@ -6,6 +6,8 @@ module Relations
 
     included do
       belongs_to :user, inverse_of: :settings
+
+      has_rich_text :remark
     end
   end
 end

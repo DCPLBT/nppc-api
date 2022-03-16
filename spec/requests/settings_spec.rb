@@ -23,7 +23,7 @@ RSpec.describe '/settings', type: :request do
   # Setting. As you add validations to Setting, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    { category: :indent, meta: { requisition_date: Time.now }, user: user }
+    { category: :indent, remark: Faker::Restaurant.review, meta: { requisition_date: Time.now }, user: user }
   end
 
   let(:invalid_attributes) do

@@ -35,7 +35,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def setting_params
-        params.require(:setting).permit(:category, meta: {})
+        params.require(:setting).permit(:category, :remark, meta: {})
       end
 
       def setting_form

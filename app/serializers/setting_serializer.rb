@@ -21,4 +21,8 @@
 #
 class SettingSerializer < ApplicationSerializer
   attributes :user_id, :category, :meta, :created_at
+
+  attribute :remark do |object|
+    object.remark&.to_plain_text
+  end
 end
