@@ -63,7 +63,11 @@ class LineItemForm < BaseForm
   def adjust_stock # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
     return unless line_item.itemable.respond_to?(:to_id) && line_item.stock
 
-    existing_stock = current_group.stocks.find_by(procured_on: line_item.stock&.procured_on)
+    existing_stock = current_group.stocks.find_by(
+      procured_on: line_item.stock&.procured_on,
+      product_type_id: line_item.product_type_id,
+      product_id: line_item.product_id
+    )
     stock = existing_stock || (
       x = line_item.stock.dup
       x.quantity = 0
