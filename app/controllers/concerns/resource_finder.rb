@@ -60,14 +60,14 @@ module ResourceFinder
   def from_id
     attr = { region_id: current_user.region_id, district_id: current_user.district_id,
              extension_id: current_user.extension_id, village_id: current_user.village_id,
-             company_id: current_user.company_id }
+             company_id: current_user.company_id, individual_id: current_user.id }
     @from_id ||= Group.find_by(group_attributes(current_role, attr))&.id
   end
 
-  # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+  # rubocop:disable Metrics/MethodLength
   def group_attributes(
     role, attrs = {
-      region_id: nil, district_id: nil, extension_id: nil, village_id: nil, company_id: nil
+      region_id: nil, district_id: nil, extension_id: nil, village_id: nil, company_id: nil, individual_id: nil
     }
   )
     attr = { role_id: role&.id }
@@ -90,14 +90,14 @@ module ResourceFinder
       )
     when 'User', 'ASSR'
       attr.merge!(
-        { individual_id: current_user.id }
+        { individual_id: attrs[:individual_id] }
       )
     else
       attr
     end
   end
 
-  # rubocop:enable Metrics/AbcSize,Metrics/MethodLength
+  # rubocop:enable Metrics/MethodLength
 
   private
 

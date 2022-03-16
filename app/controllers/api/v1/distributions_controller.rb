@@ -61,8 +61,8 @@ module Api
       def distribution_params
         params.require(:distribution).permit(
           :region_id, :district_id, :extension_id, :village_id, :company_id, :state, :received_remark,
-          :consumer_cid, :consumer_name, :consumer_village, :distributed_type, consumer_ids: [],
-                                                                               attachment_attributes: [:file]
+          :consumer_cid, :consumer_name, :consumer_village, :distributed_type,
+          consumer_ids: [], attachment_attributes: [:file]
         )
       end
 
@@ -98,9 +98,12 @@ module Api
       def to_id # rubocop:disable Metrics/AbcSize
         return unless %w[create update].include?(action_name)
 
-        attr = { region_id: distribution_params[:region_id], district_id: distribution_params[:district_id],
-                 extension_id: distribution_params[:extension_id], village_id: distribution_params[:village_id],
-                 company_id: distribution_params[:company_id] }
+        attr = {
+          region_id: distribution_params[:region_id], district_id: distribution_params[:district_id],
+          extension_id: distribution_params[:extension_id], village_id: distribution_params[:village_id],
+          company_id: distribution_params[:company_id],
+          individual_id: User.find_by(cid: distribution_params[:consumer_cid])
+        }
         @to_id ||= Group.find_by(group_attributes(to_role(distribution_params[:distributed_type]), attr))&.id
       end
     end
