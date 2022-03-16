@@ -50,10 +50,6 @@ module Callbacks
         attr.merge!(
           { region_id: region_id, district_id: district_id, extension_id: extension_id }
         )
-      when 'User', 'ASSR'
-        attr.merge!(
-          { individual_id: current_user.id }
-        )
       else
         attr
       end
@@ -62,14 +58,16 @@ module Callbacks
     # rubocop:enable Metrics/MethodLength
 
     def assign_individual_to_group
-      return unless roles.ids.include?(8)
+      return unless (roles.ids & [7, 8]).any?
 
-      user_group = Group.find_by(role_id: 8, individual_id: id, name: 'User') || Group.create!(
-        role_id: 8, individual_id: id, name: 'User'
-      )
+      roles.each do |r|
+        group_ids << (Group.find_by(role_id: r.id, individual_id: id, name: r.name) || Group.create!(
+          role_id: r.id, individual_id: id, name: r.name
+        )).id
+      end
       ::User.skip_callback(:save, :before, :assign_defaults)
       ::User.skip_callback(:save, :after, :assign_individual_to_group)
-      update(group_ids: (group_ids << user_group.id).uniq)
+      update(group_ids: group_ids.uniq)
       ::User.set_callback(:save, :before, :assign_defaults)
       ::User.set_callback(:save, :after, :assign_individual_to_group)
     end
