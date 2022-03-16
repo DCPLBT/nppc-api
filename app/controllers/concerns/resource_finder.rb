@@ -88,7 +88,7 @@ module ResourceFinder
       attr.merge!(
         { region_id: attrs[:region_id], district_id: attrs[:district_id], extension_id: attrs[:extension_id] }
       )
-    when 'User'
+    when 'User', 'ASSR'
       attr.merge!(
         { individual_id: current_user.id }
       )
