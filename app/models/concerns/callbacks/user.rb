@@ -50,6 +50,10 @@ module Callbacks
         attr.merge!(
           { region_id: region_id, district_id: district_id, extension_id: extension_id }
         )
+      when 'User', 'ASSR'
+        attr.merge!(
+          { individual_id: current_user.id }
+        )
       else
         attr
       end
