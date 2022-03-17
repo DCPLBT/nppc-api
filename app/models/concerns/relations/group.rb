@@ -16,8 +16,9 @@ module Relations
       has_many :user_groups, inverse_of: :group
       has_many :users, through: :user_groups
       has_many :stocks, inverse_of: :group, dependent: :destroy
-      has_many :requested_indents, foreign_key: :from_id, class_name: 'Indent'
-      has_many :forwarded_indents, foreign_key: :to_id, class_name: 'Indent'
+      has_many :group_transactions, dependent: :destroy
+      has_many :requested_indents, through: :group_transactions, source: :transactionable, source_type: 'Indent'
+      has_many :forwarded_indents, through: :group_transactions, source: :transactionable, source_type: 'Indent'
       has_many :distributors_distributions, foreign_key: :from_id, class_name: 'Distribution'
       has_many :distributed_tos_distributions, foreign_key: :to_id, class_name: 'Distribution'
       has_many :mobilizers_mobilizations, foreign_key: :from_id, class_name: 'Mobilization'

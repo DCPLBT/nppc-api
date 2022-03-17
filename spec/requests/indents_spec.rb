@@ -25,9 +25,13 @@ RSpec.describe '/indents', type: :request do
   let!(:village) { create(:village, extension: extension, user: admin) }
   let!(:village1) { create(:village, extension: extension1, user: admin) }
   let!(:user) do
-    create(:user, role_ids: [8], profile_attributes: {
-             region: region, district: district, extension: extension, village: village
-           })
+    create(
+      :user,
+      role_ids: [8],
+      profile_attributes: {
+        region: region, district: district, extension: extension, village: village
+      }
+    )
   end
   let!(:user1) do
     create(:user, role_ids: [8], profile_attributes: {
@@ -62,38 +66,42 @@ RSpec.describe '/indents', type: :request do
   describe 'GET /index' do
     let!(:indent1) do
       create(
-        :indent, draft: true, user_id: user.id, from_id: user.groups.first.id, to_id: ea.groups.first.id,
-                 region: user.region, district: user.district, extension: user.extension,
-                 line_items_attributes: [
-                   { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
-                 ]
+        :indent,
+        draft: true, user_id: user.id, requester_ids: [user.groups.first.id], forwarded_to_ids: [ea.groups.first.id],
+        region: user.region, district: user.district, extension: user.extension,
+        line_items_attributes: [
+          { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+        ]
       )
     end
     let!(:indent2) do
       create(
-        :indent, draft: false, user_id: user.id, from_id: user.groups.first.id, to_id: ea.groups.first.id,
-                 region: user.region, district: user.district, extension: user.extension,
-                 line_items_attributes: [
-                   { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
-                 ]
+        :indent,
+        draft: false, user_id: user.id, requester_ids: [user.groups.first.id], forwarded_to_ids: [ea.groups.first.id],
+        region: user.region, district: user.district, extension: user.extension,
+        line_items_attributes: [
+          { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+        ]
       )
     end
     let!(:indent3) do
       create(
-        :indent, draft: false, user_id: user.id, from_id: user.groups.first.id, to_id: ea.groups.first.id,
-                 region: user.region, district: user.district, extension: user.extension,
-                 line_items_attributes: [
-                   { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
-                 ]
+        :indent,
+        draft: false, user_id: user.id, requester_ids: [user.groups.first.id], forwarded_to_ids: [ea.groups.first.id],
+        region: user.region, district: user.district, extension: user.extension,
+        line_items_attributes: [
+          { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+        ]
       )
     end
     let!(:indent4) do
       create(
-        :indent, draft: false, user_id: user.id, from_id: user1.groups.first.id, to_id: ea1.groups.first.id,
-                 region: user1.region, district: user1.district, extension: user1.extension,
-                 line_items_attributes: [
-                   { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
-                 ]
+        :indent,
+        draft: false, user_id: user.id, requester_ids: [user1.groups.first.id], forwarded_to_ids: [ea1.groups.first.id],
+        region: user1.region, district: user1.district, extension: user1.extension,
+        line_items_attributes: [
+          { product_type: product_type, product: product, quantity: 10, unit_id: unit.id }
+        ]
       )
     end
 
@@ -208,8 +216,6 @@ RSpec.describe '/indents', type: :request do
                  region_id: region.id, district_id: district.id, extension_id: extension.id
                ) }, as: :json
         end.to change(Indent, :count).by(1)
-        expect(json.dig(:data, :attributes, :requester_id)).to eq(user.groups.first.id)
-        expect(json.dig(:data, :attributes, :forwarded_to_id)).to eq(ea.groups.first.id)
       end
 
       it 'renders a JSON response with the new indent' do

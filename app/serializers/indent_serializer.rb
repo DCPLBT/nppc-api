@@ -40,17 +40,6 @@
 #
 class IndentSerializer < ApplicationSerializer
   attributes(
-    :requester_id,
-    :requester_name,
-    :requester_region_name,
-    :requester_district_name,
-    :requester_extension_name,
-    :requester_company_name,
-    :forwarded_to_id,
-    :forwarded_to_name,
-    :forwarded_to_region_name,
-    :forwarded_to_district_name,
-    :forwarded_to_company_name,
     :user_id,
     :user_name,
     :draft,

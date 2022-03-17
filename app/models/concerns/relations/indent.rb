@@ -11,10 +11,11 @@ module Relations
       belongs_to :company, optional: true
       belongs_to :user
       belongs_to :accepted_by, class_name: 'User', optional: true
-      belongs_to :requester, foreign_key: :from_id, class_name: 'Group', optional: true
-      belongs_to :forwarded_to, foreign_key: :to_id, class_name: 'Group', optional: true
 
       has_many :line_items, as: :itemable, dependent: :destroy
+      has_many :group_transactions, as: :transactionable, dependent: :destroy
+      has_many :requesters, through: :group_transactions, source: :group
+      has_many :forwarded_tos, through: :group_transactions, source: :group
 
       has_rich_text :remark
 

@@ -41,8 +41,8 @@ class IndentForm < BaseForm
 
   def create_requester_forwarded_to
     indent.update(
-      from_id: from_id,
-      to_id: to_id
+      requester_ids: (indent.requester_ids << from_id).uniq,
+      forwarded_to_ids: (indent.forwarded_to_ids << to_id).uniq
     )
   end
 

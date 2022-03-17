@@ -78,8 +78,8 @@ module Api
         @indent_attributes ||= {
           current_user: current_user,
           id: params[:id],
-          from_id: from_id,
-          to_id: to_id,
+          from_ids: from_id,
+          to_ids: to_id,
           next_role_name: next_role_name
         }
       end
@@ -93,6 +93,15 @@ module Api
           :q, :draft, :requested, :received, :product_type_id, :product_id, :region_id, :district_id,
           :extension_id, :year, :from_date, :to_date
         )
+      end
+
+      def from_id
+        return unless %w[create update].include?(action_name)
+
+        attr = { region_id: indent_params[:region_id], district_id: indent_params[:district_id],
+                 extension_id: indent_params[:extension_id], village_id: indent_params[:village_id],
+                 company_id: indent_params[:company_id] }
+        @from_id ||= Group.find_by(group_attributes(current_role, attr))&.id
       end
 
       def to_id
