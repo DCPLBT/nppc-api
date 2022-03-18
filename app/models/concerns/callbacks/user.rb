@@ -62,9 +62,9 @@ module Callbacks
 
       gid = []
       roles.each do |r|
-        gid << (Group.find_by(role_id: r.id, individual_id: id, name: r.name) || Group.create!(
-          role_id: r.id, individual_id: id, name: r.name
-        )).id
+        attr = { role_id: r.id, individual_id: id, name: r.name }
+        attr.merge!(region_id: region_id, district_id: district_id, extension_id: extension_id) if assr?
+        gid << (Group.find_by(attr) || Group.create!(attr)).id
       end
       ::User.skip_callback(:save, :before, :assign_defaults)
       ::User.skip_callback(:save, :after, :assign_individual_to_group)

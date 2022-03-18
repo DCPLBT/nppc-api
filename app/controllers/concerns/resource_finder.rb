@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ResourceFinder
+module ResourceFinder # rubocop:disable Metrics/ModuleLength
   def parent
     return unless nested_route?
 
@@ -64,7 +64,7 @@ module ResourceFinder
     @from_id ||= Group.find_by(group_attributes(current_role, attr))&.id
   end
 
-  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/AbcSize
   def group_attributes(
     role, attrs = {
       region_id: nil, district_id: nil, extension_id: nil, village_id: nil, company_id: nil, individual_id: nil
@@ -88,7 +88,14 @@ module ResourceFinder
       attr.merge!(
         { region_id: attrs[:region_id], district_id: attrs[:district_id], extension_id: attrs[:extension_id] }
       )
-    when 'User', 'ASSR'
+    when 'ASSR'
+      attr.merge!(
+        {
+          individual_id: attrs[:individual_id], region_id: attrs[:region_id], district_id: attrs[:district_id],
+          extension_id: attrs[:extension_id]
+        }
+      )
+    when 'User'
       attr.merge!(
         { individual_id: attrs[:individual_id] }
       )
@@ -97,7 +104,7 @@ module ResourceFinder
     end
   end
 
-  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/AbcSize
 
   private
 
