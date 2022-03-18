@@ -94,25 +94,18 @@ RSpec.describe 'Reports', type: :request do
     end
 
     it 'renders a successful response' do
-      get api_v1_distributions_url(category: :distribution), as: :json
+      get distribution_api_v1_reports_url, as: :json
       expect(response).to be_successful
     end
 
     it 'filter by product type' do
-      get api_v1_distributions_url(category: :distribution, product_type_id: product_type.id), as: :json
+      get distribution_api_v1_reports_url(product_type_id: product_type.id), as: :json
       expect(response).to be_successful
-      expect(json[:data].size).to eq(4)
+      expect(json[:data].size).to eq(1)
     end
 
     it 'filter by product' do
-      get api_v1_distributions_url(category: :distribution, product_id: product.id), as: :json
-      expect(response).to be_successful
-      expect(json[:data].size).to eq(4)
-    end
-
-    it 'filter by date range' do
-      distribution4.update_columns(created_at: '2022-02-01')
-      get api_v1_distributions_url(category: :distribution, from_date: '2022-02-01', to_date: '2022-02-01'), as: :json
+      get distribution_api_v1_reports_url(product_id: product.id), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(1)
     end

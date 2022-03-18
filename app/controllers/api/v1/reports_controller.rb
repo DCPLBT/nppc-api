@@ -5,7 +5,7 @@ module Api
     class ReportsController < ApplicationController
       def index
         populate = ReportPopulator.new(
-          current_user: current_user, current_role_name: current_role_name,
+          current_user: current_user, current_role: current_role, current_group: current_group,
           params: query_params.merge!(type: 'Distribution')
         )
         render_paginated_collection(populate.overall, serializer: DistributionReportSerializer)
