@@ -108,6 +108,16 @@ RSpec.describe '/stocks', type: :request do
       expect(response).to be_successful
       expect(json[:data].size).to eq(1)
     end
+
+    it 'Download excel' do
+      get excel_download_api_v1_stocks_url, as: :json
+      expect(response).to be_successful
+    end
+
+    it 'Download pdf' do
+      get pdf_download_api_v1_stocks_url, as: :json
+      expect(response).to be_successful
+    end
   end
 
   describe 'GET /show' do
