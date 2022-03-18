@@ -58,7 +58,7 @@ module Api
       # Only allow a list of trusted parameters through.
       def mobilization_params
         params.require(:mobilization).permit(
-          :region_id, :district_id, :extension_id, :company_id, :state, :received_remark, :remark,
+          :region_id, :district_id, :extension_id, :company_id, :state, :received_remark, :rejected_remark, :remark,
           :approved_by_id, :category, attachment_attributes: [:file]
         )
       end

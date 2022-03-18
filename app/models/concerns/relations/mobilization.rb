@@ -21,6 +21,7 @@ module Relations
       has_many :line_items, as: :itemable, dependent: :destroy
 
       has_rich_text :received_remark
+      has_rich_text :rejected_remark
       has_rich_text :remark
 
       accepts_nested_attributes_for(

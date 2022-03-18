@@ -85,57 +85,63 @@ RSpec.describe '/mobilizations', type: :request do
     end
     let!(:mobilization1) do
       create(
-        :mobilization, user_id: user2.id, from_id: user2.groups.first.id, to_id: ea.groups.first.id,
-                       region: user2.region, district: user2.district, extension: user2.extension, category: 'ea',
-                       line_items_attributes: [
-                         { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
-                       ]
+        :mobilization,
+        user_id: user2.id, from_id: user2.groups.first.id, to_id: ea.groups.first.id,
+        region: user2.region, district: user2.district, extension: user2.extension, category: 'ea',
+        line_items_attributes: [
+          { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
+        ]
       )
     end
     let!(:mobilization2) do
       create(
-        :mobilization, user_id: user2.id, from_id: user2.groups.first.id, to_id: ea.groups.first.id,
-                       region: user2.region, district: user2.district, extension: user2.extension, category: 'ea',
-                       line_items_attributes: [
-                         { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
-                       ]
+        :mobilization,
+        user_id: user2.id, from_id: user2.groups.first.id, to_id: ea.groups.first.id,
+        region: user2.region, district: user2.district, extension: user2.extension, category: 'ea',
+        line_items_attributes: [
+          { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
+        ]
       )
     end
     let!(:mobilization3) do
       create(
-        :mobilization, user_id: user2.id, from_id: user2.groups.first.id, to_id: ea.groups.first.id,
-                       region: user2.region, district: user2.district, extension: user2.extension, category: 'ea',
-                       line_items_attributes: [
-                         { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
-                       ]
+        :mobilization,
+        user_id: user2.id, from_id: user2.groups.first.id, to_id: ea.groups.first.id,
+        region: user2.region, district: user2.district, extension: user2.extension, category: 'ea',
+        line_items_attributes: [
+          { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
+        ]
       )
     end
     let!(:mobilization4) do
       create(
-        :mobilization, user_id: user.id, from_id: user.groups.first.id, to_id: ea1.groups.first.id,
-                       region: user1.region, district: user1.district, extension: user1.extension,
-                       category: 'ea',
-                       line_items_attributes: [
-                         { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
-                       ]
+        :mobilization,
+        user_id: user.id, from_id: user.groups.first.id, to_id: ea1.groups.first.id,
+        region: user1.region, district: user1.district, extension: user1.extension,
+        category: 'ea',
+        line_items_attributes: [
+          { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
+        ]
       )
     end
     let!(:mobilization5) do
       create(
-        :mobilization, user_id: user.id, from_id: user.groups.first.id, to_id: adrc.groups.first.id,
-                       region: region1, category: 'adrc',
-                       line_items_attributes: [
-                         { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
-                       ]
+        :mobilization,
+        user_id: user.id, from_id: user.groups.first.id, to_id: adrc.groups.first.id,
+        region: region1, category: 'adrc',
+        line_items_attributes: [
+          { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
+        ]
       )
     end
     let!(:mobilization6) do
       create(
-        :mobilization, user_id: user.id, from_id: user.groups.first.id, to_id: ea1.groups.first.id, company: company,
-                       category: 'mhv',
-                       line_items_attributes: [
-                         { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
-                       ]
+        :mobilization,
+        user_id: user.id, from_id: user.groups.first.id, to_id: ea1.groups.first.id, company: company,
+        category: 'mhv',
+        line_items_attributes: [
+          { product_type: product_type, product: product, stock: stock1, quantity: 10, unit_id: unit.id }
+        ]
       )
     end
 
@@ -342,6 +348,20 @@ RSpec.describe '/mobilizations', type: :request do
               params: { mobilization: new_attributes }, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
+      end
+
+      it 'reject mobilization' do
+        mobilization = Mobilization.create! valid_attributes
+        new_attributes[:state] = :approved
+        patch api_v1_mobilization_url(mobilization, category: :mobilization),
+              params: {
+                mobilization: {
+                  state: :rejected, rejected_remark: 'Not allowed at this point of time'
+                }
+              }, as: :json
+        expect(response).to have_http_status(:ok)
+        expect(json.dig(:data, :attributes, :state)).to eq('rejected')
+        expect(json.dig(:data, :attributes, :rejected_remark)).to eq('Not allowed at this point of time')
       end
 
       it 'approval can be only carried out by NPPC user' do

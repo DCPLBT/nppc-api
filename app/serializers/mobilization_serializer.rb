@@ -92,4 +92,8 @@ class MobilizationSerializer < ApplicationSerializer
   attribute :received_remark do |object|
     object.received_remark&.to_plain_text
   end
+
+  attribute :rejected_remark do |object|
+    object.rejected_remark&.to_plain_text
+  end
 end
