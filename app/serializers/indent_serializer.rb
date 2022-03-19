@@ -55,7 +55,9 @@ class IndentSerializer < ApplicationSerializer
     :accepted_on,
     :indent_type,
     :total_product,
-    :total_quantity
+    :total_quantity,
+    :requester_ids,
+    :forwarded_to_ids
   )
 
   attribute :remark do |object|
