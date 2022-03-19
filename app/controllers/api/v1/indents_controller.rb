@@ -95,14 +95,14 @@ module Api
         )
       end
 
-      def from_id # rubocop:disable Metrics/AbcSize
-        return unless %w[create update].include?(action_name)
-
-        attr = { region_id: indent_params[:region_id], district_id: indent_params[:district_id],
-                 extension_id: indent_params[:extension_id], village_id: indent_params[:village_id],
-                 company_id: indent_params[:company_id], individual_id: current_user.id }
-        @from_id ||= Group.find_by(group_attributes(current_role, attr))&.id
-      end
+      # def from_id # rubocop:disable Metrics/AbcSize
+      #   return unless %w[create update].include?(action_name)
+      #
+      #   attr = { region_id: indent_params[:region_id], district_id: indent_params[:district_id],
+      #            extension_id: indent_params[:extension_id], village_id: indent_params[:village_id],
+      #            company_id: indent_params[:company_id], individual_id: current_user.id }
+      #   @from_id ||= Group.find_by(group_attributes(current_role, attr))&.id
+      # end
 
       def to_id
         return unless %w[create update].include?(action_name)
