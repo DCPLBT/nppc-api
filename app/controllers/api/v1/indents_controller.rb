@@ -80,7 +80,8 @@ module Api
           id: params[:id],
           from_id: from_id,
           to_id: to_id,
-          next_role_name: next_role_name
+          next_role_name: next_role_name,
+          submitted: params[:submitted]
         }
       end
 

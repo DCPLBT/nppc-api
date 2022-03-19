@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class IndentForm < BaseForm
+  attr_accessor :submitted
+
   def show
     indent
   end
@@ -15,7 +17,8 @@ class IndentForm < BaseForm
   def update
     indent.update(params).tap do |result|
       result && indent.accepted? && update_accepted_indent
-      result && !indent.draft? && create_requester_forwarded_to
+      result && indent.accepted? && create_requester_forwarded_to
+      result && determine_boolean(submitted) && create_requester_forwarded_to
     end
   end
 

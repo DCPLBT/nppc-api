@@ -22,6 +22,10 @@ class BaseForm
     assign_attributes(attributes)
   end
 
+  def determine_boolean(status)
+    [true, 'true'].include?(status)
+  end
+
   def create_notification(attr = { title: nil, text: '', url: '', recipient_ids: [] })
     Notification.create(
       title: attr[:title],
