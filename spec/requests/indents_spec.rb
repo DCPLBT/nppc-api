@@ -200,14 +200,6 @@ RSpec.describe '/indents', type: :request do
     end
   end
 
-  describe 'GET /forward' do
-    it 'renders a successful response' do
-      indent = Indent.create! valid_attributes
-      get forward_api_v1_indent_url(indent), as: :json
-      expect(response).to be_successful
-    end
-  end
-
   describe 'POST /create' do
     context 'with valid parameters' do
       it 'creates a new Indent' do
@@ -286,6 +278,18 @@ RSpec.describe '/indents', type: :request do
               params: { indent: new_attributes }, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
+      end
+
+      it 'forward indent' do
+        indent = Indent.create! valid_attributes
+        patch api_v1_indent_url(indent), params: { state: :forwarded }, as: :json
+        expect(response).to be_successful
+      end
+
+      it 'receive indent' do
+        indent = Indent.create! valid_attributes
+        patch api_v1_indent_url(indent), params: { state: :received }, as: :json
+        expect(response).to be_successful
       end
     end
 

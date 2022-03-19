@@ -18,14 +18,9 @@ class IndentForm < BaseForm
     indent.update(params).tap do |result|
       result && indent.accepted? && update_accepted_info
       result && indent.received? && update_received_info
-      result && determine_boolean(submitted) && create_requester_forwarded_to
-    end
-  end
-
-  def forward
-    indent.update(state: :forwarded).tap do |result|
       result && indent.forwarded? && update_forwarded_info
-      result && create_requester_forwarded_to
+      result && indent.forwarded? && create_requester_forwarded_to
+      result && determine_boolean(submitted) && create_requester_forwarded_to
     end
   end
 

@@ -131,9 +131,6 @@ Rails.application.routes.draw do
         end
       end
       resources :indents, concerns: :itemable, shallow: true do
-        member do
-          get :forward
-        end
         collection do
           get :excel_download
           get :pdf_download
