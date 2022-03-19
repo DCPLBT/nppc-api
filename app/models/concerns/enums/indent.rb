@@ -5,7 +5,7 @@ module Enums
     extend ActiveSupport::Concern
 
     included do
-      enum state: { requested: 0, accepted: 10, rejected: 20 }
+      enum state: { requested: 0, accepted: 10, rejected: 20, forwarded: 25, received: 30 }
       enum indent_type: { ea: 0, dao: 5, nppc: 10 }
     end
   end

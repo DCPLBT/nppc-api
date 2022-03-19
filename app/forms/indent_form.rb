@@ -14,9 +14,11 @@ class IndentForm < BaseForm
     end
   end
 
-  def update
+  def update # rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/AbcSize
     indent.update(params).tap do |result|
-      result && indent.accepted? && update_accepted_indent
+      result && indent.accepted? && update_accepted_info
+      result && indent.forwarded? && update_forwarded_info
+      result && indent.received? && update_received_info
       result && determine_boolean(submitted) && create_requester_forwarded_to
     end
   end
@@ -49,10 +51,24 @@ class IndentForm < BaseForm
     )
   end
 
-  def update_accepted_indent
+  def update_accepted_info
     indent.update_columns(
       accepted_by_id: current_user.id,
       accepted_on: Time.current
+    )
+  end
+
+  def update_forwarded_info
+    indent.update_columns(
+      forwarded_by_id: current_user.id,
+      forwarded_on: Time.current
+    )
+  end
+
+  def update_received_info
+    indent.update_columns(
+      received_by_id: current_user.id,
+      received_on: Time.current
     )
   end
 end

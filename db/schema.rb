@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_220_319_095_307) do
+ActiveRecord::Schema.define(version: 20_220_319_192_625) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -232,10 +232,16 @@ ActiveRecord::Schema.define(version: 20_220_319_095_307) do
     t.bigint 'accepted_by_id'
     t.datetime 'accepted_on'
     t.integer 'indent_type'
+    t.bigint 'forwarded_by_id'
+    t.datetime 'forwarded_on'
+    t.bigint 'received_by_id'
+    t.datetime 'received_on'
     t.index ['accepted_by_id'], name: 'index_indents_on_accepted_by_id'
     t.index ['company_id'], name: 'index_indents_on_company_id'
     t.index ['district_id'], name: 'index_indents_on_district_id'
     t.index ['extension_id'], name: 'index_indents_on_extension_id'
+    t.index ['forwarded_by_id'], name: 'index_indents_on_forwarded_by_id'
+    t.index ['received_by_id'], name: 'index_indents_on_received_by_id'
     t.index ['region_id'], name: 'index_indents_on_region_id'
     t.index ['user_id'], name: 'index_indents_on_user_id'
   end

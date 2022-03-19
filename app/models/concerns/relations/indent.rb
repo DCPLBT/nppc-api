@@ -11,6 +11,8 @@ module Relations
       belongs_to :company, optional: true
       belongs_to :user
       belongs_to :accepted_by, class_name: 'User', optional: true
+      belongs_to :forwarded_by, class_name: 'User', optional: true
+      belongs_to :received_by, class_name: 'User', optional: true
 
       has_many :line_items, as: :itemable, dependent: :destroy
       has_many :transaction_froms, as: :transactionable, dependent: :destroy

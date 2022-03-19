@@ -4,31 +4,37 @@
 #
 # Table name: indents
 #
-#  id             :bigint           not null, primary key
-#  accepted_on    :datetime
-#  draft          :boolean
-#  indent_type    :integer
-#  reference_no   :string
-#  state          :integer
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  accepted_by_id :bigint
-#  company_id     :bigint
-#  district_id    :bigint
-#  extension_id   :bigint
-#  from_id        :bigint
-#  region_id      :bigint
-#  to_id          :bigint
-#  user_id        :bigint           not null
+#  id              :bigint           not null, primary key
+#  accepted_on     :datetime
+#  draft           :boolean
+#  forwarded_on    :datetime
+#  indent_type     :integer
+#  received_on     :datetime
+#  reference_no    :string
+#  state           :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  accepted_by_id  :bigint
+#  company_id      :bigint
+#  district_id     :bigint
+#  extension_id    :bigint
+#  forwarded_by_id :bigint
+#  from_id         :bigint
+#  received_by_id  :bigint
+#  region_id       :bigint
+#  to_id           :bigint
+#  user_id         :bigint           not null
 #
 # Indexes
 #
-#  index_indents_on_accepted_by_id  (accepted_by_id)
-#  index_indents_on_company_id      (company_id)
-#  index_indents_on_district_id     (district_id)
-#  index_indents_on_extension_id    (extension_id)
-#  index_indents_on_region_id       (region_id)
-#  index_indents_on_user_id         (user_id)
+#  index_indents_on_accepted_by_id   (accepted_by_id)
+#  index_indents_on_company_id       (company_id)
+#  index_indents_on_district_id      (district_id)
+#  index_indents_on_extension_id     (extension_id)
+#  index_indents_on_forwarded_by_id  (forwarded_by_id)
+#  index_indents_on_received_by_id   (received_by_id)
+#  index_indents_on_region_id        (region_id)
+#  index_indents_on_user_id          (user_id)
 #
 # Foreign Keys
 #
