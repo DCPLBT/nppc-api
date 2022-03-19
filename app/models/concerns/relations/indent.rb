@@ -13,9 +13,10 @@ module Relations
       belongs_to :accepted_by, class_name: 'User', optional: true
 
       has_many :line_items, as: :itemable, dependent: :destroy
-      has_many :group_transactions, as: :transactionable, dependent: :destroy
-      has_many :requesters, through: :group_transactions, source: :group
-      has_many :forwarded_tos, through: :group_transactions, source: :group
+      has_many :transaction_froms, as: :transactionable, dependent: :destroy
+      has_many :transaction_tos, as: :transactionable, dependent: :destroy
+      has_many :requesters, through: :transaction_froms, source: :from
+      has_many :forwarded_tos, through: :transaction_tos, source: :to
 
       has_rich_text :remark
 

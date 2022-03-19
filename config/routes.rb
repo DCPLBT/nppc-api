@@ -94,7 +94,12 @@ Rails.application.routes.draw do
       end
 
       concern :itemable do
-        resources :line_items
+        resources :line_items do
+          collection do
+            get :excel_download
+            get :pdf_download
+          end
+        end
       end
 
       resources :profiles, concerns: :imageable

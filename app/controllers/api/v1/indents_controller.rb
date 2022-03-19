@@ -95,7 +95,7 @@ module Api
         )
       end
 
-      # def from_id # rubocop:disable Metrics/AbcSize
+      # def from_id
       #   return unless %w[create update].include?(action_name)
       #
       #   attr = { region_id: indent_params[:region_id], district_id: indent_params[:district_id],

@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_220_316_135_641) do
+ActiveRecord::Schema.define(version: 20_220_319_095_307) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -460,6 +460,28 @@ ActiveRecord::Schema.define(version: 20_220_316_135_641) do
     t.index ['region_id'], name: 'index_surrenders_on_region_id'
     t.index ['to_id'], name: 'index_surrenders_on_to_id'
     t.index ['user_id'], name: 'index_surrenders_on_user_id'
+  end
+
+  create_table 'transaction_froms', force: :cascade do |t|
+    t.string 'transactionable_type', null: false
+    t.bigint 'transactionable_id', null: false
+    t.bigint 'from_id'
+    t.string 'type'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['from_id'], name: 'index_transaction_froms_on_from_id'
+    t.index %w[transactionable_type transactionable_id], name: 'index_transaction_froms_on_transactionable'
+  end
+
+  create_table 'transaction_tos', force: :cascade do |t|
+    t.string 'transactionable_type', null: false
+    t.bigint 'transactionable_id', null: false
+    t.bigint 'to_id'
+    t.string 'type'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['to_id'], name: 'index_transaction_tos_on_to_id'
+    t.index %w[transactionable_type transactionable_id], name: 'index_transaction_tos_on_transactionable'
   end
 
   create_table 'units', force: :cascade do |t|

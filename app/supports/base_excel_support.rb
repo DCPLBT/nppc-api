@@ -8,7 +8,7 @@ class BaseExcelSupport
   end
 
   def run
-    renderer = ::Documents::Excel::ExcelRenderer.new(headers, data, 'Distributions')
+    renderer = ::Documents::Excel::ExcelRenderer.new(headers, data, 'Excel')
     renderer.run
   end
 end

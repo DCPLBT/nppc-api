@@ -26,6 +26,24 @@ module Api
         destroy_line_item_form(line_item_form)
       end
 
+      def excel_download
+        line_items = LineItemPopulator.new(parent: parent, params: query_params).run
+        file_download(
+          ::LineItemExcelSupport.new(line_items).run,
+          'Product.xlsx',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+      end
+
+      def pdf_download
+        line_items = LineItemPopulator.new(parent: parent, params: query_params).run
+        file_download(
+          ::Documents::Pdf::LineItem.new(line_items: line_items).generate,
+          'Product.pdf',
+          'application/pdf'
+        )
+      end
+
       private
 
       def line_item_params

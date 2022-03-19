@@ -1,0 +1,27 @@
+.row
+  .col-sm-12.text-center.mb-5
+    %h4.blue-color.font-weight-400 Products
+%table.table.table-striped
+  %thead>
+    %tr>
+      %th{scope: "col"}Product Type.
+      %th{scope: "col"}Product
+      %th{scope: "col"}Qty
+      %th{scope: "col"}Unit Price
+      %th{scope: "col"}Unit
+      %th{scope: "col"}Total Price
+      %th{scope: "col"}Received Qty
+      %th{scope: "col"}Received by
+      %th{scope: "col"}Received on
+  %tbody
+    - @line_items.each do |d|
+      %tr
+        %td=d.product_type_name
+        %td=d.product_name
+        %td=d.quantity
+        %td=d.unit_price
+        %td=d.unit_name
+        %td=d.total_price
+        %td=d.received_quantity
+        %td=d.received_by_name
+        %td=d.received_on&.strftime('%d/%m/%Y %I:%M %p')
