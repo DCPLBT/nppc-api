@@ -220,16 +220,20 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
       when 'MHV'
         Group.where(role_id: current_role.id, company_id: current_group.company_id)
       when 'DAO'
-        type.eql?('Surrender') ?
-          Group.where(name: %w[NPPC ADRC DAO]) :
+        if type.eql?('Surrender')
+          Group.where(name: %w[NPPC ADRC DAO])
+        else
           Group.where(region_id: current_group.region_id, district_id: current_group.district_id)
+        end
       when 'EA'
-        type.eql?('Surrender') ?
-          Group.where(name: %w[NPPC ADRC DAO EA]) :
+        if type.eql?('Surrender')
+          Group.where(name: %w[NPPC ADRC DAO EA])
+        else
           Group.where(
             region_id: current_group.region_id, district_id: current_group.district_id,
             extension_id: current_group.extension_id
           )
+        end
       when 'ASSR'
         Group.where(
           region_id: current_group.region_id, district_id: current_group.district_id,
