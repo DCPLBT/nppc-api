@@ -15,6 +15,7 @@ class IndentForm < BaseForm
   def update
     indent.update(params).tap do |result|
       result && indent.accepted? && update_accepted_indent
+      result && !indent.draft? && create_requester_forwarded_to
     end
   end
 
