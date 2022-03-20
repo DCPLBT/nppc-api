@@ -14,7 +14,7 @@ module Callbacks
     def assign_defaults
       assign_attributes(
         unit_id: product&.unit_id,
-        obsolete_date: (expiry_date || Date.current) + (Setting.obsolete.first&.meta&.dig('period') || 0).months
+        obsolete_date: (expiry_date || Date.current) + (Setting.obsolete.first&.meta&.dig('period')&.to_i || 0).months
       )
     end
 
