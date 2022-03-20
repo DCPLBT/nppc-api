@@ -149,7 +149,7 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
         "line_items.itemable_type='#{type}'"
       ).where(
         "#{type.underscore.pluralize}": {
-          id: groups.includes(:forwarded_indents).flat_map(&:forwarded_indents).pluck(:transactionable_id)
+          id: groups.includes(:forwarded_indents).flat_map(&:forwarded_indents).pluck(:id)
         }
       )
     when 'Stock'
@@ -181,7 +181,7 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
         "line_items.itemable_type='#{type}'"
       ).where(
         "#{type.underscore.pluralize}": {
-          id: groups.includes(:requested_indents).flat_map(&:requested_indents).pluck(:transactionable_id)
+          id: groups.includes(:requested_indents).flat_map(&:requested_indents).pluck(:id)
         }
       )
     when 'Stock'
