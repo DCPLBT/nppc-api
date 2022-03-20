@@ -20,7 +20,7 @@ class IndentForm < BaseForm
       result && indent.received? && update_received_info
       result && indent.forwarded? && update_forwarded_info
       result && indent.forwarded? && create_requester_forwarded_to
-      result && determine_boolean(submitted) && create_requester_forwarded_to
+      result && !indent.draft? && determine_boolean(submitted) && create_requester_forwarded_to
     end
   end
 
