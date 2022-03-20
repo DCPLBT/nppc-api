@@ -6,7 +6,7 @@ module Validations
 
     included do
       validates_presence_of :email, :roles, :profile
-      validates_uniqueness_of :email, :username, :phone, allow_blank: true
+      validates_uniqueness_of :email, :username, :phone, :cid, allow_blank: true
     end
   end
 end
