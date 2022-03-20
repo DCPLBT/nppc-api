@@ -6,6 +6,8 @@ class ReportSerializer < ApplicationSerializer
     :product_type_name,
     :product_id,
     :product_name,
+    :unit_id,
+    :unit_name,
     :quantity,
     :unit_price,
     :total_price

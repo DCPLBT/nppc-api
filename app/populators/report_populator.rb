@@ -123,8 +123,9 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
   # rubocop:enable Metrics/AbcSize
 
   def group_by_product(line_items)
-    line_items.group(:product_id, :product_type_id, :itemable_type).select(
-      :product_id, :product_type_id, 'product_id as id, SUM(quantity) as quantity, SUM(unit_price) as unit_price'
+    line_items.group(:product_id, :product_type_id, :itemable_type, :unit_id).select(
+      :product_id, :product_type_id, :unit_id,
+      'product_id as id, SUM(quantity) as quantity, SUM(unit_price) as unit_price'
     )
   end
 
