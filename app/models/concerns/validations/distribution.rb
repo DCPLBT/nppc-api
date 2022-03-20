@@ -10,6 +10,7 @@ module Validations
       validates_presence_of :region_id, if: ->(x) { x.adrc? }
       validates_presence_of :region_id, :district_id, :extension_id, if: ->(x) { x.ea? }
       validates_presence_of :company_id, if: ->(x) { x.mhv? }
+      validates_presence_of :consumer_cid, :village, if: :individual?
 
       # validate :validate_stock, if: :distributed?
     end

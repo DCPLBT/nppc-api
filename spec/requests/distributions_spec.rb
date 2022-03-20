@@ -236,7 +236,9 @@ RSpec.describe '/distributions', type: :request do
       it 'renders a JSON response with the new distribution' do
         valid_attributes[:distributed_type] = 'individual'
         post api_v1_distributions_url(category: :distribution),
-             params: { distribution: valid_attributes }, as: :json
+             params: { distribution: valid_attributes.merge!(
+               consumer_cid: user1.cid, village_id: user1.village_id
+             ) }, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
       end

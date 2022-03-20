@@ -57,6 +57,7 @@ FactoryBot.define do
     password { Faker::Internet.password }
     role_ids { [8] }
     active { true }
+    cid { Faker::IDNumber.brazilian_citizen_number }
     factory :admin do
       role_ids { [1] }
     end

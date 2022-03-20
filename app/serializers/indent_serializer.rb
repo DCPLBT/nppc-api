@@ -51,6 +51,7 @@ class IndentSerializer < ApplicationSerializer
     :draft,
     :state,
     :user_name,
+    :user_cid,
     :user_region_name,
     :user_district_name,
     :user_extension_name,
