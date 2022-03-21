@@ -166,7 +166,7 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
   end
 
   def items(line_items)
-    @items ||= line_items.joins(
+    line_items.joins(
       "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
       "line_items.itemable_type='#{type}'"
     )

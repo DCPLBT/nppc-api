@@ -55,14 +55,14 @@ class IndentReportPopulator < ReportPopulator
   end
 
   def from_indents(line_items)
-    @from_indents ||= items(line_items).joins(
+    items(line_items).joins(
       "INNER JOIN transaction_froms ON transactionable_type='Indent' AND "\
       "transactionable_id=#{type.underscore.pluralize}.id INNER JOIN groups ON groups.id=transaction_froms.from_id"
     )
   end
 
   def to_indents(line_items)
-    @to_indents ||= items(line_items).joins(
+    items(line_items).joins(
       "INNER JOIN transaction_tos ON transactionable_type='Indent' AND "\
       "transactionable_id=#{type.underscore.pluralize}.id INNER JOIN groups ON groups.id=transaction_tos.to_id"
     )
