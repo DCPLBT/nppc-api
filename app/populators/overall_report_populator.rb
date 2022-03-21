@@ -21,7 +21,7 @@ class OverallReportPopulator < ReportPopulator
   def filter_by_distributed_by(line_items)
     return line_items unless distributed_by.present? && type.eql?('Distribution')
 
-    items.where("#{type.underscore.pluralize}": { distributed_type: Distribution.distributed_types[determine_db] })
+    items(line_items).where("#{type.underscore.pluralize}": { distributed_type: Distribution.distributed_types[determine_db] })
   end
 
   def determine_db
