@@ -62,6 +62,7 @@ class LineItemForm < BaseForm
 
   def adjust_stock # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
     return unless line_item.itemable.respond_to?(:to_id) && line_item.respond_to?(:stock)
+    return if line_item.stock.nil?
 
     existing_stock = current_group.stocks.find_by(
       procured_on: line_item.stock&.procured_on,

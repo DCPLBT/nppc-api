@@ -56,3 +56,4 @@ en:
           only_nppc_can_approve: 'Only NPPC can approve the mobilization.'
         line_item:
           insufficient_stock: '%{product} has insufficient stock. Available stock is %{stock}.'
+          quantity_exceeded: 'Received qty cannot exceed what is distributed. Max qty receivable is %{quantity}'

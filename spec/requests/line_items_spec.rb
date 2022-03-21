@@ -115,6 +115,17 @@ RSpec.describe '/line_items', type: :request do
         expect(json.dig(:data, :attributes, :received)).to eq(true)
         expect(json.dig(:data, :attributes, :received_by_name)).to eq(user.name)
       end
+
+      it 'receive the product' do
+        line_item = LineItem.create! valid_attributes
+        patch api_v1_line_item_url(line_item), params: {
+          line_item: { received: true, received_quantity: line_item.quantity + 1 }
+        }, as: :json
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(
+          json[:errors][0]
+        ).to eq("Received qty cannot exceed what is distributed. Max qty receivable is #{line_item.quantity}")
+      end
     end
 
     context 'with invalid parameters' do
