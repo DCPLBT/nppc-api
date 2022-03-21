@@ -61,18 +61,18 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
   def filter_by_distributed_type(line_items)
     return line_items unless distributed_type.present? && type.eql?('Distribution')
 
-    items.where("#{type.underscore.pluralize}": { distributed_type: determine_dt })
+    items(line_items).where("#{type.underscore.pluralize}": { distributed_type: determine_dt })
   end
 
   def filter_by_region(line_items)
     return line_items unless region_id.present?
 
     if submitted.present? && determine_boolean(submitted)
-      items
+      items(line_items)
         .joins("INNER JOIN groups ON groups.id = #{type.underscore.pluralize}.from_id")
         .where(groups: { region_id: region_id })
     else
-      items
+      items(line_items)
         .joins("INNER JOIN groups ON groups.id = #{type.underscore.pluralize}.to_id")
         .where(groups: { region_id: region_id })
     end
@@ -82,11 +82,11 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
     return line_items unless district_id.present?
 
     if submitted.present? && determine_boolean(submitted)
-      items
+      items(line_items)
         .joins("INNER JOIN groups ON groups.id = #{type.underscore.pluralize}.from_id")
         .where(groups: { district_id: district_id })
     else
-      items
+      items(line_items)
         .joins("INNER JOIN groups ON groups.id = #{type.underscore.pluralize}.to_id")
         .where(groups: { district_id: district_id })
     end
@@ -96,11 +96,11 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
     return line_items unless extension_id.present?
 
     if submitted.present? && determine_boolean(submitted)
-      items
+      items(line_items)
         .joins("INNER JOIN groups ON groups.id = #{type.underscore.pluralize}.from_id")
         .where(groups: { region_id: region_id })
     else
-      items
+      items(line_items)
         .joins("INNER JOIN groups ON groups.id = #{type.underscore.pluralize}.to_id")
         .where(groups: { region_id: region_id })
     end
@@ -110,9 +110,9 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
     return line_items unless village_id.present? && type.eql?('Distribution')
 
     if submitted.present? && determine_boolean(submitted)
-      items.where("#{type.underscore.pluralize}": { village_id: village_id })
+      items(line_items).where("#{type.underscore.pluralize}": { village_id: village_id })
     else
-      items
+      items(line_items)
         .joins("INNER JOIN groups ON groups.id = #{type.underscore.pluralize}.to_id")
         .where(groups: { village_id: village_id })
     end
@@ -122,11 +122,11 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
     return line_items unless company_id.present? && type.eql?('Distribution')
 
     if submitted.present? && determine_boolean(submitted)
-      items
+      items(line_items)
         .joins("INNER JOIN groups ON groups.id = #{type.underscore.pluralize}.from_id")
         .where(groups: { company_id: company_id })
     else
-      items
+      items(line_items)
         .joins("INNER JOIN groups ON groups.id = #{type.underscore.pluralize}.to_id")
         .where(groups: { company_id: company_id })
     end
@@ -136,11 +136,11 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
     return line_items unless sale_agent_id.present? && type.eql?('Distribution')
 
     if submitted.present? && determine_boolean(submitted)
-      items
+      items(line_items)
         .joins("INNER JOIN groups ON groups.id = #{type.underscore.pluralize}.from_id")
         .where(groups: { individual_id: sale_agent_id })
     else
-      items
+      items(line_items)
         .joins("INNER JOIN groups ON groups.id = #{type.underscore.pluralize}.to_id")
         .where(groups: { individual_id: sale_agent_id })
     end
@@ -157,15 +157,15 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
       )
   end
 
-  def received_line_items(_line_items)
-    items.where("#{type.underscore.pluralize}": { to_id: groups.ids })
+  def received_line_items(line_items)
+    items(line_items).where("#{type.underscore.pluralize}": { to_id: groups.ids })
   end
 
-  def submitted_line_items(_line_items)
-    items.where("#{type.underscore.pluralize}": { from_id: groups.ids })
+  def submitted_line_items(line_items)
+    items(line_items).where("#{type.underscore.pluralize}": { from_id: groups.ids })
   end
 
-  def items
+  def items(line_items)
     @items ||= line_items.joins(
       "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
       "line_items.itemable_type='#{type}'"
