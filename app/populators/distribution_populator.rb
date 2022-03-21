@@ -25,7 +25,7 @@ class DistributionPopulator < BasePopulator
 
   def distributions
     @distributions ||= Distribution.includes(
-      :line_items, :rich_text_received_remark, :region, :district, :extension, :attachment, :company,
+      :line_items, :rich_text_received_remark, :region, :district, :extension, :attachment, :company, :village,
       distributed_to: %i[region district extension company], user: :profile,
       distributor: %i[region district extension company]
     )

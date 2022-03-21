@@ -167,7 +167,6 @@ Rails.application.routes.draw do
           get :indent
           get :distribution
           get :surrender
-          get :stock
           get :mobilization
         end
       end
