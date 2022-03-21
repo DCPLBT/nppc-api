@@ -54,6 +54,8 @@ class DistributionSerializer < ApplicationSerializer
     :extension_name,
     :company_id,
     :company_name,
+    :village_id,
+    :village_name,
     :state,
     :reference_no,
     :draft,

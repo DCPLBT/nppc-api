@@ -117,7 +117,7 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
     line_items.joins(
       "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
       "line_items.itemable_type='#{type}'"
-    ).where("#{type.underscore.pluralize}": { distributed_type: determine_dt })
+    ).where("#{type.underscore.pluralize}": { distributed_type: Distribution.distributed_types[determine_dt] })
   end
 
   # rubocop:enable Metrics/AbcSize
