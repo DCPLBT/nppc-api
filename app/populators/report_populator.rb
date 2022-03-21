@@ -2,6 +2,7 @@
 
 class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
   DISTRIBUTED_TYPE = %w[self individual].freeze
+  DISTRIBUTED_BY = %w[ea mhv assr].freeze
 
   attr_accessor :product_type_id, :product_id, :received, :submitted, :type, :region_id, :district_id,
                 :extension_id, :company_id, :distributed_type, :distributed_by, :village, :sale_agent_id
@@ -23,12 +24,16 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
       .yield_self { |line_items| group_by_product(line_items) }
   end
 
-  def overall
+  def overall # rubocop:disable Metrics/AbcSize
     line_items
       .yield_self { |line_items| filter_by_date_range(line_items) }
       .yield_self { |line_items| filter_by_product_type(line_items) }
       .yield_self { |line_items| filter_by_product(line_items) }
       .yield_self { |line_items| filter_by_distributed_by(line_items) }
+      .yield_self { |line_items| filter_by_region(line_items) }
+      .yield_self { |line_items| filter_by_district(line_items) }
+      .yield_self { |line_items| filter_by_extension(line_items) }
+      .yield_self { |line_items| filter_by_village(line_items) }
       .distinct
   end
 
@@ -136,7 +141,7 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
     line_items.joins(
       "INNER JOIN #{type.underscore.pluralize} ON #{type.underscore.pluralize}.id = line_items.itemable_id AND "\
       "line_items.itemable_type='#{type}'"
-    ).where("#{type.underscore.pluralize}": { from_id: groups.ids })
+    ).where("#{type.underscore.pluralize}": { distributed_type: Distribution.distributed_types[determine_db] })
   end
 
   # rubocop:enable Metrics/AbcSize
@@ -210,6 +215,10 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
 
   def determine_dt
     distributed_type.presence_in(DISTRIBUTED_TYPE) || 'self'
+  end
+
+  def determine_db
+    distributed_type.presence_in(DISTRIBUTED_BY) || 'ea'
   end
 
   # rubocop:disable Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/AbcSize
