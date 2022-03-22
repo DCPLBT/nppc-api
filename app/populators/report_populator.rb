@@ -7,6 +7,7 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
                 :extension_id, :company_id, :distributed_type, :distributed_by, :village_id, :sale_agent_id
 
   def run # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+    validate_submitted_or_received
     line_items
       .yield_self { |line_items| filter_by_date_range(line_items) }
       .yield_self { |line_items| filter_by_product_type(line_items) }
@@ -204,4 +205,6 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
   end
 
   # rubocop:enable Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/AbcSize
+
+  def validate_submitted_or_received; end
 end

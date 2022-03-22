@@ -228,6 +228,21 @@ RSpec.describe '/indents', type: :request do
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
       end
+
+      it 'validate PPP requisition date' do
+        setting = create(:setting, meta: { requisition_date: Date.current - 1 }, category: :indent, user: user)
+        post api_v1_indents_url,
+             params: { indent: valid_attributes.merge!(
+               region_id: region.id, district_id: district.id, extension_id: extension.id
+             ) }, as: :json
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(
+          json[:errors][0]
+        ).to eq(
+          "Notice for Last date for submission of indent is #{setting.meta['requisition_date']}. The PPP "\
+          'Information Management System will not allow submitting indent beyond the above mentioned date.'
+        )
+      end
     end
 
     context 'with invalid parameters' do

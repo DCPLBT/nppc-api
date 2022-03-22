@@ -57,3 +57,5 @@ en:
         line_item:
           insufficient_stock: '%{product} has insufficient stock. Available stock is %{stock}.'
           quantity_exceeded: 'Received qty cannot exceed what is distributed. Max qty receivable is %{quantity}'
+        indent:
+          cannot_make_indent: 'Notice for Last date for submission of indent is %{date}. The PPP Information Management System will not allow submitting indent beyond the above mentioned date.'
