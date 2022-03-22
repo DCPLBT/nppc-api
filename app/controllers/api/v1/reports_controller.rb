@@ -7,7 +7,9 @@ module Api
         populate = OverallReportPopulator.new(
           current_user: current_user, current_role: current_role, current_group: current_group, params: query_params
         )
-        render_paginated_collection(populate.run, serializer: DistributionReportSerializer)
+        render_paginated_collection(
+          populate.run, serializer: DistributionReportSerializer, params: { submitted: query_params[:submitted] }
+        )
       end
 
       def indent

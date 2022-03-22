@@ -11,17 +11,33 @@ class DistributionReportSerializer < ApplicationSerializer
     :total_price
   )
 
-  attribute :region_name do |obj|
-    obj.itemable.region_name
+  attribute :region_name do |obj, params|
+    if bool(params[:submitted])
+      obj.itemable.distributor&.region_name
+    else
+      obj.itemable.region_name
+    end
   end
-  attribute :district_name do |obj|
-    obj.itemable.district_name
+  attribute :district_name do |obj, params|
+    if bool(params[:submitted])
+      obj.itemable.distributor&.district_name
+    else
+      obj.itemable.district_name
+    end
   end
-  attribute :extension_name do |obj|
-    obj.itemable.extension_name
+  attribute :extension_name do |obj, params|
+    if bool(params[:submitted])
+      obj.itemable.distributor&.extension_name
+    else
+      obj.itemable.extension_name
+    end
   end
-  attribute :company_name do |obj|
-    obj.itemable.company_name
+  attribute :company_name do |obj, params|
+    if bool(params[:submitted])
+      obj.itemable.distributor&.company_name
+    else
+      obj.itemable.company_name
+    end
   end
   attribute :consumer_name do |obj|
     obj.itemable.consumer_name
@@ -30,6 +46,10 @@ class DistributionReportSerializer < ApplicationSerializer
     obj.itemable.consumer_cid
   end
   attribute :consumer_village do |obj|
-    obj.itemable.consumer_village
+    obj.itemable&.village_name
+  end
+
+  def self.bool(val)
+    [true, 'true'].include?(val)
   end
 end

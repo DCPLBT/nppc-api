@@ -3,7 +3,7 @@
 class OverallReportPopulator < ReportPopulator
   DISTRIBUTED_BY = %w[ea mhv assr].freeze
 
-  def run # rubocop:disable Metrics/AbcSize
+  def run # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     validate_submitted_or_received
     @type = 'Distribution'
     line_items
