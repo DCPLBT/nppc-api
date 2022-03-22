@@ -28,8 +28,9 @@ module Pagination
   end
 
   def paginated_data(collection, config, options)
+    params = options[:params] || {}
     options[:meta] = paginate(config, options[:meta])
-    options[:params] = options[:params].merge!(current_user: current_user)
+    options[:params] = params.merge!(current_user: current_user)
     {
       json: collection_serializer(collection, options[:serializer]).new(collection, options).serializable_hash.to_json,
       status: :ok
