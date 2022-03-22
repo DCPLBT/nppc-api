@@ -47,7 +47,7 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
   end
 
   def filter_by_received(line_items)
-    return line_items unless received.present? || determine_boolean(received)
+    return line_items unless received.present? && determine_boolean(received)
 
     received_line_items(line_items)
   end
