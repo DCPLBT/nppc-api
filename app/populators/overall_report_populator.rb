@@ -27,7 +27,7 @@ class OverallReportPopulator < ReportPopulator
   end
 
   def determine_db
-    distributed_type.presence_in(DISTRIBUTED_BY) || 'ea'
+    distributed_by.presence_in(DISTRIBUTED_BY) || 'ea'
   end
 
   def distributors
