@@ -23,10 +23,21 @@ class OverallReportPopulator < ReportPopulator
     return line_items unless distributed_by.present? && type.eql?('Distribution')
 
     items(line_items)
-      .where("#{type.underscore.pluralize}": { distributed_type: ::Distribution.distributed_types[determine_db] })
+      .where("#{type.underscore.pluralize}": { from_id: distributors&.ids })
   end
 
   def determine_db
     distributed_type.presence_in(DISTRIBUTED_BY) || 'ea'
+  end
+
+  def distributors
+    @distributors ||= case determine_db
+                      when 'ea'
+                        Group.where(name: 'EA')
+                      when 'mhv'
+                        Group.where(name: 'MHV')
+                      when 'assr'
+                        Group.where(name: 'ASSR')
+                      end
   end
 end
