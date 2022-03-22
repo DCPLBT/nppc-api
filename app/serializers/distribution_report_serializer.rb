@@ -45,7 +45,7 @@ class DistributionReportSerializer < ApplicationSerializer
   attribute :consumer_cid do |obj|
     obj.itemable.consumer_cid
   end
-  attribute :consumer_village do |obj|
+  attribute :consumer_village do |obj, params|
     if bool(params[:submitted])
       obj.itemable.distributor&.village_name
     else
