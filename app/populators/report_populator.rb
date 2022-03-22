@@ -207,5 +207,15 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
 
   # rubocop:enable Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/AbcSize
 
-  def validate_submitted_or_received; end
+  def validate_submitted_or_received # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+    unless (submitted.present? && determine_boolean(submitted)) || (received.present? && determine_boolean(received))
+      raise(
+        ArgumentError, 'Either submitted or received is required.'
+      )
+    end
+    return unless (submitted.present? && determine_boolean(submitted)) &&
+                  (received.present? && determine_boolean(received))
+
+    raise ArgumentError, 'Cannot send both submitted & received at a same time.'
+  end
 end

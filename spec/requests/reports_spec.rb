@@ -94,18 +94,18 @@ RSpec.describe 'Reports', type: :request do
     end
 
     it 'renders a successful response' do
-      get distribution_api_v1_reports_url, as: :json
+      get distribution_api_v1_reports_url(submitted: true), as: :json
       expect(response).to be_successful
     end
 
     it 'filter by product type' do
-      get distribution_api_v1_reports_url(product_type_id: product_type.id), as: :json
+      get distribution_api_v1_reports_url(product_type_id: product_type.id, submitted: true), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(1)
     end
 
     it 'filter by product' do
-      get distribution_api_v1_reports_url(product_id: product.id), as: :json
+      get distribution_api_v1_reports_url(product_id: product.id, submitted: true), as: :json
       expect(response).to be_successful
       expect(json[:data].size).to eq(1)
     end
