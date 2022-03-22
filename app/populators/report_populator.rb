@@ -100,11 +100,11 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
     if submitted.present? && determine_boolean(submitted)
       items(line_items)
         .joins("INNER JOIN groups ON groups.id = #{type.underscore.pluralize}.from_id")
-        .where(groups: { region_id: region_id })
+        .where(groups: { extension_id: extension_id })
     else
       items(line_items)
         .joins("INNER JOIN groups ON groups.id = #{type.underscore.pluralize}.to_id")
-        .where(groups: { region_id: region_id })
+        .where(groups: { extension_id: extension_id })
     end
   end
 
@@ -214,7 +214,7 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
       )
     end
     return unless (submitted.present? && determine_boolean(submitted)) &&
-                  (received.present? && determine_boolean(received))
+      (received.present? && determine_boolean(received))
 
     raise ArgumentError, 'Cannot send both submitted & received at a same time.'
   end
