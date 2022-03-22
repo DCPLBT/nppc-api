@@ -4,6 +4,7 @@ class OverallReportPopulator < ReportPopulator
   DISTRIBUTED_BY = %w[ea mhv assr].freeze
 
   def run # rubocop:disable Metrics/AbcSize
+    validate_submitted_or_received
     @type = 'Distribution'
     line_items
       .yield_self { |line_items| filter_by_date_range(line_items) }
