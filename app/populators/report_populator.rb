@@ -62,7 +62,8 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
   def filter_by_distributed_type(line_items)
     return line_items unless distributed_type.present? && type.eql?('Distribution')
 
-    items(line_items).where("#{type.underscore.pluralize}": { distributed_type: determine_dt })
+    items(line_items)
+      .where("#{type.underscore.pluralize}": { distributed_type: ::Distribution.distributed_types[determine_dt] })
   end
 
   def filter_by_region(line_items)

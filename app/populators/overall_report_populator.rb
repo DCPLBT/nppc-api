@@ -22,7 +22,7 @@ class OverallReportPopulator < ReportPopulator
     return line_items unless distributed_by.present? && type.eql?('Distribution')
 
     items(line_items)
-      .where("#{type.underscore.pluralize}": { distributed_type: Distribution.distributed_types[determine_db] })
+      .where("#{type.underscore.pluralize}": { distributed_type: ::Distribution.distributed_types[determine_db] })
   end
 
   def determine_db
