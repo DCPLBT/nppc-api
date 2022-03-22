@@ -31,13 +31,13 @@ class OverallReportPopulator < ReportPopulator
   end
 
   def distributors
-    @distributors ||= case determine_db
-                      when 'ea'
-                        Group.where(name: 'EA')
-                      when 'mhv'
-                        Group.where(name: 'MHV')
-                      when 'assr'
-                        Group.where(name: 'ASSR')
-                      end
+    case determine_db
+    when 'ea'
+      Group.where(name: 'EA')
+    when 'mhv'
+      Group.where(name: 'MHV')
+    when 'assr'
+      Group.where(name: 'ASSR')
+    end
   end
 end
