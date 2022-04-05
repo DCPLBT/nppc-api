@@ -5,6 +5,8 @@ module Api
     class DistributionsController < ApplicationController
       before_action :assign_params, only: %i[create update]
 
+      attr_accessor :individual_id
+
       # GET /distributions
       def index
         populate = DistributionPopulator.new(
@@ -85,6 +87,7 @@ module Api
       end
 
       def assign_params
+        @individual_id = distribution_params.delete(:individual_id)
         distribution_attributes.merge!(params: distribution_params)
       end
 
@@ -102,7 +105,7 @@ module Api
           region_id: distribution_params[:region_id], district_id: distribution_params[:district_id],
           extension_id: distribution_params[:extension_id], village_id: distribution_params[:village_id],
           company_id: distribution_params[:company_id],
-          individual_id: distribution_params.delete(:individual_id) ||
+          individual_id: individual_id ||
                          User.find_by(cid: distribution_params[:consumer_cid])
         }
         @to_id ||= Group.find_by(group_attributes(to_role(distribution_params[:distributed_type]), attr))&.id
