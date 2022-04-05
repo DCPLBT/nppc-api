@@ -61,7 +61,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def distribution_params
-        params.require(:distribution).permit(
+        @distribution_params ||= params.require(:distribution).permit(
           :region_id, :district_id, :extension_id, :village_id, :company_id, :state, :received_remark,
           :individual_id, :consumer_cid, :consumer_name, :consumer_village, :distributed_type,
           consumer_ids: [], attachment_attributes: [:file]
