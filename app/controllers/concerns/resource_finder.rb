@@ -14,7 +14,7 @@ module ResourceFinder # rubocop:disable Metrics/ModuleLength
     @current_role ||= Role.find_by(id: params[:current_role_id]) || current_user.roles.first
   end
 
-  def current_group
+  def current_group # rubocop:disable Metrics/AbcSize
     attrs = {
       region_id: current_user.region_id, district_id: current_user.district_id, extension_id: current_user.extension_id,
       village_id: current_user.village_id, company_id: current_user.company_id, individual_id: current_user.id

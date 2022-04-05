@@ -77,6 +77,10 @@ Rails.application.routes.draw do
       },
       defaults: { format: :json }
     )
+
+    devise_scope :user do
+      get 'users/confirmation/check', to: 'api/v1/users/confirmations#check'
+    end
   end
 
   namespace :api, defaults: { format: :json } do
