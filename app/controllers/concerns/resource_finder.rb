@@ -15,7 +15,11 @@ module ResourceFinder # rubocop:disable Metrics/ModuleLength
   end
 
   def current_group
-    @current_group ||= Group.find_by(group_attributes(current_role)) || current_user.groups.first
+    attrs = {
+      region_id: current_user.region_id, district_id: current_user.district_id, extension_id: current_user.extension_id,
+      village_id: current_user.village_id, company_id: current_user.company_id, individual_id: current_user.id
+    }
+    @current_group ||= Group.find_by(group_attributes(current_role, attrs)) || current_user.groups.first
   end
 
   def current_role_name
