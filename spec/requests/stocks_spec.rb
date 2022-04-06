@@ -109,6 +109,13 @@ RSpec.describe '/stocks', type: :request do
       expect(json[:data].size).to eq(1)
     end
 
+    it 'filter by procured year' do
+      stock.update(procured_on: Date.current - 1.year)
+      get api_v1_stocks_url(year: (Date.current - 1.year).year), as: :json
+      expect(response).to be_successful
+      expect(json[:data].size).to eq(1)
+    end
+
     it 'Download excel' do
       get excel_download_api_v1_stocks_url, as: :json
       expect(response).to be_successful
