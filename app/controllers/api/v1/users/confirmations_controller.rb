@@ -12,12 +12,7 @@ module Api
         end
 
         def check
-          user = resource_class.find_first_by_auth_conditions(confirmation_token: params[:confirmation_token])
-
-          unless user
-            confirmation_digest = Devise.token_generator.digest(self, :confirmation_token, params[:confirmation_token])
-            user = resource_class.find_or_initialize_with_error_by(:confirmation_token, confirmation_digest)
-          end
+          user = User.find(params[:id])
           render json: { confirmed: user.confirmed? }
         end
 
