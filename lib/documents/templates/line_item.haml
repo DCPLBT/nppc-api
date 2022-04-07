@@ -9,10 +9,11 @@
       %th{scope: "col"}Qty
       %th{scope: "col"}Unit Price
       %th{scope: "col"}Unit
-      %th{scope: "col"}Total Price
-      %th{scope: "col"}Received Qty
-      %th{scope: "col"}Received by
-      %th{scope: "col"}Received on
+      - unless @line_items.first.itemable.is_a?(Indent)
+        %th{scope: "col"}Total Price
+        %th{scope: "col"}Received Qty
+        %th{scope: "col"}Received by
+        %th{scope: "col"}Received on
   %tbody
     - @line_items.each do |d|
       %tr
@@ -21,7 +22,8 @@
         %td=d.quantity
         %td=d.unit_price
         %td=d.unit_name
-        %td=d.total_price
-        %td=d.received_quantity
-        %td=d.received_by_name
-        %td=d.received_on&.strftime('%d/%m/%Y %I:%M %p')
+        - unless d.itemable.is_a?(Indent)
+          %td=d.total_price
+          %td=d.received_quantity
+          %td=d.received_by_name
+          %td=d.received_on&.strftime('%d/%m/%Y %I:%M %p')
