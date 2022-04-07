@@ -156,7 +156,7 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
       .select(
         :product_id, :product_type_id, :unit_id, :itemable_type,
         'product_id as id, SUM(quantity) as quantity, SUM(unit_price) as unit_price, SUM(received_quantity) '\
-        'as received_quantity, null as received_by_id, null as received_on'
+        'as received_quantity, null as received_by_id, null as received_on, MAX(itemable_id) as itemable_id'
       )
   end
 
