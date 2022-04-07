@@ -9,7 +9,7 @@
       %th{scope: "col"}Qty
       %th{scope: "col"}Unit Price
       %th{scope: "col"}Unit
-      - unless @line_items.first.itemable.is_a?(Indent)
+      - unless @line_items.first.itemable_type.eql?('Indent')
         %th{scope: "col"}Total Price
         %th{scope: "col"}Received Qty
         %th{scope: "col"}Received by
@@ -22,7 +22,7 @@
         %td=d.quantity
         %td=d.unit_price
         %td=d.unit_name
-        - unless d.itemable.is_a?(Indent)
+        - unless d.itemable_type.eql?('Indent')
           %td=d.total_price
           %td=d.received_quantity
           %td=d.received_by_name
