@@ -57,7 +57,7 @@ module Api
           params: query_params.merge!(type: module_name)
         ).run
         file_download(
-          ::LineItemExcelSupport.new(line_items).run,
+          ::ReportLineItemExcelSupport.new(line_items).run,
           'Product.xlsx',
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         )
@@ -77,7 +77,7 @@ module Api
           params: query_params.merge!(type: module_name)
         ).run
         file_download(
-          ::Documents::Pdf::LineItem.new(line_items: line_items).generate,
+          ::Documents::Pdf::ReportLineItem.new(line_items: line_items).generate,
           'Product.pdf',
           'application/pdf'
         )

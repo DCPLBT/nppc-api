@@ -1,0 +1,20 @@
+.row
+  .col-sm-12.text-center.mb-5
+    %h4.blue-color.font-weight-400 Products
+%table.table.table-striped
+  %thead>
+    %tr>
+      %th{scope: "col"}Product Type.
+      %th{scope: "col"}Product
+      %th{scope: "col"}Qty
+      %th{scope: "col"}Unit Price
+      %th{scope: "col"}Total Price
+  %tbody
+    - @line_items.each do |d|
+      %tr
+        %td=d.product_type_name
+        %td=d.product_name
+        %td=d.quantity
+        %td=d.unit_price
+        %td=d.unit_name
+        %td=d.total_price
