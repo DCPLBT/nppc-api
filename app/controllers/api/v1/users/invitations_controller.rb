@@ -7,6 +7,11 @@ module Api
         before_action :invite_parameter_sanitizer, only: :create
         before_action :accept_parameter_sanitizer, only: :update
 
+        def check
+          user = User.find(params[:id])
+          render json: { accepted: user.invitation_accepted? }
+        end
+
         def respond_with(resource, _opts = {})
           if resource.errors?
             invalid_resource(resource)

@@ -80,6 +80,7 @@ Rails.application.routes.draw do
 
     devise_scope :user do
       get 'users/confirmation/check', to: 'api/v1/users/confirmations#check'
+      get 'users/invitation/check', to: 'api/v1/users/invitations#check'
     end
   end
 
