@@ -43,6 +43,46 @@ module Api
         render_paginated_collection(populate.run, serializer: ReportSerializer)
       end
 
+      def excel_download # rubocop:disable Metrics/MethodLength
+        populator = case module_name
+                    when 'Indent'
+                      IndentReportPopulator
+                    when 'Reports'
+                      OverallReportPopulator
+                    else
+                      ReportPopulator
+                    end
+        line_items = populator.new(
+          current_user: current_user, current_role: current_role, current_group: current_group,
+          params: query_params.merge!(type: module_name)
+        ).run
+        file_download(
+          ::LineItemExcelSupport.new(line_items).run,
+          'Product.xlsx',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+      end
+
+      def pdf_download # rubocop:disable Metrics/MethodLength
+        populator = case module_name
+                    when 'Indent'
+                      IndentReportPopulator
+                    when 'Reports'
+                      OverallReportPopulator
+                    else
+                      ReportPopulator
+                    end
+        line_items = populator.new(
+          current_user: current_user, current_role: current_role, current_group: current_group,
+          params: query_params.merge!(type: module_name)
+        ).run
+        file_download(
+          ::Documents::Pdf::LineItem.new(line_items: line_items).generate,
+          'Product.pdf',
+          'application/pdf'
+        )
+      end
+
       private
 
       def query_params
@@ -50,6 +90,10 @@ module Api
           :product_type_id, :product_id, :from_date, :to_date, :received, :submitted, :region_id, :district_id,
           :extension_id, :company_id, :distributed_type, :distributed_by, :village_id, :sale_agent_id
         )
+      end
+
+      def module_name
+        @module_name ||= nested_route[nested_route.size - 2].camelize
       end
     end
   end

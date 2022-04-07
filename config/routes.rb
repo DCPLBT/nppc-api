@@ -172,6 +172,18 @@ Rails.application.routes.draw do
           get :distribution
           get :surrender
           get :mobilization
+
+          get :excel_download
+          get :pdf_download
+
+          get 'indent/excel_download', to: 'reports#excel_download'
+          get 'indent/pdf_download', to: 'reports#pdf_download'
+          get 'distribution/excel_download', to: 'reports#excel_download'
+          get 'distribution/pdf_download', to: 'reports#pdf_download'
+          get 'surrender/excel_download', to: 'reports#excel_download'
+          get 'surrender/pdf_download', to: 'reports#pdf_download'
+          get 'mobilization/excel_download', to: 'reports#excel_download'
+          get 'mobilization/pdf_download', to: 'reports#pdf_download'
         end
       end
       resources :roles, only: :index, shallow: true do

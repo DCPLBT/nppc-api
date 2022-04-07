@@ -124,6 +124,10 @@ module ResourceFinder # rubocop:disable Metrics/ModuleLength
   end
 
   def nested_route?
-    request.url.split('v1/')[1].split('/').size >= 3
+    nested_route.size >= 3
+  end
+
+  def nested_route
+    @nested_route ||= request.url.split('v1/')[1].split('/')
   end
 end
