@@ -5,8 +5,8 @@ module Api
     class NotificationsController < ApplicationController
       # GET /notifications
       def index
-        populate = NotificationPopulator.new(params: query_params, current_user: current_user)
-        render_paginated_collection(populate.run)
+        nfc, meta = NotificationPopulator.new(params: query_params, current_user: current_user).run
+        render_paginated_collection(nfc, meta: meta)
       end
 
       # GET /notifications/1

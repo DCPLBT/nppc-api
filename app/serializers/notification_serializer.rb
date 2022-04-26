@@ -18,10 +18,10 @@ class NotificationSerializer < ApplicationSerializer
   end
 
   attribute :read do |obj, params|
-    obj.recipients.find_by(user_id: params[:current_user].id)&.read
+    obj.recipients.select { |x| x.user_id == params[:current_user].id }.first&.read
   end
 
   attribute :read_at do |obj, params|
-    obj.recipients.find_by(user_id: params[:current_user].id)&.read_at
+    obj.recipients.select { |x| x.user_id == params[:current_user].id }.first&.read_at
   end
 end
