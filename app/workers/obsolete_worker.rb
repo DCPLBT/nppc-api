@@ -9,7 +9,7 @@ class ObsoleteWorker < ApplicationWorker
       title: 'Obsolete product',
       text: "Product #{stock.product_name} has become obsolete on #{time.strftime("#{time.day.ordinalize} %B %Y")}",
       url: root_url.concat("inventory/#{stock.id}"),
-      user_ids: stock.users.ids
+      user_ids: stock.group&.users&.ids
     )
   end
 end
