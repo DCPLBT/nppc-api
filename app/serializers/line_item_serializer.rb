@@ -48,6 +48,7 @@ class LineItemSerializer < ApplicationSerializer
     :unit_price,
     :unit_id,
     :unit_name,
+    :pack_size,
     :total_price,
     :received,
     :received_by_id,

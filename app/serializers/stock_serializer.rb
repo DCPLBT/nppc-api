@@ -43,6 +43,7 @@ class StockSerializer < ApplicationSerializer
     :product_name,
     :user_id,
     :user_name,
+    :pack_size,
     :quantity,
     :unit_id,
     :unit_name,

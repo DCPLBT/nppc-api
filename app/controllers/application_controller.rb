@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::API
-  include Pundit
   include Renderer
   include CartHelper
   include Pagination
@@ -9,6 +8,7 @@ class ApplicationController < ActionController::API
   include Pagy::Backend
   include ResourceFinder
   include ParamsSanitizer
+  include Pundit::Authorization
   include ApiErrors::ErrorHandler
   include ActionController::Cookies
   include HttpAcceptLanguage::AutoLocale

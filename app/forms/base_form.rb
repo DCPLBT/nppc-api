@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class BaseForm
-  include Pundit
   include Assigner
+  include Pundit::Authorization
   include Rails.application.routes.url_helpers
 
   attr_accessor(

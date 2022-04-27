@@ -8,6 +8,7 @@
 #  description     :text
 #  disabled        :boolean          default(FALSE)
 #  name            :string
+#  pack_size       :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  product_type_id :bigint           not null
@@ -33,6 +34,7 @@ class ProductSerializer < ApplicationSerializer
     :unit_id,
     :unit_name,
     :user_id,
+    :pack_size,
     :product_type_id,
     :product_type_name,
     :disabled
