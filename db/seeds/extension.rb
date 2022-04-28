@@ -270,3 +270,7 @@ puts 'Seeding geog...'
   e = Extension.find_or_initialize_by(id: g[:id])
   e.update!(g)
 end
+
+Dir.glob(Rails.root.join('db/seeds/villages/*.rb')) do |file|
+  load file
+end
