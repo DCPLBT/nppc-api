@@ -9,6 +9,7 @@
       %th{scope: "col"}Qty
       %th{scope: "col"}Unit Price
       %th{scope: "col"}Unit
+      %th{scope: "col"}Pack Size
       %th{scope: "col"}Total Price
   %tbody
     - @line_items.each do |d|
@@ -18,4 +19,5 @@
         %td=d.quantity
         %td=d.unit_price
         %td=d.unit_name
+        %td=d.pack_size
         %td=d.total_price

@@ -10,6 +10,7 @@
       %th{scope: "col"}Expiry Date
       %th{scope: "col"}Obsolete Date
       %th{scope: "col"}Unit
+      %th{scope: "col"}Pack Size
       %th{scope: "col"}Quantity
       %th{scope: "col"}Price/uint
       %th{scope: "col"}Total Price
@@ -24,6 +25,7 @@
         %td=d.expiry_date&.strftime('%d/%m/%Y %I:%M %p')
         %td=d.obsolete_date&.strftime('%d/%m/%Y %I:%M %p')
         %td=d.unit_name
+        %td=d.pack_size
         %td=d.quantity
         %td=d.unit_price
         %td=d.total_price

@@ -9,6 +9,7 @@
       %th{scope: "col"}Qty
       %th{scope: "col"}Unit Price
       %th{scope: "col"}Unit
+      %th{scope: "col"}Pack Size
       - unless @line_items.first.itemable.is_a?(Indent)
         %th{scope: "col"}Total Price
         %th{scope: "col"}Received Qty
@@ -22,6 +23,7 @@
         %td=d.quantity
         %td=d.unit_price
         %td=d.unit_name
+        %td=d.pack_size
         - unless d.itemable.is_a?(Indent)
           %td=d.total_price
           %td=d.received_quantity
