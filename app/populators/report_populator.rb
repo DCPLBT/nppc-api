@@ -184,7 +184,8 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
     @groups ||=
       case current_role.name
       when 'ADRC'
-        Group.where(role_id: current_role.id, region_id: current_group.region_id)
+        # Group.where(role_id: current_role.id, region_id: current_group.region_id)
+        Group.where(region_id: current_group.region_id)
       when 'MHV'
         Group.where(role_id: current_role.id, company_id: current_group.company_id)
       when 'DAO'
@@ -215,7 +216,7 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
       )
     end
     return unless (submitted.present? && determine_boolean(submitted)) &&
-                  (received.present? && determine_boolean(received))
+      (received.present? && determine_boolean(received))
 
     raise ArgumentError, 'Cannot send both submitted & received at a same time.'
   end
