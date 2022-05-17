@@ -1,0 +1,4 @@
+en:
+  obsolete_mailer:
+    notify_obsolete_product:
+      subject: Obsolete product

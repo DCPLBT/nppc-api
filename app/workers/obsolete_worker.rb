@@ -11,5 +11,6 @@ class ObsoleteWorker < ApplicationWorker
       url: root_url.concat("inventory/#{stock.id}"),
       user_ids: stock.group&.users&.ids
     )
+    ObsoleteMailer.notify_obsolete_product(stock).deliver_now
   end
 end

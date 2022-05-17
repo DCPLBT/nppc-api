@@ -216,7 +216,7 @@ class ReportPopulator < BasePopulator # rubocop:disable Metrics/ClassLength
       )
     end
     return unless (submitted.present? && determine_boolean(submitted)) &&
-      (received.present? && determine_boolean(received))
+                  (received.present? && determine_boolean(received))
 
     raise ArgumentError, 'Cannot send both submitted & received at a same time.'
   end
