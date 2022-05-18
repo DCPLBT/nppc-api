@@ -4,6 +4,7 @@ class ObsoleteMailer < ApplicationMailer
   def notify_obsolete_product(stock)
     @stock = stock
     @time = stock.obsolete_date
-    mail(to: stock.group&.users&.pluck(:email))
+    emails = stock.group.users.pluck(:email) + User.includes(:roles).select(&:nppc?).pluck(:email)
+    mail(to: emails)
   end
 end
