@@ -2,3 +2,9 @@ en:
   obsolete_mailer:
     notify_obsolete_product:
       subject: Obsolete product
+  indent_mailer:
+    notify_indent_submission:
+      subject: New indent request
+  setting_mailer:
+    notify_indent_submission:
+      subject: Last date of indent submission

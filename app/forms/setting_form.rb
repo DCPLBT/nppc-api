@@ -8,6 +8,7 @@ class SettingForm < BaseForm
   def create
     setting.save.tap do |res|
       res && setting.indent? && create_notification(notification_attributes)
+      res && setting.indent? && notify_indent_submission
     end
   end
 
@@ -35,5 +36,9 @@ class SettingForm < BaseForm
       url: 'setting',
       recipient_ids: User.ids
     }
+  end
+
+  def notify_indent_submission
+    SettingMailer.notify_indent_submission(setting).deliver_later
   end
 end
