@@ -4,20 +4,21 @@
 #
 # Table name: stocks
 #
-#  id              :bigint           not null, primary key
-#  expiry_date     :date
-#  obsolete_date   :date
-#  procured_on     :date
-#  quantity        :decimal(, )
-#  remark          :text
-#  unit_price      :decimal(, )
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  group_id        :bigint
-#  product_id      :bigint           not null
-#  product_type_id :bigint           not null
-#  unit_id         :bigint           not null
-#  user_id         :bigint           not null
+#  id                      :bigint           not null, primary key
+#  expiry_date             :date
+#  obsolete_date           :date
+#  procured_on             :date
+#  quantity                :decimal(, )
+#  remark                  :text
+#  total_quantity_procured :decimal(, )
+#  unit_price              :decimal(, )
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  group_id                :bigint
+#  product_id              :bigint           not null
+#  product_type_id         :bigint           not null
+#  unit_id                 :bigint           not null
+#  user_id                 :bigint           not null
 #
 # Indexes
 #
@@ -45,6 +46,7 @@ class StockSerializer < ApplicationSerializer
     :user_name,
     :pack_size,
     :quantity,
+    :total_quantity_procured,
     :unit_id,
     :unit_name,
     :unit_price,
