@@ -24,7 +24,7 @@ module Callbacks
     end
 
     def update_total_quantity_procured
-      update_columns(total_quantity_procured: (total_quantity_procured || 0) + quantity)
+      update_columns(total_quantity_procured: quantity)
     end
   end
 end
