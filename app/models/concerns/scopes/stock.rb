@@ -18,7 +18,7 @@ module Scopes
         where(product_id: id)
       }
       scope :filter_by_obsolete, lambda {
-        where.not(quantity: [0, nil, '']).where('obsolete_date < ?', Date.current)
+        where.not(quantity: [0, nil, '']).where('obsolete_date <= ?', Date.current)
       }
     end
   end
