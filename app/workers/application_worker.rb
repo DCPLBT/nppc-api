@@ -6,7 +6,7 @@ class ApplicationWorker
 
   sidekiq_options(
     queue: 'nppc',
-    retry_queue: 'bulk',
+    retry_queue: 'nppc',
     retry: 2
   )
 end
