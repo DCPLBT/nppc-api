@@ -111,7 +111,7 @@ Rails.application.configure do
     address: ENV['MAIL_ADDRESS'],
     port: ENV['MAIL_PORT'],
     domain: URI.parse(ENV['HOST_URL']).host,
-    user_name: ENV['MAIL_USER_NAME'],
+    user_name: ENV['MAIL_USERNAME'],
     password: ENV['MAIL_PASSWORD'],
     authentication: 'login'
   }
