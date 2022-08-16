@@ -117,6 +117,8 @@ module ResourceFinder # rubocop:disable Metrics/ModuleLength
     params.each_key do |name|
       if name.match?(/(.+)_id$/)
         model = name.match(%r{([^/.]*)_id$})
+        next unless Object.const_defined? model[1].classify
+
         result = model[1].classify.constantize, name
       end
     end
