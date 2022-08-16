@@ -16,7 +16,7 @@ module Validations
 
     def indent_dates
       date = ::Setting.indent.first&.meta&.dig('requisition_date')
-      return unless date.present? && Time.current.after?(date.to_time)
+      return unless date.present? && Time.current.after?(date.to_time.end_of_day)
 
       errors.add(:base, :cannot_make_indent, date: date)
     end
